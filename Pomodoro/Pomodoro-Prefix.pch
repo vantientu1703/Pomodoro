@@ -1,0 +1,26 @@
+//
+//  Pomodoro-Prefix.pch
+//  Pomodoro
+//
+//  Created by Văn Tiến Tú on 10/23/15.
+//  Copyright © 2015 ZooStudio. All rights reserved.
+//
+
+#import <Availability.h>
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+
+#ifdef DEBUG
+#   define DebugLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#   define DebugLog(...)
+#endif
+
+#endif
+
+#ifndef Pomodoro_Prefix_h
+#define Pomodoro_Prefix_h
+#define todos @"todos"
+
+#endif /* Pomodoro_Prefix_h */

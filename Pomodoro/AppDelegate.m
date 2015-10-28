@@ -7,8 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import "MoneyDBController.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) MoneyDBController *moneyDBController;
 
 @end
 
@@ -17,6 +20,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    _moneyDBController = [MoneyDBController getInstance];
+    
+    [_moneyDBController openDB:[NSString stringWithFormat:@"Pomodoro.sqlite"]];
+    
     return YES;
 }
 

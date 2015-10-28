@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF0391E61BDE066300C4A622 /* GetToDoItemToDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0391E51BDE066300C4A622 /* GetToDoItemToDatabase.m */; settings = {ASSET_TAGS = (); }; };
+		EF0391FE1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0391FD1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m */; settings = {ASSET_TAGS = (); }; };
+		EF03920D1BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0392001BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.m */; settings = {ASSET_TAGS = (); }; };
+		EF03920E1BDE235D00C4A622 /* SWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0392021BDE235D00C4A622 /* SWCellScrollView.m */; settings = {ASSET_TAGS = (); }; };
+		EF03920F1BDE235D00C4A622 /* SWLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0392041BDE235D00C4A622 /* SWLongPressGestureRecognizer.m */; settings = {ASSET_TAGS = (); }; };
+		EF0392101BDE235D00C4A622 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0392061BDE235D00C4A622 /* SWTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		EF0392111BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0392081BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m */; settings = {ASSET_TAGS = (); }; };
+		EF0392121BDE235D00C4A622 /* SWUtilityButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF03920A1BDE235D00C4A622 /* SWUtilityButtonView.m */; settings = {ASSET_TAGS = (); }; };
+		EF0392131BDE235D00C4A622 /* UMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF03920C1BDE235D00C4A622 /* UMTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		EF3F0EB81BDA22C800AB0DC3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EB71BDA22C800AB0DC3 /* main.m */; };
 		EF3F0EBB1BDA22C800AB0DC3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EBA1BDA22C800AB0DC3 /* AppDelegate.m */; };
 		EF3F0EBE1BDA22C800AB0DC3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EBD1BDA22C800AB0DC3 /* ViewController.m */; };
@@ -18,6 +27,11 @@
 		EF3F0EF41BDA28B500AB0DC3 /* MoneyDBController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EF11BDA28B500AB0DC3 /* MoneyDBController.m */; settings = {ASSET_TAGS = (); }; };
 		EF3F0EF51BDA28B500AB0DC3 /* ZooDBUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EF31BDA28B500AB0DC3 /* ZooDBUtil.m */; settings = {ASSET_TAGS = (); }; };
 		EF3F0EF71BDA28F400AB0DC3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EF3F0EF61BDA28F400AB0DC3 /* libsqlite3.tbd */; };
+		EF3F0EFD1BDA3FE400AB0DC3 /* DBUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EFC1BDA3FE400AB0DC3 /* DBUtil.m */; settings = {ASSET_TAGS = (); }; };
+		EF3F0F021BDA416300AB0DC3 /* TodoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0F011BDA416300AB0DC3 /* TodoItem.m */; settings = {ASSET_TAGS = (); }; };
+		EF84406C1BDF1DFB00A97CA0 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF84406A1BDF1DFB00A97CA0 /* CustomTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		EF84406D1BDF1DFB00A97CA0 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
+		EF9A2D5F1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +52,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EF0391E41BDE066300C4A622 /* GetToDoItemToDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetToDoItemToDatabase.h; path = Task/GetToDoItemToDatabase.h; sourceTree = "<group>"; };
+		EF0391E51BDE066300C4A622 /* GetToDoItemToDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetToDoItemToDatabase.m; path = Task/GetToDoItemToDatabase.m; sourceTree = "<group>"; };
+		EF0391FC1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateToDoItemToDatabase.h; path = Task/UpdateToDoItemToDatabase.h; sourceTree = "<group>"; };
+		EF0391FD1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UpdateToDoItemToDatabase.m; path = Task/UpdateToDoItemToDatabase.m; sourceTree = "<group>"; };
+		EF0391FF1BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+SWUtilityButtons.h"; path = "Library/NSMutableArray+SWUtilityButtons.h"; sourceTree = "<group>"; };
+		EF0392001BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMutableArray+SWUtilityButtons.m"; path = "Library/NSMutableArray+SWUtilityButtons.m"; sourceTree = "<group>"; };
+		EF0392011BDE235D00C4A622 /* SWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWCellScrollView.h; path = Library/SWCellScrollView.h; sourceTree = "<group>"; };
+		EF0392021BDE235D00C4A622 /* SWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWCellScrollView.m; path = Library/SWCellScrollView.m; sourceTree = "<group>"; };
+		EF0392031BDE235D00C4A622 /* SWLongPressGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWLongPressGestureRecognizer.h; path = Library/SWLongPressGestureRecognizer.h; sourceTree = "<group>"; };
+		EF0392041BDE235D00C4A622 /* SWLongPressGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWLongPressGestureRecognizer.m; path = Library/SWLongPressGestureRecognizer.m; sourceTree = "<group>"; };
+		EF0392051BDE235D00C4A622 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWTableViewCell.h; path = Library/SWTableViewCell.h; sourceTree = "<group>"; };
+		EF0392061BDE235D00C4A622 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWTableViewCell.m; path = Library/SWTableViewCell.m; sourceTree = "<group>"; };
+		EF0392071BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWUtilityButtonTapGestureRecognizer.h; path = Library/SWUtilityButtonTapGestureRecognizer.h; sourceTree = "<group>"; };
+		EF0392081BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWUtilityButtonTapGestureRecognizer.m; path = Library/SWUtilityButtonTapGestureRecognizer.m; sourceTree = "<group>"; };
+		EF0392091BDE235D00C4A622 /* SWUtilityButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWUtilityButtonView.h; path = Library/SWUtilityButtonView.h; sourceTree = "<group>"; };
+		EF03920A1BDE235D00C4A622 /* SWUtilityButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWUtilityButtonView.m; path = Library/SWUtilityButtonView.m; sourceTree = "<group>"; };
+		EF03920B1BDE235D00C4A622 /* UMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMTableViewCell.h; path = Library/UMTableViewCell.h; sourceTree = "<group>"; };
+		EF03920C1BDE235D00C4A622 /* UMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMTableViewCell.m; path = Library/UMTableViewCell.m; sourceTree = "<group>"; };
 		EF3F0EB31BDA22C800AB0DC3 /* Pomodoro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pomodoro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF3F0EB71BDA22C800AB0DC3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF3F0EB91BDA22C800AB0DC3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -59,6 +91,16 @@
 		EF3F0EF21BDA28B500AB0DC3 /* ZooDBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZooDBUtil.h; path = DBManager/ZooDBUtil.h; sourceTree = "<group>"; };
 		EF3F0EF31BDA28B500AB0DC3 /* ZooDBUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZooDBUtil.m; path = DBManager/ZooDBUtil.m; sourceTree = "<group>"; };
 		EF3F0EF61BDA28F400AB0DC3 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		EF3F0EFA1BDA3B3900AB0DC3 /* Pomodoro-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Pomodoro-Prefix.pch"; sourceTree = "<group>"; };
+		EF3F0EFB1BDA3FE400AB0DC3 /* DBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBUtil.h; path = DBManager/DBUtil.h; sourceTree = "<group>"; };
+		EF3F0EFC1BDA3FE400AB0DC3 /* DBUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBUtil.m; path = DBManager/DBUtil.m; sourceTree = "<group>"; };
+		EF3F0F001BDA416300AB0DC3 /* TodoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TodoItem.h; path = Model/TodoItem.h; sourceTree = "<group>"; };
+		EF3F0F011BDA416300AB0DC3 /* TodoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TodoItem.m; path = Model/TodoItem.m; sourceTree = "<group>"; };
+		EF8440691BDF1DFB00A97CA0 /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTableViewCell.h; path = CustomTaableViewCell/CustomTableViewCell.h; sourceTree = "<group>"; };
+		EF84406A1BDF1DFB00A97CA0 /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTableViewCell.m; path = CustomTaableViewCell/CustomTableViewCell.m; sourceTree = "<group>"; };
+		EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CustomTableViewCell.xib; path = CustomTaableViewCell/CustomTableViewCell.xib; sourceTree = "<group>"; };
+		EF9A2D5D1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTodoItemToDatabaseTask.h; path = Task/DeleteTodoItemToDatabaseTask.h; sourceTree = "<group>"; };
+		EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeleteTodoItemToDatabaseTask.m; path = Task/DeleteTodoItemToDatabaseTask.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,10 +129,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EF0391E31BDE062500C4A622 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				EF0391E41BDE066300C4A622 /* GetToDoItemToDatabase.h */,
+				EF0391E51BDE066300C4A622 /* GetToDoItemToDatabase.m */,
+				EF0391FC1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.h */,
+				EF0391FD1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m */,
+				EF9A2D5D1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.h */,
+				EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */,
+			);
+			name = Task;
+			sourceTree = "<group>";
+		};
 		EF3F0EAA1BDA22C800AB0DC3 = {
 			isa = PBXGroup;
 			children = (
-				EF3F0EF81BDA290B00AB0DC3 /* Framework */,
 				EF3F0EB51BDA22C800AB0DC3 /* Pomodoro */,
 				EF3F0ECF1BDA22C900AB0DC3 /* PomodoroTests */,
 				EF3F0EDA1BDA22C900AB0DC3 /* PomodoroUITests */,
@@ -111,16 +165,20 @@
 		EF3F0EB51BDA22C800AB0DC3 /* Pomodoro */ = {
 			isa = PBXGroup;
 			children = (
-				EF3F0EF91BDA291F00AB0DC3 /* Library */,
 				EF3F0EB91BDA22C800AB0DC3 /* AppDelegate.h */,
 				EF3F0EBA1BDA22C800AB0DC3 /* AppDelegate.m */,
 				EF3F0EBC1BDA22C800AB0DC3 /* ViewController.h */,
 				EF3F0EBD1BDA22C800AB0DC3 /* ViewController.m */,
 				EF3F0EBF1BDA22C800AB0DC3 /* Main.storyboard */,
+				EF0391E31BDE062500C4A622 /* Task */,
 				EF3F0EE91BDA24EE00AB0DC3 /* DBManager */,
+				EF3F0EFE1BDA412A00AB0DC3 /* Model */,
 				EF3F0EC21BDA22C800AB0DC3 /* Assets.xcassets */,
 				EF3F0EC41BDA22C800AB0DC3 /* LaunchScreen.storyboard */,
 				EF3F0EC71BDA22C800AB0DC3 /* Info.plist */,
+				EF8440681BDF1D9000A97CA0 /* CustomTableViewCell */,
+				EF3F0EF91BDA291F00AB0DC3 /* Library */,
+				EF3F0EF81BDA290B00AB0DC3 /* Framework */,
 				EF3F0EB61BDA22C800AB0DC3 /* Supporting Files */,
 			);
 			path = Pomodoro;
@@ -130,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				EF3F0EB71BDA22C800AB0DC3 /* main.m */,
+				EF3F0EFA1BDA3B3900AB0DC3 /* Pomodoro-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -159,6 +218,8 @@
 				EF3F0EF11BDA28B500AB0DC3 /* MoneyDBController.m */,
 				EF3F0EF21BDA28B500AB0DC3 /* ZooDBUtil.h */,
 				EF3F0EF31BDA28B500AB0DC3 /* ZooDBUtil.m */,
+				EF3F0EFB1BDA3FE400AB0DC3 /* DBUtil.h */,
+				EF3F0EFC1BDA3FE400AB0DC3 /* DBUtil.m */,
 			);
 			name = DBManager;
 			sourceTree = "<group>";
@@ -169,13 +230,47 @@
 				EF3F0EF61BDA28F400AB0DC3 /* libsqlite3.tbd */,
 			);
 			name = Framework;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		EF3F0EF91BDA291F00AB0DC3 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				EF0391FF1BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.h */,
+				EF0392001BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.m */,
+				EF0392011BDE235D00C4A622 /* SWCellScrollView.h */,
+				EF0392021BDE235D00C4A622 /* SWCellScrollView.m */,
+				EF0392031BDE235D00C4A622 /* SWLongPressGestureRecognizer.h */,
+				EF0392041BDE235D00C4A622 /* SWLongPressGestureRecognizer.m */,
+				EF0392051BDE235D00C4A622 /* SWTableViewCell.h */,
+				EF0392061BDE235D00C4A622 /* SWTableViewCell.m */,
+				EF0392071BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.h */,
+				EF0392081BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m */,
+				EF0392091BDE235D00C4A622 /* SWUtilityButtonView.h */,
+				EF03920A1BDE235D00C4A622 /* SWUtilityButtonView.m */,
+				EF03920B1BDE235D00C4A622 /* UMTableViewCell.h */,
+				EF03920C1BDE235D00C4A622 /* UMTableViewCell.m */,
 			);
 			name = Library;
+			sourceTree = "<group>";
+		};
+		EF3F0EFE1BDA412A00AB0DC3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EF3F0F001BDA416300AB0DC3 /* TodoItem.h */,
+				EF3F0F011BDA416300AB0DC3 /* TodoItem.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		EF8440681BDF1D9000A97CA0 /* CustomTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				EF8440691BDF1DFB00A97CA0 /* CustomTableViewCell.h */,
+				EF84406A1BDF1DFB00A97CA0 /* CustomTableViewCell.m */,
+				EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */,
+			);
+			name = CustomTableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,6 +378,7 @@
 			files = (
 				EF3F0EC61BDA22C800AB0DC3 /* LaunchScreen.storyboard in Resources */,
 				EF3F0EC31BDA22C800AB0DC3 /* Assets.xcassets in Resources */,
+				EF84406D1BDF1DFB00A97CA0 /* CustomTableViewCell.xib in Resources */,
 				EF3F0EC11BDA22C800AB0DC3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,11 +404,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF9A2D5F1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m in Sources */,
+				EF84406C1BDF1DFB00A97CA0 /* CustomTableViewCell.m in Sources */,
+				EF03920E1BDE235D00C4A622 /* SWCellScrollView.m in Sources */,
+				EF0392131BDE235D00C4A622 /* UMTableViewCell.m in Sources */,
+				EF0392101BDE235D00C4A622 /* SWTableViewCell.m in Sources */,
 				EF3F0EF41BDA28B500AB0DC3 /* MoneyDBController.m in Sources */,
+				EF3F0F021BDA416300AB0DC3 /* TodoItem.m in Sources */,
 				EF3F0EF51BDA28B500AB0DC3 /* ZooDBUtil.m in Sources */,
 				EF3F0EBE1BDA22C800AB0DC3 /* ViewController.m in Sources */,
+				EF0391FE1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m in Sources */,
+				EF0392121BDE235D00C4A622 /* SWUtilityButtonView.m in Sources */,
 				EF3F0EBB1BDA22C800AB0DC3 /* AppDelegate.m in Sources */,
+				EF0392111BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
+				EF03920D1BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				EF3F0EB81BDA22C800AB0DC3 /* main.m in Sources */,
+				EF3F0EFD1BDA3FE400AB0DC3 /* DBUtil.m in Sources */,
+				EF0391E61BDE066300C4A622 /* GetToDoItemToDatabase.m in Sources */,
+				EF03920F1BDE235D00C4A622 /* SWLongPressGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +560,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pomodoro/Pomodoro-Prefix.pch";
 				INFOPLIST_FILE = Pomodoro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zoostudio.Pomodoro;
@@ -462,6 +573,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pomodoro/Pomodoro-Prefix.pch";
 				INFOPLIST_FILE = Pomodoro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zoostudio.Pomodoro;
@@ -536,6 +649,7 @@
 				EF3F0EE21BDA22C900AB0DC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EF3F0EE31BDA22C900AB0DC3 /* Build configuration list for PBXNativeTarget "PomodoroTests" */ = {
 			isa = XCConfigurationList;
@@ -544,6 +658,7 @@
 				EF3F0EE51BDA22C900AB0DC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EF3F0EE61BDA22C900AB0DC3 /* Build configuration list for PBXNativeTarget "PomodoroUITests" */ = {
 			isa = XCConfigurationList;
@@ -552,6 +667,7 @@
 				EF3F0EE81BDA22C900AB0DC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -11,6 +11,17 @@
 static MoneyDBController *instance = nil;
 static NSString *documentDir = nil;
 
+static NSString *TABLE_CREATE_TASKS = @"CREATE TABLE IF NOT EXISTS \"todos\" \
+                                        (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
+                                         \"content\" text, status INTEGER DEFAULT 0)";
+
+NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
+                                (\"id\" INTEGER PRIMARY KEY NOT NULL, \
+                                \"cat_id\" INTEGER NOT NULL , \
+                                \"number\" INTEGER NOT NULL , \
+                                \"created_date\" DATETIME NOT NULL DEFAULT (CURRENT_DATE) ,\
+                                \"note\" VARCHAR(140))";
+
 @implementation MoneyDBController
 @synthesize sqlite,onCompletion,onFailure;
 
@@ -59,20 +70,12 @@ static NSString *documentDir = nil;
 
 #pragma mark - Create table
 - (void)createTable {
-    NSString *TABLE_CREATE_CATEGORY = @"CREATE TABLE IF NOT EXISTS \"categories\" \
-                (\"id\" INTEGER PRIMARY KEY NOT NULL, \
-                \"name\" VARCHAR(30) NOT NULL, \
-                \"status\" BOOL NOT NULL DEFAULT TRUE, \
-                \"note\" VARCHAR(140))";
-    [self executeQuery:TABLE_CREATE_CATEGORY];
+
     
-    NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
-            (\"id\" INTEGER PRIMARY KEY NOT NULL, \
-            \"cat_id\" INTEGER NOT NULL , \
-            \"number\" INTEGER NOT NULL , \
-            \"created_date\" DATETIME NOT NULL DEFAULT (CURRENT_DATE) ,\
-            \"note\" VARCHAR(140))";
-    [self executeQuery:TABLE_CREATE_COUNT];
+    [self executeQuery:TABLE_CREATE_TASKS];
+    
+
+    //[self executeQuery:TABLE_CREATE_COUNT];
 }
 
 
@@ -107,6 +110,7 @@ static NSString *documentDir = nil;
 
 #pragma mark - Support select, insert, delete, update
 - (long)insert:(NSString*)table_name data:(NSDictionary *)data {
+    
     long reval = -1;
     if (!self.sqlite) {
         return reval;
@@ -270,6 +274,7 @@ static NSString *documentDir = nil;
 }
 
 - (NSArray*)rawQuery:(NSString*)sqlCommand args:(NSArray*)selectionArgs {
+    
     NSMutableArray *reval;
     
     sqlite3_stmt *statement;
@@ -338,6 +343,7 @@ static NSString *documentDir = nil;
  Raw query
 */
 - (NSArray*)rawQueryWithCommand:(NSString*)sqlCommand args:(NSArray*)selectionArgs {
+    
     NSMutableArray *reval;
     
     sqlite3_stmt *statement;
@@ -403,6 +409,7 @@ static NSString *documentDir = nil;
 }
 
 - (NSArray*)rawQuery:(NSString*)sqlCommand arg:(NSString*)selectionArg {
+    
     NSMutableArray *reval;
     
     sqlite3_stmt *statement;
@@ -524,6 +531,7 @@ static NSString *documentDir = nil;
 + (NSString *)dbPath:(NSString *)fileName {
     if (documentDir == nil) {
         documentDir = [[kDOCSFOLDER stringByAppendingPathComponent:fileName]copy];
+        DebugLog(@"dbPath: :%@",documentDir);
     }
     return documentDir;
 }
