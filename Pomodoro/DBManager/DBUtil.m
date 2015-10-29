@@ -18,6 +18,7 @@
     
     [dictionary setValue:[NSString stringWithFormat:@"%@",todoItem.content] forKey:@"content"];
     [dictionary setValue:[NSString stringWithFormat:@"%d", todoItem.status] forKey:@"status"];
+    [dictionary setValue:[NSString stringWithFormat:@"%d",todoItem.isDelete] forKey:@"isdeleted"];
     //[dictionary setValue:[NSString stringWithFormat:@"%ld", todoItem.todo_id] forKey:@"id"];
     
     return dictionary;
@@ -30,6 +31,7 @@
     todoItem.todo_id = [todo [@"0"]longLongValue];
     todoItem.content = todo [@"1"];
     todoItem.status = [todo [@"2"]boolValue];
+    todoItem.isDelete = [todo [@"3"]boolValue];
     
     return todoItem;
 }

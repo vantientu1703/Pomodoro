@@ -22,5 +22,4 @@
 #ifndef Pomodoro_Prefix_h
 #define Pomodoro_Prefix_h
 #define todos @"todos"
-
 #endif /* Pomodoro_Prefix_h */

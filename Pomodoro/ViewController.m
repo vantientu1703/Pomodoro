@@ -17,7 +17,7 @@
 #import "CustomTableViewCell.h"
 #import "DeleteTodoItemToDatabaseTask.h"
 #import "UndoView.h"
-#import "UndoViewController.h"
+
 
 @interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate>
 
@@ -68,9 +68,9 @@
 
 - (void) loadData {
 
-    _arrTodos = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:@"0"]];
+    _arrTodos = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:@[@"0",@"0"]];
     
-    _arrTodosRe_Oder = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:@"0"]];
+    _arrTodosRe_Oder = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:@[@"0",@"0"]];
         DebugLog(@"arrTodos: %@",_arrTodos);
     [self.tableView reloadData];
 
@@ -150,7 +150,7 @@
         case 1:
             
             _status = true;
-            _arrTodos = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:@"1"]];
+            _arrTodos = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:@[@"1",@"0"]];
             [_txtItemTodo resignFirstResponder];
             [self.tableView reloadData];
             break;
@@ -197,7 +197,11 @@
     _heightKeyboard = keyboardRect.size.height + 40;
     
     _tableView.frame = CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, widthTableview, heightTableview - _heightKeyboard);
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_arrTodos.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    if (_arrTodos.count != 0) {
+        
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_arrTodos.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    }
+    
 }
 
 - (void) keyboardWillBeHidden: (NSNotification *) aNotification {
@@ -385,10 +389,12 @@
             
             [self.arrTodos removeObject:todoItem];
             
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
             [self.tableView reloadData];
+            
         } else {
         
+            // Undone
             todoItem.status = false;
             
             UpdateToDoItemToDatabase *updateTodoItemTask = [[UpdateToDoItemToDatabase alloc]initWithTodoItem:todoItem];
@@ -415,20 +421,18 @@
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         
         TodoItem *todoItemRemoveFromTable = [_arrTodos objectAtIndex:indexPath.row];
-        todoItemRemoveFromTable.status = 2;
+        todoItemRemoveFromTable.isDelete = true;
         
         UpdateToDoItemToDatabase *updateTodoItemToDatabaseTask = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemRemoveFromTable];
         [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
-//        DeleteTodoItemToDatabaseTask *deleteTodoItemToDatabaseTask = [[DeleteTodoItemToDatabaseTask alloc] initWithTodoItem:todoItem];
-//        [deleteTodoItemToDatabaseTask doQuery:_moneyDBController];
         
-//        [self.arrTodos removeObject:todoItemRemoveFromTable];
-//        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//        [self.tableView reloadData];
+        [self.arrTodos removeObject:todoItemRemoveFromTable];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        [self.tableView reloadData];
         
         [self animateUndoViewDisplay];
     }
-    
+    // index = 1 button is edit
     if (index == 1) {
         
         DebugLog(@"press button is edit");
@@ -445,10 +449,14 @@
         _undoView.center = CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height + 10);
         _undoView.layer.cornerRadius = 10;
         [self.view addSubview:_undoView];
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             
-            _undoView.center = CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 30);
+            _undoView.center = CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 40);
         } completion:^(BOOL finished) {
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                _undoView.center = CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 30);
+            } completion:nil];
             
         }];
     }
