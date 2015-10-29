@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SWTableViewCell.h"
 
-@interface CustomTableViewCell : UITableViewCell
+@interface CustomTableViewCell : SWTableViewCell
 
 @property (weak, nonatomic) IBOutlet UITextField *txtTask;
 

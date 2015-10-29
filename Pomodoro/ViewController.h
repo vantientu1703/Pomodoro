@@ -19,7 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
-
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 

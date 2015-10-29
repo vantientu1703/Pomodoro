@@ -16,58 +16,64 @@
 #import "UpdateToDoItemToDatabase.h"
 #import "CustomTableViewCell.h"
 #import "DeleteTodoItemToDatabaseTask.h"
+#import "UndoView.h"
+#import "UndoViewController.h"
 
 @interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate>
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
 @property (nonatomic, strong) TodoItem *todoItem;
 @property (nonatomic, strong) NSMutableArray *arrTodos;
-@property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL status;
 @property (nonatomic, assign) NSInteger indexPathRow;
+@property (nonatomic, assign) CGFloat heightKeyboard;
+@property (nonatomic, strong) NSMutableArray *arrTodosRe_Oder;
+@property (nonatomic, strong) UndoView *undoView;
 
 @end
 
 @implementation ViewController
-
+{
+    int heightTableview, widthTableview;
+    
+    NSInteger _sourceIndexOfRow, _destinationIndexPathOfRow;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _status = false;
     
-    _txtItemTodo = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 100, 50)];
+    _txtItemTodo = [[UITextField alloc] init];
     [self.view addSubview:_txtItemTodo];
     [_txtItemTodo setBackgroundColor:[UIColor grayColor]];
     _txtItemTodo.placeholder = @"Adding new task";
     _txtItemTodo.textColor = [UIColor whiteColor];
     _txtItemTodo.hidden = YES;
     _txtItemTodo.delegate = self;
-    
+    _txtItemTodo.tag = 1;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
     _searchBar.delegate = self;
-    
-    self.isEditing = false;
-    
     _moneyDBController = [MoneyDBController getInstance];
     
     _searchBar.frame = CGRectMake(0, 0, _tableView.bounds.size.width, 50);
     [_tableView addSubview:_searchBar];
-    [_tableView setEditing:YES animated:YES];
     
-    
+    heightTableview = _tableView.bounds.size.height;
+    widthTableview = _tableView.bounds.size.width;
     [self loadData];
-    [self addGestureRecognizer];
+    [self registerForKeyboardNotification];
 }
 
 - (void) loadData {
 
     _arrTodos = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:@"0"]];
     
-    DebugLog(@"arrTodos: %@",_arrTodos);
-    
+    _arrTodosRe_Oder = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:@"0"]];
+        DebugLog(@"arrTodos: %@",_arrTodos);
     [self.tableView reloadData];
+
 }
 
 #pragma  mark add recognizer
@@ -88,6 +94,49 @@
 #pragma mark implement IBAC
 
 
+- (IBAction)editOnClicked:(id)sender {
+    
+    if (![self.tableView isEditing]) {
+        
+        [_tableView setEditing:YES animated:YES];
+        [_editButton setTitle:@"Done"];
+        
+        
+    } else {
+        
+        [_tableView setEditing:NO animated:YES];
+        [_editButton setTitle:@"Edit"];
+        DebugLog(@"YES");
+        DebugLog(@"Source %ld - destination %ld", (long)_sourceIndexOfRow, (long)_destinationIndexPathOfRow);
+        
+        if (_sourceIndexOfRow < _destinationIndexPathOfRow) {
+            
+            DebugLog(@"Sau khi sap xep");
+            for (NSInteger i = _sourceIndexOfRow; i <= _destinationIndexPathOfRow; i++) {
+                
+                TodoItem *todoItem = [[TodoItem alloc] init];
+                todoItem = [_arrTodos objectAtIndex:i];
+                
+                TodoItem *todosItemReOder = [[TodoItem alloc] init];
+                todosItemReOder = [_arrTodosRe_Oder objectAtIndex:i];
+                todosItemReOder.content = todoItem.content;
+                todosItemReOder.status = todoItem.status;
+
+                UpdateToDoItemToDatabase *updateTodoItemTask = [[UpdateToDoItemToDatabase alloc]initWithTodoItem:todosItemReOder];
+                [updateTodoItemTask doQuery:_moneyDBController];
+            }
+        } else {
+            
+            DebugLog(@"Sau khi sap xep");
+            for (NSInteger i = _destinationIndexPathOfRow; i <= _sourceIndexOfRow; i++) {
+                
+                TodoItem *todoItem = [[TodoItem alloc] init];
+                todoItem = [_arrTodos objectAtIndex:i];
+            }
+        }
+    }
+}
+
 - (IBAction)segrumentOnClicked:(id)sender {
     
     switch (_segmentControl.selectedSegmentIndex) {
@@ -95,13 +144,14 @@
             
             _status = false;
             [self loadData];
+            //[self.tableView reloadData];
             break;
             
         case 1:
             
             _status = true;
             _arrTodos = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:@"1"]];
-            
+            [_txtItemTodo resignFirstResponder];
             [self.tableView reloadData];
             break;
             
@@ -113,12 +163,11 @@
 
 - (IBAction)addItem:(id)sender {
     
-    [self registerForKeyboardNotification];
-    _isEditing = false;
+    _segmentControl.selectedSegmentIndex = 0;
+    [self loadData];
     [_txtItemTodo becomeFirstResponder];
-    
-    //[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
+    _status = false;
+
 }
 
 #pragma mark notification keyboard 
@@ -144,9 +193,16 @@
     
     _txtItemTodo.frame = CGRectMake(0, self.view.bounds.size.height - keyboardRect.size.height - 40, keyboardRect.size.width, 40);
     _txtItemTodo.hidden = NO;
+    
+    _heightKeyboard = keyboardRect.size.height + 40;
+    
+    _tableView.frame = CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, widthTableview, heightTableview - _heightKeyboard);
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_arrTodos.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
 }
 
-- (void) keyboardWillBeHidden: (NSNotification *) aNotidication {
+- (void) keyboardWillBeHidden: (NSNotification *) aNotification {
+    
+    _tableView.frame = CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, widthTableview, heightTableview + _heightKeyboard);
     
     _txtItemTodo.hidden = YES;
 }
@@ -156,52 +212,38 @@
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
     
-    if ([_txtItemTodo.text isEqual:@""]) {
+    if (textField.tag == 1) {
         
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Reminder" message:@"Missing to information" preferredStyle: UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *okAlert = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK Action") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            
-//            NSLog(@"OK Action");
-//        }];
-//        
-//        [alertController addAction:okAlert];
-//        
-//        [self presentViewController:alertController animated:YES completion:nil];
-        
-        [_txtItemTodo resignFirstResponder];
-    } else {
-        
-        if (_isEditing == false) {
+        if ([_txtItemTodo.text isEqual:@""]) {
+            
+            //        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Reminder" message:@"Missing to information" preferredStyle: UIAlertControllerStyleAlert];
+            //
+            //        UIAlertAction *okAlert = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK Action") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //
+            //            NSLog(@"OK Action");
+            //        }];
+            //
+            //        [alertController addAction:okAlert];
+            //
+            //        [self presentViewController:alertController animated:YES completion:nil];
+            [_txtItemTodo resignFirstResponder];
+            [self registerForKeyboardNotification];
+        } else {
             
             _todoItem = [[TodoItem alloc] init];
-            
             _todoItem.content = _txtItemTodo.text;
             
             [_moneyDBController insert:@"todos" data:[DBUtil ToDoItemToDBItem:_todoItem ]];
             
             [self loadData];
-            
             [_txtItemTodo resignFirstResponder];
-        } else if (_isEditing == true) {
-            
-            TodoItem *todoItem = [[TodoItem alloc] init];
-            
-            todoItem = [_arrTodos objectAtIndex:_indexPathRow];
-            todoItem.content = _txtItemTodo.text;
-            
-            UpdateToDoItemToDatabase *updateTodoItemDatabaseTask = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItem];
-            [updateTodoItemDatabaseTask doQuery:_moneyDBController];
-            
-            [self.tableView reloadData];
-            
-            [_txtItemTodo resignFirstResponder];
+            _txtItemTodo.text = @"";
         }
+    } else if (textField.tag == 2 ) {
         
-        _txtItemTodo.hidden = YES;
-        
-        _txtItemTodo.text = @"";
+        [textField resignFirstResponder];
     }
+    
 
     return YES;
 }
@@ -224,28 +266,24 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    
-    
     static NSString *cellIdentifer = @"cellIndetifer";
     
-    SWTableViewCell *cell = (SWTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
-    
-    //CustomTableViewCell *cell2 = (CustomTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellIdentifer];
-    
+    CustomTableViewCell *cell = (CustomTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
     if (cell == nil) {
-        
-        cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifer];
-        
-    }
     
-    cell.rightUtilityButtons = [self rightButtons];
+        NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"CustomTableViewCell" owner:self options:nil];
+        
+        cell = [xib objectAtIndex:0];
+    }
     
     if (_status == false) {
         
         cell.leftUtilityButtons = [self leftButtonsStatusFalse];
+        cell.rightUtilityButtons = [self rightButtonsStatusFalse];
     } else {
         
         cell.leftUtilityButtons = [self leftButtonsStatusTrue];
+        cell.rightUtilityButtons = [self rightButtonsStatusTrue];
     }
     
     cell.delegate = self;
@@ -254,26 +292,23 @@
     
     todoItem = [_arrTodos objectAtIndex:indexPath.row];
     
-    cell.textLabel.text = todoItem.content;
+    cell.txtTask.tag = 2;
+    cell.txtTask.text = todoItem.content;
     
-    
-    
-    //DebugLog(@"todoItem content: %@", todoItem.content);
-    //[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    cell.txtTask.delegate = self;
     
     return cell;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    return 50;
+    return 40;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [_txtItemTodo resignFirstResponder];
 }
 
 //- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -286,7 +321,7 @@
 //    
 //    return 60;
 //}
-- (NSArray *) rightButtons {
+- (NSArray *) rightButtonsStatusFalse {
     
     NSMutableArray *rightUtilitylButtons = [[NSMutableArray alloc] init];
     
@@ -297,13 +332,21 @@
     return rightUtilitylButtons;
 }
 
+- (NSArray *) rightButtonsStatusTrue {
+    
+    NSMutableArray *rightUtilitylButtons = [[NSMutableArray alloc] init];
+    
+    [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0] title:@"Delete"];
+    
+    //[rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.16f green:0.36f blue:0.82f alpha:1.0] title:@"Edit"];
+    
+    return rightUtilitylButtons;
+}
 - (NSArray *) leftButtonsStatusFalse {
     
         NSMutableArray *leftUtilityButtons = [[NSMutableArray alloc] init];
         
         [leftUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.07f green:0.75f blue:0.16f alpha:1.0] title:@"Done"];
-        
-        DebugLog(@"Done button");
     
     return leftUtilityButtons;
 }
@@ -313,8 +356,6 @@
     NSMutableArray *leftUtilityButtons = [[NSMutableArray alloc] init];
     
     [leftUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.07f green:0.75f blue:0.16f alpha:1.0] title:@"UnDone"];
-    
-    DebugLog(@"UnDone button");
     
     return leftUtilityButtons;
 }
@@ -345,8 +386,9 @@
             [self.arrTodos removeObject:todoItem];
             
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView reloadData];
         } else {
-            
+        
             todoItem.status = false;
             
             UpdateToDoItemToDatabase *updateTodoItemTask = [[UpdateToDoItemToDatabase alloc]initWithTodoItem:todoItem];
@@ -357,6 +399,8 @@
             [self.arrTodos removeObject:todoItem];
             
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.tableView reloadData];
         }
         
     }
@@ -370,33 +414,48 @@
         
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         
-        TodoItem *todoItem = [_arrTodos objectAtIndex:indexPath.row];
+        TodoItem *todoItemRemoveFromTable = [_arrTodos objectAtIndex:indexPath.row];
+        todoItemRemoveFromTable.status = 2;
         
-        DeleteTodoItemToDatabaseTask *deleteTodoItemToDatabaseTask = [[DeleteTodoItemToDatabaseTask alloc] initWithTodoItem:todoItem];
-        [deleteTodoItemToDatabaseTask doQuery:_moneyDBController];
+        UpdateToDoItemToDatabase *updateTodoItemToDatabaseTask = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemRemoveFromTable];
+        [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
+//        DeleteTodoItemToDatabaseTask *deleteTodoItemToDatabaseTask = [[DeleteTodoItemToDatabaseTask alloc] initWithTodoItem:todoItem];
+//        [deleteTodoItemToDatabaseTask doQuery:_moneyDBController];
         
-        [self.arrTodos removeObject:todoItem];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//        [self.arrTodos removeObject:todoItemRemoveFromTable];
+//        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//        [self.tableView reloadData];
         
-        DebugLog(@"Press button delete");
+        [self animateUndoViewDisplay];
     }
     
-    // index = 1 button is edit
     if (index == 1) {
         
-        _isEditing = true;
-        [self registerForKeyboardNotification];
-        [_txtItemTodo becomeFirstResponder];
-        
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        TodoItem *todoItem = _arrTodos [indexPath.row];
-        _indexPathRow = indexPath.row;
-        
-        _txtItemTodo.text = todoItem.content;
+        DebugLog(@"press button is edit");
     }
 }
 
-#pragma mark table view edit 
+#pragma mark init UndoView and animate
+
+- (void) animateUndoViewDisplay {
+    
+    if (!_undoView) {
+        
+        _undoView = [[UndoView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 4, self.view.bounds.size.height - 30, self.view.bounds.size.width * 2 / 3, 30)];
+        _undoView.center = CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height + 10);
+        _undoView.layer.cornerRadius = 10;
+        [self.view addSubview:_undoView];
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            _undoView.center = CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 30);
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+}
+
+#pragma mark table view edit
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -405,12 +464,17 @@
 
 - (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     
-    TodoItem *todoItem1 = [[TodoItem alloc] init];
-    todoItem1 = [_arrTodos objectAtIndex:sourceIndexPath.row];
+    TodoItem *todoItem = [[TodoItem alloc] init];
+    todoItem = [_arrTodos objectAtIndex:sourceIndexPath.row];
     
+    _sourceIndexOfRow = sourceIndexPath.row;
+
     [_arrTodos removeObjectAtIndex:sourceIndexPath.row];
-    [_arrTodos insertObject:todoItem1 atIndex:destinationIndexPath.row];
+    [_arrTodos insertObject:todoItem atIndex:destinationIndexPath.row];
     
+        _destinationIndexPathOfRow = destinationIndexPath.row;
+    
+    DebugLog(@"%ld - %ld",(long)_sourceIndexOfRow, (long)_destinationIndexPathOfRow);
 }
 
 - (NSIndexPath *) tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {

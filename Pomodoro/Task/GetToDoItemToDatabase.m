@@ -21,7 +21,6 @@
     
     NSArray *arr = [moneyDBController rawQueryWithCommand:query args:arrays];
     
-    DebugLog(@"arrContent: %@", [[arr objectAtIndex:0] objectForKey:@"content"]);
     
     DebugLog(@"arr : %@", arr);
     

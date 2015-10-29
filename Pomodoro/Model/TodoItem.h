@@ -16,4 +16,6 @@
 
 @property (nonatomic, assign) BOOL status;
 
+//@property (nonatomic, assign) BOOL isDelete;
+
 @end

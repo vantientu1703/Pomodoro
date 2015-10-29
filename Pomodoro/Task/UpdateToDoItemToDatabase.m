@@ -33,7 +33,14 @@
     
     [arr addObject:[NSString stringWithFormat:@"%ld", _todoItem.todo_id]];
     
-    [db update:todos data:[DBUtil ToDoItemToDBItem:_todoItem] whereClause:@"id = ?" whereArgs:arr];
+    NSInteger i = [db update:todos data:[DBUtil ToDoItemToDBItem:_todoItem] whereClause:@"id = ?" whereArgs:arr];
     
+    if ((i != -1)) {
+        
+        DebugLog(@"Update database accessesfully");
+    } else {
+        
+        DebugLog(@"Update not query");
+    }
 }
 @end

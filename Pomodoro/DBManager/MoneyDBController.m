@@ -12,15 +12,16 @@ static MoneyDBController *instance = nil;
 static NSString *documentDir = nil;
 
 static NSString *TABLE_CREATE_TASKS = @"CREATE TABLE IF NOT EXISTS \"todos\" \
-                                        (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
-                                         \"content\" text, status INTEGER DEFAULT 0)";
+                                        (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
+                                         content text, status INTEGER DEFAULT 0, isdelete INTEGER DEFAULT 0)";
 
-NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
+static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
                                 (\"id\" INTEGER PRIMARY KEY NOT NULL, \
                                 \"cat_id\" INTEGER NOT NULL , \
                                 \"number\" INTEGER NOT NULL , \
                                 \"created_date\" DATETIME NOT NULL DEFAULT (CURRENT_DATE) ,\
                                 \"note\" VARCHAR(140))";
+
 
 @implementation MoneyDBController
 @synthesize sqlite,onCompletion,onFailure;
@@ -52,6 +53,8 @@ NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
         if (sqlite3_open_v2([sqlPath UTF8String], &sqlite, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK) {
             if (!isExitst) {
                 [self createTable];
+            } else {
+                [self updateTable];
             }
             
             sqlite3_exec(sqlite, [@"PRAGMA auto_vacuum = FULL" UTF8String], nil, nil, nil);
@@ -69,13 +72,45 @@ NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
 }
 
 #pragma mark - Create table
+- (void)updateTable {
+    
+    DebugLog(@"version: %d",[self currentVersion]);
+    int dbVersion = [self currentVersion];
+    if (dbVersion < 1) {
+        
+        [self executeQuery:@"ALTER TABLE todos \
+                             ADD isdeleted INTEGER DEFAULT 0"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 1] UTF8String], nil, nil, nil);
+    }
+    
+}
+- (int) currentVersion {
+    
+    sqlite3_stmt *statement = nil;
+    int dbVersion = 9999;
+    
+    @try {
+        if (sqlite3_prepare_v2(sqlite, "PRAGMA user_version", -1, &statement, nil) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW) {
+                dbVersion = sqlite3_column_int(statement, 0);
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        DebugLog(@"Exception: Cannot get version database %@",exception);
+    }
+    @finally {
+        if (statement != nil) {
+            sqlite3_finalize(statement);
+        }
+    }
+    return dbVersion;
+}
 - (void)createTable {
 
-    
     [self executeQuery:TABLE_CREATE_TASKS];
     
-
-    //[self executeQuery:TABLE_CREATE_COUNT];
+    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 1] UTF8String], nil, nil, nil);
 }
 
 
@@ -396,7 +431,7 @@ NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
         //        onCompletion();
     }
     @catch (NSException *exception) {
-        NSLog(@"Raw error: %@",exception);
+        DebugLog(@"Raw error: %@",exception);
         onFailure();
     }
     @finally {
