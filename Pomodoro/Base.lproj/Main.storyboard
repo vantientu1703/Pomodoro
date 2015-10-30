@@ -84,6 +84,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="editButton" destination="YBN-mo-JlO" id="YiA-Us-ANw"/>
+                        <outlet property="keyboardContraint" destination="YAD-jR-sYR" id="ZgY-hW-n69"/>
                         <outlet property="searchBar" destination="91r-VN-Btu" id="pyj-mH-dyu"/>
                         <outlet property="segmentControl" destination="cyO-Xt-PDf" id="Hlv-cK-xxo"/>
                         <outlet property="tableView" destination="Cv3-Ht-mUi" id="lBD-7S-N7Y"/>

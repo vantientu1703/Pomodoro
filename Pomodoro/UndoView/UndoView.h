@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol UndoViewDelegate
+
+- (void) undoHandle;
+- (void) removeUndoView;
+@end
+
 @interface UndoView : UIView
 
+@property (nonatomic, strong)id<UndoViewDelegate> delegate;
 @end

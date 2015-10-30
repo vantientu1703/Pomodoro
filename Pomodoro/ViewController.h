@@ -23,5 +23,7 @@
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardContraint;
+
 @end
 
