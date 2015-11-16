@@ -11,7 +11,7 @@
 @protocol UndoViewDelegate
 
 - (void) undoHandle;
-- (void) removeUndoView;
+
 @end
 
 @interface UndoView : UIView

@@ -16,24 +16,16 @@
     
     NSMutableArray *arrTodo = [[NSMutableArray alloc] init];
     
-    NSString *query = @"SELECT id,content,status,isdeleted FROM todos \
+    NSString *query = @"SELECT id,content,status,isdeleted,date_completed,date_deleted FROM todos \
                         WHERE status = ? AND isdeleted = ?";
-    
     NSArray *arr = [moneyDBController rawQueryWithCommand:query args:arrays];
-    
-    
-    DebugLog(@"arr : %@", arr);
     
     for (NSDictionary *todo in arr) {
         
         TodoItem *todoItem = [TodoItem new];
-        
         todoItem = [DBUtil dbItemToToDoItem:todo];
-        
-        DebugLog(@"1 phan tu: %@",[todo objectForKey:@"0"]);
         [arrTodo addObject:todoItem];
     }
-    
     return arrTodo;
 }
 @end

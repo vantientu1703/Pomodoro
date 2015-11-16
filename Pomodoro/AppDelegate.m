@@ -8,10 +8,11 @@
 
 #import "AppDelegate.h"
 #import "MoneyDBController.h"
-
+#import "SettingItem.h"
 @interface AppDelegate ()
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
+
 
 @end
 
@@ -20,9 +21,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    _moneyDBController = [MoneyDBController getInstance];
     
+    _moneyDBController = [MoneyDBController getInstance];
     [_moneyDBController openDB:[NSString stringWithFormat:@"Pomodoro.sqlite"]];
+    
+    self.settingItem = [SettingItem new];
+    _timeMinutes = _settingItem.timeWork;
     
     return YES;
 }

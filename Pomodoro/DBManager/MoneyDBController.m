@@ -13,7 +13,11 @@ static NSString *documentDir = nil;
 
 static NSString *TABLE_CREATE_TASKS = @"CREATE TABLE IF NOT EXISTS \"todos\" \
                                         (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
-                                         content text, status INTEGER DEFAULT 0, isdelete INTEGER DEFAULT 0)";
+                                         content text, \
+                                         status INTEGER DEFAULT 0, \
+                                         isdeleted INTEGER DEFAULT 0, \
+                                         date_completed DATETIME, \
+                                         date_deleted DATETIME)";
 
 static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
                                 (\"id\" INTEGER PRIMARY KEY NOT NULL, \
@@ -81,6 +85,11 @@ static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
         [self executeQuery:@"ALTER TABLE todos \
                              ADD isdeleted INTEGER DEFAULT 0"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 1] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 2){
+        
+        [self executeQuery:@"ALTER TABLE todos \
+                             ADD date_completed DATETIME"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 2] UTF8String], nil, nil, nil);
     }
     
 }
@@ -110,7 +119,7 @@ static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
 
     [self executeQuery:TABLE_CREATE_TASKS];
     
-    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 1] UTF8String], nil, nil, nil);
+    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 2] UTF8String], nil, nil, nil);
 }
 
 

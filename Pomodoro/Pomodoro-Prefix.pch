@@ -22,4 +22,15 @@
 #ifndef Pomodoro_Prefix_h
 #define Pomodoro_Prefix_h
 #define todos @"todos"
+#define keyTimeWork @"keyTimeWork"
+#define keyTimeBreak @"keyTimeBreak"
+#define keyTimeLongBreak @"keyTimeLongBreak"
+#define keyFrequency @"keyFrequency"
+#define keySwitchOnOffLongBreak @"keySwitchOnOffLongBreak"
+#define keyisActive @"keyisActive"
+#define keyIsChanged @"keyisChanged"
+
+#define Pomodorosqlite @"Pomodoro.sqlite"
+#import "MoneyDBController.h"
+#import "TodoItem.h"
 #endif /* Pomodoro_Prefix_h */

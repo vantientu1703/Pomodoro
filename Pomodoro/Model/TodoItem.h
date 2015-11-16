@@ -18,4 +18,8 @@
 
 @property (nonatomic, assign) BOOL isDelete;
 
+@property (nonatomic, strong) NSDate *dateCompleted;
+
+@property (nonatomic, strong) NSDate *dateDeleted;
+
 @end

@@ -16,6 +16,10 @@
 		EF0392111BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0392081BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m */; settings = {ASSET_TAGS = (); }; };
 		EF0392121BDE235D00C4A622 /* SWUtilityButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF03920A1BDE235D00C4A622 /* SWUtilityButtonView.m */; settings = {ASSET_TAGS = (); }; };
 		EF0392131BDE235D00C4A622 /* UMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF03920C1BDE235D00C4A622 /* UMTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		EF0E65BD1BF59BD500610703 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0E65BC1BF59BD500610703 /* TimerViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EF0E65C01BF5C9A800610703 /* SettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0E65BF1BF5C9A800610703 /* SettingItem.m */; settings = {ASSET_TAGS = (); }; };
+		EF0E65C51BF5D1EB00610703 /* SettingTimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0E65C31BF5D1EB00610703 /* SettingTimerViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EF0E65C61BF5D1EB00610703 /* SettingTimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF0E65C41BF5D1EB00610703 /* SettingTimerViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		EF3F0EB81BDA22C800AB0DC3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EB71BDA22C800AB0DC3 /* main.m */; };
 		EF3F0EBB1BDA22C800AB0DC3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EBA1BDA22C800AB0DC3 /* AppDelegate.m */; };
 		EF3F0EBE1BDA22C800AB0DC3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EBD1BDA22C800AB0DC3 /* ViewController.m */; };
@@ -33,6 +37,12 @@
 		EF84406C1BDF1DFB00A97CA0 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF84406A1BDF1DFB00A97CA0 /* CustomTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		EF84406D1BDF1DFB00A97CA0 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
 		EF9A2D5F1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
+		EFD11C391BF63EE500990791 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = EFD11C381BF63EE500990791 /* line.png */; settings = {ASSET_TAGS = (); }; };
+		EFD681DB1BE525230087083B /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD681DA1BE525230087083B /* MenuViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EFD681DE1BE5295A0087083B /* GetTodoItemIsDeletedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */; settings = {ASSET_TAGS = (); }; };
+		EFE613381BE73CD5007B7CD2 /* TodoITemDeletedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE613361BE73CD5007B7CD2 /* TodoITemDeletedListViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EFE613391BE73CD5007B7CD2 /* TodoITemDeletedListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFE613371BE73CD5007B7CD2 /* TodoITemDeletedListViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		EFE6133C1BE76BA3007B7CD2 /* GetTodoItemOrderByDateCompletedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE6133B1BE76BA3007B7CD2 /* GetTodoItemOrderByDateCompletedTask.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +81,13 @@
 		EF03920A1BDE235D00C4A622 /* SWUtilityButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWUtilityButtonView.m; path = Library/SWUtilityButtonView.m; sourceTree = "<group>"; };
 		EF03920B1BDE235D00C4A622 /* UMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMTableViewCell.h; path = Library/UMTableViewCell.h; sourceTree = "<group>"; };
 		EF03920C1BDE235D00C4A622 /* UMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMTableViewCell.m; path = Library/UMTableViewCell.m; sourceTree = "<group>"; };
+		EF0E65BB1BF59BD500610703 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerViewController.h; path = Screen/Timer/TimerViewController.h; sourceTree = "<group>"; };
+		EF0E65BC1BF59BD500610703 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerViewController.m; path = Screen/Timer/TimerViewController.m; sourceTree = "<group>"; };
+		EF0E65BE1BF5C9A800610703 /* SettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingItem.h; path = Model/SettingItem.h; sourceTree = "<group>"; };
+		EF0E65BF1BF5C9A800610703 /* SettingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingItem.m; path = Model/SettingItem.m; sourceTree = "<group>"; };
+		EF0E65C21BF5D1EB00610703 /* SettingTimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingTimerViewController.h; path = Screen/SettingTimerViewController/SettingTimerViewController.h; sourceTree = "<group>"; };
+		EF0E65C31BF5D1EB00610703 /* SettingTimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingTimerViewController.m; path = Screen/SettingTimerViewController/SettingTimerViewController.m; sourceTree = "<group>"; };
+		EF0E65C41BF5D1EB00610703 /* SettingTimerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingTimerViewController.xib; path = Screen/SettingTimerViewController/SettingTimerViewController.xib; sourceTree = "<group>"; };
 		EF3F0EB31BDA22C800AB0DC3 /* Pomodoro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pomodoro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF3F0EB71BDA22C800AB0DC3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF3F0EB91BDA22C800AB0DC3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -104,6 +121,16 @@
 		EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CustomTableViewCell.xib; path = CustomTaableViewCell/CustomTableViewCell.xib; sourceTree = "<group>"; };
 		EF9A2D5D1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTodoItemToDatabaseTask.h; path = Task/DeleteTodoItemToDatabaseTask.h; sourceTree = "<group>"; };
 		EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeleteTodoItemToDatabaseTask.m; path = Task/DeleteTodoItemToDatabaseTask.m; sourceTree = "<group>"; };
+		EFD11C381BF63EE500990791 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
+		EFD681D91BE525230087083B /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuViewController.h; path = Screen/MenuViewController/MenuViewController.h; sourceTree = "<group>"; };
+		EFD681DA1BE525230087083B /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuViewController.m; path = Screen/MenuViewController/MenuViewController.m; sourceTree = "<group>"; };
+		EFD681DC1BE5295A0087083B /* GetTodoItemIsDeletedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTodoItemIsDeletedTask.h; path = Task/GetTodoItemIsDeletedTask.h; sourceTree = "<group>"; };
+		EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemIsDeletedTask.m; path = Task/GetTodoItemIsDeletedTask.m; sourceTree = "<group>"; };
+		EFE613351BE73CD5007B7CD2 /* TodoITemDeletedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TodoITemDeletedListViewController.h; path = Screen/TodoItemDeletedListViewController/TodoITemDeletedListViewController.h; sourceTree = "<group>"; };
+		EFE613361BE73CD5007B7CD2 /* TodoITemDeletedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TodoITemDeletedListViewController.m; path = Screen/TodoItemDeletedListViewController/TodoITemDeletedListViewController.m; sourceTree = "<group>"; };
+		EFE613371BE73CD5007B7CD2 /* TodoITemDeletedListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TodoITemDeletedListViewController.xib; path = Screen/TodoItemDeletedListViewController/TodoITemDeletedListViewController.xib; sourceTree = "<group>"; };
+		EFE6133A1BE76BA3007B7CD2 /* GetTodoItemOrderByDateCompletedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTodoItemOrderByDateCompletedTask.h; path = Task/GetTodoItemOrderByDateCompletedTask.h; sourceTree = "<group>"; };
+		EFE6133B1BE76BA3007B7CD2 /* GetTodoItemOrderByDateCompletedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemOrderByDateCompletedTask.m; path = Task/GetTodoItemOrderByDateCompletedTask.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,8 +168,31 @@
 				EF0391FD1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m */,
 				EF9A2D5D1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.h */,
 				EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */,
+				EFD681DC1BE5295A0087083B /* GetTodoItemIsDeletedTask.h */,
+				EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */,
+				EFE6133A1BE76BA3007B7CD2 /* GetTodoItemOrderByDateCompletedTask.h */,
+				EFE6133B1BE76BA3007B7CD2 /* GetTodoItemOrderByDateCompletedTask.m */,
 			);
 			name = Task;
+			sourceTree = "<group>";
+		};
+		EF0E65BA1BF59BB800610703 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				EF0E65BB1BF59BD500610703 /* TimerViewController.h */,
+				EF0E65BC1BF59BD500610703 /* TimerViewController.m */,
+			);
+			name = Timer;
+			sourceTree = "<group>";
+		};
+		EF0E65C11BF5D1A700610703 /* SettingTimer */ = {
+			isa = PBXGroup;
+			children = (
+				EF0E65C21BF5D1EB00610703 /* SettingTimerViewController.h */,
+				EF0E65C31BF5D1EB00610703 /* SettingTimerViewController.m */,
+				EF0E65C41BF5D1EB00610703 /* SettingTimerViewController.xib */,
+			);
+			name = SettingTimer;
 			sourceTree = "<group>";
 		};
 		EF3F0EAA1BDA22C800AB0DC3 = {
@@ -173,16 +223,14 @@
 				EF3F0EBC1BDA22C800AB0DC3 /* ViewController.h */,
 				EF3F0EBD1BDA22C800AB0DC3 /* ViewController.m */,
 				EF3F0EBF1BDA22C800AB0DC3 /* Main.storyboard */,
-				EF79713A1BE13266005DBA1B /* UndoView */,
+				EFAC3D621BE4D3DA00435BCC /* Screen */,
 				EF0391E31BDE062500C4A622 /* Task */,
 				EF3F0EE91BDA24EE00AB0DC3 /* DBManager */,
 				EF3F0EFE1BDA412A00AB0DC3 /* Model */,
-				EF3F0EC21BDA22C800AB0DC3 /* Assets.xcassets */,
-				EF3F0EC41BDA22C800AB0DC3 /* LaunchScreen.storyboard */,
-				EF3F0EC71BDA22C800AB0DC3 /* Info.plist */,
 				EF8440681BDF1D9000A97CA0 /* CustomTableViewCell */,
 				EF3F0EF91BDA291F00AB0DC3 /* Library */,
 				EF3F0EF81BDA290B00AB0DC3 /* Framework */,
+				EFD11C371BF63EAC00990791 /* Resource */,
 				EF3F0EB61BDA22C800AB0DC3 /* Supporting Files */,
 			);
 			path = Pomodoro;
@@ -193,6 +241,9 @@
 			children = (
 				EF3F0EB71BDA22C800AB0DC3 /* main.m */,
 				EF3F0EFA1BDA3B3900AB0DC3 /* Pomodoro-Prefix.pch */,
+				EF3F0EC21BDA22C800AB0DC3 /* Assets.xcassets */,
+				EF3F0EC41BDA22C800AB0DC3 /* LaunchScreen.storyboard */,
+				EF3F0EC71BDA22C800AB0DC3 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -263,8 +314,20 @@
 			children = (
 				EF3F0F001BDA416300AB0DC3 /* TodoItem.h */,
 				EF3F0F011BDA416300AB0DC3 /* TodoItem.m */,
+				EF0E65BE1BF5C9A800610703 /* SettingItem.h */,
+				EF0E65BF1BF5C9A800610703 /* SettingItem.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		EF734C081BE6614500FEE4F7 /* TodoItemDeletedListViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EFE613351BE73CD5007B7CD2 /* TodoITemDeletedListViewController.h */,
+				EFE613361BE73CD5007B7CD2 /* TodoITemDeletedListViewController.m */,
+				EFE613371BE73CD5007B7CD2 /* TodoITemDeletedListViewController.xib */,
+			);
+			name = TodoItemDeletedListViewController;
 			sourceTree = "<group>";
 		};
 		EF79713A1BE13266005DBA1B /* UndoView */ = {
@@ -284,6 +347,35 @@
 				EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */,
 			);
 			name = CustomTableViewCell;
+			sourceTree = "<group>";
+		};
+		EFAC3D621BE4D3DA00435BCC /* Screen */ = {
+			isa = PBXGroup;
+			children = (
+				EFD681D81BE524DD0087083B /* MenuViewController */,
+				EF0E65C11BF5D1A700610703 /* SettingTimer */,
+				EF0E65BA1BF59BB800610703 /* Timer */,
+				EF734C081BE6614500FEE4F7 /* TodoItemDeletedListViewController */,
+				EF79713A1BE13266005DBA1B /* UndoView */,
+			);
+			name = Screen;
+			sourceTree = "<group>";
+		};
+		EFD11C371BF63EAC00990791 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				EFD11C381BF63EE500990791 /* line.png */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
+		EFD681D81BE524DD0087083B /* MenuViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EFD681D91BE525230087083B /* MenuViewController.h */,
+				EFD681DA1BE525230087083B /* MenuViewController.m */,
+			);
+			name = MenuViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -390,8 +482,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF3F0EC61BDA22C800AB0DC3 /* LaunchScreen.storyboard in Resources */,
+				EFD11C391BF63EE500990791 /* line.png in Resources */,
+				EF0E65C61BF5D1EB00610703 /* SettingTimerViewController.xib in Resources */,
 				EF3F0EC31BDA22C800AB0DC3 /* Assets.xcassets in Resources */,
 				EF84406D1BDF1DFB00A97CA0 /* CustomTableViewCell.xib in Resources */,
+				EFE613391BE73CD5007B7CD2 /* TodoITemDeletedListViewController.xib in Resources */,
 				EF3F0EC11BDA22C800AB0DC3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -417,11 +512,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF0E65BD1BF59BD500610703 /* TimerViewController.m in Sources */,
+				EFE6133C1BE76BA3007B7CD2 /* GetTodoItemOrderByDateCompletedTask.m in Sources */,
 				EF9A2D5F1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m in Sources */,
+				EF0E65C51BF5D1EB00610703 /* SettingTimerViewController.m in Sources */,
 				EF84406C1BDF1DFB00A97CA0 /* CustomTableViewCell.m in Sources */,
 				EF03920E1BDE235D00C4A622 /* SWCellScrollView.m in Sources */,
 				EF0392131BDE235D00C4A622 /* UMTableViewCell.m in Sources */,
 				EF0392101BDE235D00C4A622 /* SWTableViewCell.m in Sources */,
+				EFD681DE1BE5295A0087083B /* GetTodoItemIsDeletedTask.m in Sources */,
 				EF3F0EF41BDA28B500AB0DC3 /* MoneyDBController.m in Sources */,
 				EF3F0F021BDA416300AB0DC3 /* TodoItem.m in Sources */,
 				EF3F0EF51BDA28B500AB0DC3 /* ZooDBUtil.m in Sources */,
@@ -433,9 +532,12 @@
 				EF0392111BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				EF03920D1BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				EF3F0EB81BDA22C800AB0DC3 /* main.m in Sources */,
+				EFE613381BE73CD5007B7CD2 /* TodoITemDeletedListViewController.m in Sources */,
 				EF3F0EFD1BDA3FE400AB0DC3 /* DBUtil.m in Sources */,
 				EF0391E61BDE066300C4A622 /* GetToDoItemToDatabase.m in Sources */,
+				EF0E65C01BF5C9A800610703 /* SettingItem.m in Sources */,
 				EF03920F1BDE235D00C4A622 /* SWLongPressGestureRecognizer.m in Sources */,
+				EFD681DB1BE525230087083B /* MenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
