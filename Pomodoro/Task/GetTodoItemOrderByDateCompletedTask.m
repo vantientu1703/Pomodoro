@@ -21,7 +21,6 @@
     
     NSMutableArray *arrTodoItem = [[NSMutableArray alloc] init];
     for (NSDictionary *todo in arr) {
-        
         TodoItem *todoItem = [[TodoItem alloc] init];
         todoItem = [DBUtil dbItemToToDoItem:todo];
         [arrTodoItem addObject:todoItem];

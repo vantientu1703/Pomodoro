@@ -20,6 +20,7 @@
 #import "GetTodoItemOrderByDateCompletedTask.h"
 #import "AppDelegate.h"
 #import "SettingItem.h"
+#import "TimerNotificationcenterItem.h"
 
 @interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate>
 
@@ -51,6 +52,9 @@
     CGSize size;
     NSInteger totalTodos;
     AppDelegate *appDelegate;
+    BOOL isStartting;
+    TimerNotificationcenterItem *timerNotificationCenterItem;
+    SettingItem *_settingItem;
 }
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -58,7 +62,28 @@
     [self loadData];
     totalTodos = _arrTodos.count;
     [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos] forSegmentAtIndex:0];
+    
+    appDelegate = [[UIApplication sharedApplication] delegate];
+    timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
+    
+    CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
+    cell.delegate = self;
+    
+    if (timerNotificationCenterItem.isRunTimer) { // label cell đc cập nhật khi chuyển tab view
+        cell.rightUtilityButtons = [self rightButtonsTodoPause];
+        [self updateLabelForCell];
+    } else {
+        cell.rightUtilityButtons = [self rightButtonsStatusToDo];
+        [self updateLabelForCell];
+    }
+    
+    _settingItem = appDelegate.settingItem;
+    _settingItem.isChanged = 0;
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setInteger:0 forKey:keyIsChanged];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -96,8 +121,16 @@
     
     totalTodos = _arrTodos.count;
     [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos] forSegmentAtIndex:0];
+    
+    //gọi hàm chạy bắt đầu chạy timer
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateLabelForCell:)
+                                                 name:keyStartTimer
+                                               object:nil];
+    isStartting = true;
 }
 
+#pragma mark load data from database
 - (void) loadData {
 
     if (_segmentControl.selectedSegmentIndex == 0) {
@@ -112,58 +145,63 @@
         GetTodoItemOrderByDateCompletedTask *getTodoItemOrderByDateCompleted = [[GetTodoItemOrderByDateCompletedTask alloc] init];
         arrTodoItemDateCompleteds = [getTodoItemOrderByDateCompleted getTodoItemToDatbase:_moneyDBController];
         
-        _arrTitleSections = [[NSMutableArray alloc] init];
-        TodoItem *todoItem = [[TodoItem alloc] init];
-        todoItem = [arrTodoItemDateCompleteds objectAtIndex:0];
-        
-        NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
-        [dateFomatter setDateFormat:@"yyyy - MM - dd"];
-        
-        NSString *dateCmp = [dateFomatter stringFromDate:todoItem.dateCompleted];
-        [_arrTitleSections addObject:dateCmp];
-        
-        DebugLog(@"DateFomatter: %@", dateCmp);
-        for (int i = 0; i < arrTodoItemDateCompleteds.count; i++) {
+        if (arrTodoItemDateCompleteds.count != 0) {
             
-            TodoItem *todoItemCompare = [arrTodoItemDateCompleteds objectAtIndex:i];
-            NSString *dateTodoItemCompare = [dateFomatter stringFromDate:todoItemCompare.dateCompleted];
-            BOOL tmp = true;
-            for (int j = 0; j < _arrTitleSections.count; j ++) {
-                
-                NSString *dateCompare = [_arrTitleSections objectAtIndex:j];
-                if ([dateCompare isEqual:dateTodoItemCompare]) {
-                    tmp = false;
-                }
-            }
-            if (tmp != false) {
-                
-                [_arrTitleSections addObject:dateTodoItemCompare];
-            }
-        }
-        
-        NSMutableDictionary *todoItemDictionarys = [[NSMutableDictionary alloc] init];
-        
-        for (int i = 0; i < _arrTitleSections.count; i ++) {
+            _arrTitleSections = [[NSMutableArray alloc] init];
+            TodoItem *todoItem = [[TodoItem alloc] init];
+            todoItem = [arrTodoItemDateCompleteds objectAtIndex:0];
             
-            NSMutableArray *arrTodoItems = [[NSMutableArray alloc] init];
-            NSString *keyDate = [_arrTitleSections objectAtIndex:i];
-            for (int j = 0; j < arrTodoItemDateCompleteds.count; j ++) {
+            NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
+            [dateFomatter setDateFormat:@"yyyy - MM - dd"];
+            
+            NSString *dateCmp = [dateFomatter stringFromDate:todoItem.dateCompleted];
+            [_arrTitleSections addObject:dateCmp];
+            
+            DebugLog(@"DateFomatter: %@", dateCmp);
+            for (int i = 0; i < arrTodoItemDateCompleteds.count; i++) {
                 
-                TodoItem *todoItemDict = [[TodoItem alloc] init];
-                todoItemDict = [arrTodoItemDateCompleteds objectAtIndex:j];
-                NSString *dateString = [dateFomatter stringFromDate: todoItemDict.dateCompleted];
-                if ([keyDate isEqual:dateString]) {
+                TodoItem *todoItemCompare = [arrTodoItemDateCompleteds objectAtIndex:i];
+                NSString *dateTodoItemCompare = [dateFomatter stringFromDate:todoItemCompare.dateCompleted];
+                BOOL tmp = true;
+                for (int j = 0; j < _arrTitleSections.count; j ++) {
                     
-                    [arrTodoItems addObject:todoItemDict];
+                    NSString *dateCompare = [_arrTitleSections objectAtIndex:j];
+                    if ([dateCompare isEqual:dateTodoItemCompare]) {
+                        tmp = false;
+                    }
+                }
+                if (tmp != false) {
+                    
+                    [_arrTitleSections addObject:dateTodoItemCompare];
                 }
             }
-            [todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
+            
+            NSMutableDictionary *todoItemDictionarys = [[NSMutableDictionary alloc] init];
+            
+            for (int i = 0; i < _arrTitleSections.count; i ++) {
+                
+                NSMutableArray *arrTodoItems = [[NSMutableArray alloc] init];
+                NSString *keyDate = [_arrTitleSections objectAtIndex:i];
+                for (int j = 0; j < arrTodoItemDateCompleteds.count; j ++) {
+                    
+                    TodoItem *todoItemDict = [[TodoItem alloc] init];
+                    todoItemDict = [arrTodoItemDateCompleteds objectAtIndex:j];
+                    NSString *dateString = [dateFomatter stringFromDate: todoItemDict.dateCompleted];
+                    if ([keyDate isEqual:dateString]) {
+                        
+                        [arrTodoItems addObject:todoItemDict];
+                    }
+                }
+                [todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
+            }
+            _todoItemDictionarys = todoItemDictionarys;
+            
+            [self.tableView reloadData];
+
         }
-        _todoItemDictionarys = todoItemDictionarys;
-        
-        [self.tableView reloadData];
     }
 }
+
 
 #pragma mark implement IBAC
 
@@ -219,7 +257,6 @@
             self.navigationItem.rightBarButtonItem = _showEditBtn;
             _status = false;
             [self loadData];
-            //[self.tableView reloadData];
             break;
             
         case 1:
@@ -229,7 +266,7 @@
             _status = true;
             [_txtItemTodo resignFirstResponder];
             [self loadData];
-            //[self.tableView reloadData];
+            [self.tableView reloadData];
             break;
             
         default:
@@ -419,7 +456,7 @@
         TodoItem *todoItem = [[TodoItem alloc] init];
         todoItem = [_arrTodos objectAtIndex:indexPath.row];
         cell.txtTask.text = todoItem.content;
-    } else {
+    } else if (_segmentControl.selectedSegmentIndex == 1){
         
         DebugLog(@"segument: %ld", _segmentControl.selectedSegmentIndex);
         NSString *titleSection = [_arrTitleSections objectAtIndex:indexPath.section];
@@ -441,9 +478,9 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_segmentControl.selectedSegmentIndex == 1) {
         
-        return 60;
+        return 50;
     }
-    return 40;
+    return 45;
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -451,8 +488,17 @@
         
         return [_arrTitleSections objectAtIndex:section];
     }
-    
     return @"";
+}
+- (NSArray *) rightButtonsTodoPause {
+    NSMutableArray *rightUtilitylButtons = [[NSMutableArray alloc] init];
+    
+    [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0] title:@"Delete"];
+    
+    [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.16f green:0.36f blue:0.82f alpha:1.0] title:@"Edit"];
+    [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:11.0f/255.0f green:150.0f/255.0f blue:243.0f/255.0f alpha:1.0f]  title:@"Pause"];
+    
+    return rightUtilitylButtons;
 }
 - (NSArray *) rightButtonsStatusToDo {
     
@@ -461,7 +507,7 @@
     [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0] title:@"Delete"];
     
     [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.16f green:0.36f blue:0.82f alpha:1.0] title:@"Edit"];
-    [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor yellowColor] title:@"Start"];
+    [rightUtilitylButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:11.0f/255.0f green:150.0f/255.0f blue:243.0f/255.0f alpha:1.0f]  title:@"Start"];
     
     return rightUtilitylButtons;
 }
@@ -626,17 +672,89 @@
     }
     // index = 2 button is start
     if (index == 2) {
+        [self.tableView reloadData];
+        _indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+        
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setInteger:1 forKey:keyisActive];
+        SettingItem *settingItem = [SettingItem new];
+        settingItem = appDelegate.settingItem;
         
-        appDelegate = [[UIApplication sharedApplication] delegate];
-        SettingItem *settingItem = appDelegate.settingItem;
-        settingItem.isActive = 1;
-        
-        self.tabBarController.selectedIndex = 1;
+        TodoItem *todoItem = [TodoItem new];
+        todoItem = [_arrTodos objectAtIndex:_indexPath.row];
+        DebugLog(@"_indexPath: %@", _indexPath);
+        if (_indexPath.row != settingItem.indexPathForCell) { // so sách index path đang chạy timer vs index path vừa ấn có giống nhau hay không.. nếu không giống nhau thì chạy lại timer từ đâu
+           
+            timerNotificationCenterItem.isRunTimer = true; // cài lại toàn bộ các giá trị liên quan đến timer
+            [timerNotificationCenterItem.timer invalidate];
+            timerNotificationCenterItem.timer = nil;
+            timerNotificationCenterItem.totalTime = settingItem.timeWork * 60;
+            timerNotificationCenterItem.timeMinutes = settingItem.timeWork;
+            timerNotificationCenterItem.timeSeconds = 0;
+            timerNotificationCenterItem.stringStatusWorking = @"Working";
+            timerNotificationCenterItem.isWorking = true;
+            timerNotificationCenterItem.totalWorking = 0;
+            timerNotificationCenterItem.totalLongBreaking = 0;
+            timerNotificationCenterItem.stringTaskname = todoItem.content;
+            
+            [userDefaults setInteger:_indexPath.row forKey:keyIndexPathForCell];
+            settingItem.indexPathForCell = (int)_indexPath.row;
+            
+            [userDefaults setInteger:1 forKey:keyisActive];
+            settingItem.isActive = 1;
+            
+            [userDefaults setInteger:0 forKey:keyIsChanged];
+            settingItem.isChanged = 0;
+
+            self.tabBarController.selectedIndex = 2;
+            
+        } else {
+            
+            if (!isStartting) {
+                timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = false
+                [self updateLabelForCell];
+                [appDelegate startStopTimer];
+                isStartting = true;
+                
+            } else if (isStartting){
+                
+                timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = true
+                timerNotificationCenterItem.stringTaskname = todoItem.content;
+                [userDefaults setInteger:1 forKey:keyisActive];
+                settingItem.isActive = 1;
+                self.tabBarController.selectedIndex = 2;
+                isStartting = false;
+            }
+        }
     }
 }
+#pragma mark NSTimer
+- (void) updateLabelForCell {  // khi timer invalidate thì label cell đc cập nhật lại cho đúng với thời gian timer dừng
+    CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
+    cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell:timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
+}
+- (void) updateLabelForCell: (NSNotification *) notification { // label cell đc cập nhật liên tục khi timer running     
+    CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
+    cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell: timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
+}
 
+#pragma mark set Text Label For Cell
+
+- (NSString *) setTextLabelForCell: (int) minutes and: (int) seconds {
+    NSString *stringMinutes;
+    if (timerNotificationCenterItem.timeMinutes >= 10) {
+        stringMinutes = [NSString stringWithFormat:@"%d", timerNotificationCenterItem.timeMinutes];
+    } else {
+        stringMinutes = [NSString stringWithFormat:@"0%d", timerNotificationCenterItem.timeMinutes];
+    }
+    NSString *stringSeconds;
+    if (timerNotificationCenterItem.timeSeconds >= 10) {
+        stringSeconds = [NSString stringWithFormat:@"%d", timerNotificationCenterItem.timeSeconds];
+    } else {
+        stringSeconds = [NSString stringWithFormat:@"0%d", timerNotificationCenterItem.timeSeconds];
+    }
+    
+    return [NSString stringWithFormat:@"%@ : %@", stringMinutes, stringSeconds];
+}
 #pragma mark UndoDelegate
 
 - (void) undoHandle {

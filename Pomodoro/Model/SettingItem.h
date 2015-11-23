@@ -17,5 +17,5 @@
 @property (nonatomic, assign) int switchOnOffLongBreak;
 @property (nonatomic, assign) BOOL isActive;
 @property (nonatomic, assign) BOOL isChanged;
-
+@property (nonatomic, assign) int indexPathForCell;
 @end

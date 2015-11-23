@@ -22,4 +22,5 @@
 
 @property (nonatomic, strong) NSDate *dateDeleted;
 
+@property (nonatomic, strong) NSString *stringTimer;
 @end

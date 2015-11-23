@@ -29,6 +29,9 @@
 #define keySwitchOnOffLongBreak @"keySwitchOnOffLongBreak"
 #define keyisActive @"keyisActive"
 #define keyIsChanged @"keyisChanged"
+#define keyStartTimer @"startTimer"
+#define keyPauseTimer @"pauseTimer"
+#define keyIndexPathForCell @"keyIndexPathForCell"
 
 #define Pomodorosqlite @"Pomodoro.sqlite"
 #import "MoneyDBController.h"

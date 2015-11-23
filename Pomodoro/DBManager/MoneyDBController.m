@@ -17,7 +17,8 @@ static NSString *TABLE_CREATE_TASKS = @"CREATE TABLE IF NOT EXISTS \"todos\" \
                                          status INTEGER DEFAULT 0, \
                                          isdeleted INTEGER DEFAULT 0, \
                                          date_completed DATETIME, \
-                                         date_deleted DATETIME)";
+                                         date_deleted DATETIME, \
+                                         projectid INTEGER)";
 
 static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
                                 (\"id\" INTEGER PRIMARY KEY NOT NULL, \
@@ -26,7 +27,9 @@ static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
                                 \"created_date\" DATETIME NOT NULL DEFAULT (CURRENT_DATE) ,\
                                 \"note\" VARCHAR(140))";
 
-
+static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"projectmanage\" \
+                                                (projectid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \
+                                                 projectname text)";
 @implementation MoneyDBController
 @synthesize sqlite,onCompletion,onFailure;
 
@@ -90,6 +93,13 @@ static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
         [self executeQuery:@"ALTER TABLE todos \
                              ADD date_completed DATETIME"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 2] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 4) {
+        [self executeQuery:TABLE_CREATE_PROJECTMANAGE];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 4] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 5) {
+        [self executeQuery:@"ALTER TABLE todos \
+                             ADD projectid INTEGER"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 5] UTF8String], nil, nil, nil);
     }
     
 }
@@ -118,8 +128,9 @@ static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
 - (void)createTable {
 
     [self executeQuery:TABLE_CREATE_TASKS];
+    [self executeQuery:TABLE_CREATE_PROJECTMANAGE];
     
-    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 2] UTF8String], nil, nil, nil);
+    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 5] UTF8String], nil, nil, nil);
 }
 
 

@@ -36,7 +36,6 @@
     todoItem.isDelete = [todo [@"3"]boolValue];
     todoItem.dateCompleted = [NSDate dateWithTimeIntervalSince1970:[todo [@"4"]doubleValue]];
     todoItem.dateDeleted = [NSDate dateWithTimeIntervalSince1970:[todo [@"5"]doubleValue]];
-//    todoItem.date_complete = [todo [@"4"]]
     
     return todoItem;
 }

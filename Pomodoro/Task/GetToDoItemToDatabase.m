@@ -16,7 +16,7 @@
     
     NSMutableArray *arrTodo = [[NSMutableArray alloc] init];
     
-    NSString *query = @"SELECT id,content,status,isdeleted,date_completed,date_deleted FROM todos \
+    NSString *query = @"SELECT * FROM todos \
                         WHERE status = ? AND isdeleted = ?";
     NSArray *arr = [moneyDBController rawQueryWithCommand:query args:arrays];
     

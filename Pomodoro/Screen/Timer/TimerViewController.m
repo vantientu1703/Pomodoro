@@ -13,6 +13,7 @@
 @interface TimerViewController ()
 
 @property (nonatomic, strong) SettingItem *settingItem;
+@property (nonatomic, strong) TimerNotificationcenterItem *timerNotificationCenterItem;
 @end
 
 @implementation TimerViewController
@@ -30,201 +31,145 @@
     int frequency;
     int switchOnOffLongBreak;
     AppDelegate *appDelegate;
+    NSUserDefaults *userDefaults;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    DebugLog(@"in gi ra di");
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     appDelegate = [[UIApplication sharedApplication] delegate];
     _settingItem = appDelegate.settingItem;
-    isActive = _settingItem.isActive;
-    isChanged = _settingItem.isChanged;
+    _timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
+//    _settingItem.indexPathForCell = -1;
+    [userDefaults setInteger:-1 forKey:keyIndexPathForCell];
     
-    if (isChanged && !isActive && (timer == nil || ![timer isValid] || [timer isValid])) {
-        [timer invalidate];
-        minutes = _settingItem.timeWork - 1;
-        seconds = 60;
-        [self setupLabelMinutesText:minutes + 1];
-        _labelSecond.text = @"00";
-        [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateLabelMinutesAndSeconds:)
+                                                 name:keyStartTimer
+                                               object:nil];
+    
+    isActive = _settingItem.isActive;
+    
+    if (isActive && _timerNotificationCenterItem.isRunTimer) { // nếu timer = nil thì bắt đầu chạy timer
+        [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and: _timerNotificationCenterItem.timeSeconds];
+        [_labelTask setText:_timerNotificationCenterItem.stringTaskname];
+        NSString *string = _timerNotificationCenterItem.stringTaskname;
+        [appDelegate startStopTimer];
+        [self updateLabelTotalWorkingAndBreaking:_timerNotificationCenterItem.totalWorking andLongBreaking:_timerNotificationCenterItem.totalLongBreaking];
         
-        switchOnOffLongBreak = _settingItem.switchOnOffLongBreak;
-        isStartting = false;
+    } else if (!isActive && !_timerNotificationCenterItem.isRunTimer) { // nếu timer đang tạm ngừng thì tiếp tục chạy timer
+        
+        [appDelegate startStopTimer];
+        [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and:_timerNotificationCenterItem.timeSeconds];
+        [self updateLabelTotalWorkingAndBreaking:_timerNotificationCenterItem.totalWorking andLongBreaking:_timerNotificationCenterItem.totalLongBreaking];
     }
-    if (isActive) {
-        //appDelegate = [[UIApplication sharedApplication] delegate];
-        //_settingItem = appDelegate.settingItem;
-        [timer invalidate];
-        
-        minutes = _settingItem.timeWork - 1;
-        seconds = 60;
-        [self setupLabelMinutesText:minutes + 1];
-        [_labelSecond setText:@"00"];
+    if (_timerNotificationCenterItem.isRunTimer) { // cập nhật tiêu đề cho button phù hợp với trạng thái timer đang chạy hay đang dừng
         [_buttonStart setTitle:@"Pause" forState:UIControlStateNormal];
-        timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLabelTimer) userInfo:nil repeats:YES];
-        
-        isStartting = true;
-        isWorking = true;
-        totalWorking = 0;
-        totalBreaking = 0;
-        totalLongBreaking = 0;
-        frequency = _settingItem.frequency;
-        switchOnOffLongBreak = _settingItem.switchOnOffLongBreak;
-        
-        
-        _labelTotalWorking.text = [NSString stringWithFormat:@"Number Of Time Working : %d", totalWorking];
-        _labelTotalBreaking.text = [NSString stringWithFormat:@"Number Of Time Breaking : %d", totalBreaking];
-        _labelTotalLongBreaking.text = [NSString stringWithFormat:@"Number Of Time Long Breaking : %d", totalLongBreaking];
+    } else {
+        [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
     }
+    
+    
+    isChanged = _settingItem.isChanged;
+    if (isChanged == 1) {
+        
+        _timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
+        _timerNotificationCenterItem.timeSeconds = 0;
+        [_timerNotificationCenterItem.timer invalidate];
+        [self setTextForLabelWhenSettingWasChanged];
+    }
+    
+    userDefaults = [NSUserDefaults standardUserDefaults];
+    //[userDefaults setInteger:0 forKey:keyIsChanged];
     [userDefaults setInteger:0 forKey:keyisActive];
+    //_settingItem.isChanged = 0;
     _settingItem.isActive = 0;
-    [userDefaults setInteger:0 forKey:keyIsChanged];
-    _settingItem.isChanged = 0;
-    [self setupView];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view
-    if (isActive == false) {
-        appDelegate = [[UIApplication sharedApplication] delegate];
-        self.settingItem = appDelegate.settingItem;
-        minutes = self.settingItem.timeWork - 1;
-        seconds = 60;
-        
-        //isActive = self.settingItem.isActive;
-        [self setupLabelMinutesText:minutes + 1];
-        _labelSecond.text = @"00";
-        
-        [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
-        
-        isStartting = false;
-    }
-
-    isWorking = true;
-    totalWorking = 0;
-    totalBreaking = 0;
-    totalLongBreaking = 0;
-    frequency = _settingItem.frequency;
-    switchOnOffLongBreak = _settingItem.switchOnOffLongBreak;
-    DebugLog(@"switchOnOff: %d", switchOnOffLongBreak);
+    [self setupView];
 }
 
 #pragma mark setup view
-
 - (void) setupView {
     _labelTotalWorking.adjustsFontSizeToFitWidth = YES;
-    _labelTotalBreaking.adjustsFontSizeToFitWidth = YES;
+    _labelTask.text = @"";
+    _labelStatusWorking.text = @"";
 }
-- (void) setupLabelMinutesText: (int) minute {
+
+- (void) updateLabelMinutesAndSeconds: (NSNotification *) notification { //hàm này đc chạy liên tục khi timer đang chạy để cập nhật liên tục thời gian và label work và break
+    [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and:_timerNotificationCenterItem.timeSeconds];
+    _labelStatusWorking.text = _timerNotificationCenterItem.stringStatusWorking;
+    [self updateLabelTotalWorkingAndBreaking:_timerNotificationCenterItem.totalWorking andLongBreaking:_timerNotificationCenterItem.totalLongBreaking];
+}
+
+- (void) updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun: (int) minute and: (int) second { //  cap nhat label minutes va seconds
     
     if (minute >= 10) {
         _labelMinute.text = [NSString stringWithFormat:@"%d",minute];
-        //_labelSecond.text = @"00";
     } else {
         _labelMinute.text = [NSString stringWithFormat:@"0%d",minute];
     }
+    if (second >= 10) {
+        _labelSecond.text = [NSString stringWithFormat:@"%d", second];
+    } else {
+        _labelSecond.text = [NSString stringWithFormat:@"0%d", second];
+    }
+    if (second == 0 && minute == 0) { // để hiển thị đúng thứ tự thời gian khi timer bắt đầu lại với giá trị minutes mới. có thể đc hiểu như sau: khi thời gian đếm lùi về 00 : 00 thì minutes (thời gian bắt đầu chạy timer) sẽ hiển thị minutes : 00 rồi mới đếm lùi về (minutes - 1) : 59 --
+        if (_timerNotificationCenterItem.isWorking) {
+             minute = _settingItem.timeWork;
+        } else {
+           
+            if (_timerNotificationCenterItem.totalWorking > 0 && _timerNotificationCenterItem.totalWorking % _settingItem.frequency == 0) {
+                minute = _settingItem.timeLongBreak;
+            } else {
+                minute = _settingItem.timeBreak;
+            }
+        }
+        if (minute >= 10) {
+            _labelMinute.text = [NSString stringWithFormat:@"%d",minute];
+        } else {
+            _labelMinute.text = [NSString stringWithFormat:@"0%d",minute];
+        }
+    }
 }
-
-
+- (void) setTextForLabelWhenSettingWasChanged {
+    
+    int minute = _settingItem.timeWork;
+    if (minute >= 10) {
+        _labelMinute.text = [NSString stringWithFormat:@"%d",minute];
+    } else {
+        _labelMinute.text = [NSString stringWithFormat:@"0%d",minute];
+    }
+    _labelSecond.text = [NSString stringWithFormat:@"00"];
+    
+    [_labelTotalWorking setText:@"Number Of Time Work: 0"];
+    [_labelTotalLongBreaking setText:@"Number Of Time Long Break: 0"];
+    [_labelStatusWorking setText:@""];
+    [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
+}
+- (void) updateLabelTotalWorkingAndBreaking: (int) itotalWorking andLongBreaking: (int) itotalLongBreaking {
+    [_labelTotalWorking setText:[NSString stringWithFormat:@"Number Of Time Work: %d", itotalWorking]];
+    [_labelTotalLongBreaking setText:[NSString stringWithFormat:@"Number Of Time Long Break: %d", itotalLongBreaking]];
+}
 #pragma mark button Start
 
 - (IBAction)buttonStartOnClicked:(id)sender {
-    if (isActive == true) {
-        if (isStartting == false) {
-            if (isStartting == true) {
-                [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
-                [timer invalidate];
-                
-                isStartting = false;
-            } else if (isStartting == false){
-                [_buttonStart setTitle:@"Pause" forState:UIControlStateNormal];
-                timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLabelTimer) userInfo:nil repeats:YES];
-                
-                isStartting = true;
-            }
-        }
-    } else if (isActive == false) {
-        if (isStartting == false) {
-            [_buttonStart setTitle:@"Pause" forState:UIControlStateNormal];
-            timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLabelTimer) userInfo:nil repeats:YES];
-            isStartting = true;
-        } else {
-            [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
-            [timer invalidate];
-            
-            isStartting = false;
-        }
-    }
-    
-}
-
-#pragma mark implement Timer
-
-- (void) updateLabelTimer {
-    
-    seconds --;
-    [self setupLabelMinutesText:minutes];
-    
-    if (seconds >= 10) {
-        [_labelSecond setText:[NSString stringWithFormat:@"%d",seconds]];
-    } else if (seconds < 10) {
-        [_labelSecond setText:[NSString stringWithFormat:@"0%d",seconds]];
-    }
-    if (seconds == 0) {
-        seconds = 60;
-        minutes --;
-        if (minutes == -1) {
-            if (isWorking == true) {
-                
-                isWorking = false;
-                totalWorking ++;
-                [_labelTotalWorking setText:[NSString stringWithFormat:@"Number Of Time Working : %d",totalWorking]];
-
-                if (_settingItem.switchOnOffLongBreak == 1) {
-                    if (totalWorking > 0 && totalWorking % frequency == 0) {
-                        totalLongBreaking ++;
-                        minutes = _settingItem.timeLongBreak - 1;
-                    } else {
-                        minutes = _settingItem.timeBreak - 1;
-                    }
-                    [self setupLabelMinutesText:minutes + 1];
-                } else if (_settingItem.switchOnOffLongBreak == 0) {
-                    
-                    minutes = _settingItem.timeBreak - 1;
-                    [self setupLabelMinutesText:minutes + 1];
-                    
-                    DebugLog(@"TimeBreak;");
-                }
-            } else if (isWorking == false) {
-                
-                isWorking = true;
-                totalBreaking ++;
-                [_labelTotalBreaking setText:[NSString stringWithFormat:@"Number Of Time Breaking : %d", totalBreaking]];
-                [_labelTotalLongBreaking setText:[NSString stringWithFormat:@"Number Of Time Long Breaking : %d",  totalLongBreaking]];
-                minutes = _settingItem.timeWork - 1;
-                [self setupLabelMinutesText:minutes + 1];
-            }
-        }
-    }
-    if (isWorking == true) {
-        [_labelStatusWorking setText:@"Working"];
-    } else {
-        if (switchOnOffLongBreak == 1) {
-            if (totalWorking > 0 && totalWorking % frequency == 0) {
-                [_labelStatusWorking setText:@"Long Breaking"];
-            } else {
-                [_labelStatusWorking setText:@"Breaking"];
-            }
-        } else {
-            [_labelStatusWorking setText:@"Breaking"];
-        }
+    if ([_timerNotificationCenterItem.timer isValid]) {
+        _timerNotificationCenterItem.isRunTimer = false;
+        [self setTextForLabelWhenSettingWasChanged];
+        [appDelegate startStopTimer];
+        [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and:_timerNotificationCenterItem.timeSeconds];
         
+    } else {
+        _timerNotificationCenterItem.isRunTimer = true;
+        [_buttonStart setTitle:@"Pause" forState:UIControlStateNormal];
+        [appDelegate startStopTimer];
+        [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and:_timerNotificationCenterItem.timeSeconds];
     }
-
+    
 }
+
 
 
 

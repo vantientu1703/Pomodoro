@@ -49,54 +49,57 @@
     GetTodoItemIsDeletedTask *getTodoItemIsDeletedTask = [[GetTodoItemIsDeletedTask alloc] init];
     _arrTodoItemIsDeleted = [getTodoItemIsDeletedTask getTodoItemToDatabase:_moneyDBController ];
     
-    _arrTitleSections = [[NSMutableArray alloc] init];
-    TodoItem *todoItem = [[TodoItem alloc] init];
-    todoItem = [_arrTodoItemIsDeleted objectAtIndex:0];
-    
-    NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
-    [dateFomatter setDateFormat:@"yyyy - MM - dd"];
-    
-    NSString *dateTodoItem = [dateFomatter stringFromDate:todoItem.dateDeleted];
-    [_arrTitleSections addObject:dateTodoItem];
-    
-    for (int i = 0; i < _arrTodoItemIsDeleted.count; i++) {
+    if (_arrTitleSections.count != 0) {
+        _arrTitleSections = [[NSMutableArray alloc] init];
+        TodoItem *todoItem = [[TodoItem alloc] init];
+        todoItem = [_arrTodoItemIsDeleted objectAtIndex:0];
         
-        TodoItem *todoItemCompare = [_arrTodoItemIsDeleted objectAtIndex:i];
-        NSString *dateTodoItemCompare = [dateFomatter stringFromDate:todoItemCompare.dateDeleted];
-        BOOL tmp = true;
-        for (int j = 0; j < _arrTitleSections.count; j ++) {
-            
-            NSString *dateCompare = [_arrTitleSections objectAtIndex:j];
-            if ([dateCompare isEqual:dateTodoItemCompare]) {
-                tmp = false;
-            }
-        }
-        if (tmp != false) {
-            
-            [_arrTitleSections addObject:dateTodoItemCompare];
-        }
-    }
-
-    NSMutableDictionary *todoItemDictionarys = [[NSMutableDictionary alloc] init];
-    
-    for (int i = 0; i < _arrTitleSections.count; i ++) {
+        NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
+        [dateFomatter setDateFormat:@"yyyy - MM - dd"];
         
-        NSMutableArray *arrTodoItems = [[NSMutableArray alloc] init];
-        NSString *keyDate = [_arrTitleSections objectAtIndex:i];
-        for (int j = 0; j < _arrTodoItemIsDeleted.count; j ++) {
+        NSString *dateTodoItem = [dateFomatter stringFromDate:todoItem.dateDeleted];
+        [_arrTitleSections addObject:dateTodoItem];
+        
+        for (int i = 0; i < _arrTodoItemIsDeleted.count; i++) {
             
-            TodoItem *todoItemDict = [[TodoItem alloc] init];
-            todoItemDict = [_arrTodoItemIsDeleted objectAtIndex:j];
-            NSString *dateString = [dateFomatter stringFromDate: todoItemDict.dateDeleted];
-            if ([keyDate isEqual:dateString]) {
+            TodoItem *todoItemCompare = [_arrTodoItemIsDeleted objectAtIndex:i];
+            NSString *dateTodoItemCompare = [dateFomatter stringFromDate:todoItemCompare.dateDeleted];
+            BOOL tmp = true;
+            for (int j = 0; j < _arrTitleSections.count; j ++) {
                 
-                [arrTodoItems addObject:todoItemDict];
+                NSString *dateCompare = [_arrTitleSections objectAtIndex:j];
+                if ([dateCompare isEqual:dateTodoItemCompare]) {
+                    tmp = false;
+                }
+            }
+            if (tmp != false) {
+                
+                [_arrTitleSections addObject:dateTodoItemCompare];
             }
         }
-        [todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
+        
+        NSMutableDictionary *todoItemDictionarys = [[NSMutableDictionary alloc] init];
+        
+        for (int i = 0; i < _arrTitleSections.count; i ++) {
+            
+            NSMutableArray *arrTodoItems = [[NSMutableArray alloc] init];
+            NSString *keyDate = [_arrTitleSections objectAtIndex:i];
+            for (int j = 0; j < _arrTodoItemIsDeleted.count; j ++) {
+                
+                TodoItem *todoItemDict = [[TodoItem alloc] init];
+                todoItemDict = [_arrTodoItemIsDeleted objectAtIndex:j];
+                NSString *dateString = [dateFomatter stringFromDate: todoItemDict.dateDeleted];
+                if ([keyDate isEqual:dateString]) {
+                    
+                    [arrTodoItems addObject:todoItemDict];
+                }
+            }
+            [todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
+        }
+        _todoItemIsDeletedDictionarys = todoItemDictionarys;
+        
+
     }
-    _todoItemIsDeletedDictionarys = todoItemDictionarys;
-    
     
     [self.tableView reloadData];
 }

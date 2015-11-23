@@ -136,28 +136,28 @@
                                     <action selector="buttonStartOnClicked:" destination="3By-hf-Jqc" eventType="touchUpInside" id="eUa-et-XQ2"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number Of Time Working : 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jci-4f-gIO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number Of Time Work : 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jci-4f-gIO">
                                 <rect key="frame" x="20" y="114" width="318" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number Of Time Breaking : 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RGs-fQ-GJb">
-                                <rect key="frame" x="20" y="152" width="318" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number Of Time Long Break : 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ncj-0j-9Hj">
+                                <rect key="frame" x="20" y="154" width="318" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number Of Time Long Breaking : 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ncj-0j-9Hj">
-                                <rect key="frame" x="20" y="190" width="318" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MVC-Nt-sDc">
-                                <rect key="frame" x="95" y="346" width="184" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status Working" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MVC-Nt-sDc">
+                                <rect key="frame" x="95" y="322" width="184" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.38431376218795776" blue="0.94117653369903564" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Task Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V24-kz-04k">
+                                <rect key="frame" x="20" y="40" width="335" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -170,14 +170,14 @@
                         <outlet property="labelMinute" destination="jIw-0Y-Ooj" id="djI-ib-nPh"/>
                         <outlet property="labelSecond" destination="sqE-d3-abQ" id="jBt-Ex-ki6"/>
                         <outlet property="labelStatusWorking" destination="MVC-Nt-sDc" id="O4t-up-mXc"/>
-                        <outlet property="labelTotalBreaking" destination="RGs-fQ-GJb" id="pVp-YZ-RP5"/>
+                        <outlet property="labelTask" destination="V24-kz-04k" id="h1P-b7-pdC"/>
                         <outlet property="labelTotalLongBreaking" destination="Ncj-0j-9Hj" id="Azy-bc-byg"/>
                         <outlet property="labelTotalWorking" destination="Jci-4f-gIO" id="Ey0-lP-aAs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SPt-KZ-5xd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-251.5" y="1007.5"/>
+            <point key="canvasLocation" x="-330.5" y="932.5"/>
         </scene>
         <!--Setting-->
         <scene sceneID="a4c-IB-U48">
@@ -244,6 +244,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="htQ-ys-Zu2" kind="relationship" relationship="viewControllers" id="FOj-Jd-fM4"/>
+                        <segue destination="DpC-xi-qSA" kind="relationship" relationship="viewControllers" id="V1m-Ax-BQ6"/>
                         <segue destination="3By-hf-Jqc" kind="relationship" relationship="viewControllers" id="lJP-VJ-VIH"/>
                         <segue destination="BHg-Dr-OMg" kind="relationship" relationship="viewControllers" id="fyy-bb-ALY"/>
                     </connections>
@@ -251,6 +252,52 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kdw-dZ-KiN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-742" y="33"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="gek-j8-Ix3">
+            <objects>
+                <tableViewController id="WCX-fa-scS" customClass="ProjectManageTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="YSf-Pe-ivr">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="l30-EL-dO3">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l30-EL-dO3" id="xM1-AM-EXU">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="WCX-fa-scS" id="vpI-tu-mYC"/>
+                            <outlet property="delegate" destination="WCX-fa-scS" id="DIY-Ds-aew"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="jXz-jt-it9"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jAO-sm-XRk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-822" y="1496"/>
+        </scene>
+        <!--Project Manage-->
+        <scene sceneID="aNy-f8-Ffs">
+            <objects>
+                <navigationController id="DpC-xi-qSA" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Project Manage" id="zJD-uS-R2r"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2jt-VZ-Feo">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="WCX-fa-scS" kind="relationship" relationship="rootViewController" id="mPx-Rm-zWP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="og9-CR-b7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-809" y="785"/>
         </scene>
     </scenes>
 </document>

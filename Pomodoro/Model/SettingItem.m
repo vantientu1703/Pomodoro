@@ -42,6 +42,13 @@
 - (void) loadSetting {
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//    [userDefault setInteger:25 forKey:keyTimeWork];
+//    [userDefault setInteger:5 forKey:keyTimeBreak];
+//    [userDefault setInteger:15 forKey:keyTimeLongBreak];
+//    [userDefault setInteger:4 forKey:keyFrequency];
+//    [userDefault setInteger:0 forKey:keyIsChanged];
+//    [userDefault setInteger:-1 forKey:keyIndexPathForCell];
+    //[userDefault setInteger:0 forKey:keyisActive];
     
     [self setTimeWork:(int)[userDefault integerForKey:keyTimeWork]];
     if (self.timeWork == 0) {
@@ -62,11 +69,17 @@
         [userDefault setInteger:4 forKey:keyFrequency];
     }
     [self setSwitchOnOffLongBreak:(int)[userDefault integerForKey:keySwitchOnOffLongBreak]];
-//    if (self.switchOnOffLongBreak == 0) {
-//        [userDefault setInteger:1 forKey:keySwitchOnOffLongBreak];
-//    }
+    
     [self setIsActive:(BOOL)[userDefault integerForKey:keyisActive]];
+    
     [self setIsChanged:(BOOL)[userDefault integerForKey:keyIsChanged]];
+    if (self.isChanged != 0) {
+        [userDefault setInteger:0 forKey:keyIsChanged];
+    }
+    [self setIndexPathForCell:(int)[userDefault integerForKey:keyIndexPathForCell]];
+    if (self.indexPathForCell != -1) {
+        [userDefault setInteger:-1 forKey:keyIndexPathForCell];
+    }
 }
 
 

@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "SettingItem.h"
+#import "TimerNotificationcenterItem.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) SettingItem *settingItem;
-@property (nonatomic, assign) int timeMinutes;
-
+// timerNotification
+@property (nonatomic, strong) TimerNotificationcenterItem *timerNotificationcenterItem;
+- (void) startStopTimer;
 @end
 

@@ -18,7 +18,10 @@
 
 @implementation AppDelegate
 
-
+{
+    int seconds;
+    int minutes;
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
@@ -26,11 +29,67 @@
     [_moneyDBController openDB:[NSString stringWithFormat:@"Pomodoro.sqlite"]];
     
     self.settingItem = [SettingItem new];
-    _timeMinutes = _settingItem.timeWork;
-    
-    return YES;
+    self.timerNotificationcenterItem = [TimerNotificationcenterItem new];
+    [self setupTimerNotificationCenterItem];
+        return YES;
+}
+- (void) setupTimerNotificationCenterItem {
+    _timerNotificationcenterItem.totalTime = _settingItem.timeWork * 60;
+    _timerNotificationcenterItem.timeMinutes = _timerNotificationcenterItem.totalTime / 60;
+    _timerNotificationcenterItem.isWorking = true;
+    _timerNotificationcenterItem.totalWorking = 0;
+    _timerNotificationcenterItem.totalLongBreaking = 0;
+    _timerNotificationcenterItem.isRunTimer = nil;
+    _timerNotificationcenterItem.stringStatusWorking = @"Working";
+
+}
+- (void) startStopTimer {
+    if (_timerNotificationcenterItem.isRunTimer) {
+        _timerNotificationcenterItem.timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                                              target:self
+                                                                            selector:@selector(runningTimer)
+                                                                            userInfo:nil
+                                                                             repeats:YES];
+    } else {
+        [_timerNotificationcenterItem.timer invalidate];
+    }
 }
 
+- (void) runningTimer { // khi đc gọi timer bắt đầu chạy và đếm lùi thời gian đc cài đặt.
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:keyStartTimer
+                                                        object:self];
+    _timerNotificationcenterItem.totalTime --;
+    _timerNotificationcenterItem.timeMinutes = _timerNotificationcenterItem.totalTime / 60;
+    _timerNotificationcenterItem.timeSeconds = _timerNotificationcenterItem.totalTime - (_timerNotificationcenterItem.timeMinutes * 60);
+    
+        if (_timerNotificationcenterItem.totalTime == 0) {
+            if (_timerNotificationcenterItem.isWorking) {
+                _timerNotificationcenterItem.totalWorking ++;
+                _timerNotificationcenterItem.isWorking = false;
+                if (_settingItem.switchOnOffLongBreak == 0) {
+                    _timerNotificationcenterItem.stringStatusWorking = @"Breking";
+                    _timerNotificationcenterItem.totalTime = _settingItem.timeBreak * 60;
+                } else {
+                    if (_timerNotificationcenterItem.totalWorking > 0 && _timerNotificationcenterItem.totalWorking % _settingItem.frequency == 0) {
+                        _timerNotificationcenterItem.totalTime = _settingItem.timeLongBreak * 60;
+                        _timerNotificationcenterItem.stringStatusWorking = @"Long Breaking";
+                    } else {
+                        _timerNotificationcenterItem.totalTime = _settingItem.timeBreak * 60;
+                        _timerNotificationcenterItem.stringStatusWorking = @"Breaking";
+                    }
+                }
+                
+            } else if (!_timerNotificationcenterItem.isWorking) {
+                _timerNotificationcenterItem.isWorking = true;
+                if (_timerNotificationcenterItem.totalWorking > 0 && _timerNotificationcenterItem.totalWorking % _settingItem.frequency == 0) {
+                    _timerNotificationcenterItem.totalLongBreaking ++;
+                }
+                _timerNotificationcenterItem.stringStatusWorking = @"Working";
+                _timerNotificationcenterItem.totalTime = _settingItem.timeWork * 60;
+            }
+        }
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

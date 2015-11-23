@@ -21,8 +21,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTotalWorking;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelTotalBreaking;
-
 @property (weak, nonatomic) IBOutlet UILabel *labelTotalLongBreaking;
+
+@property (weak, nonatomic) IBOutlet UILabel *labelTask;
 
 @end
