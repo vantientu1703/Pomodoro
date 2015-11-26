@@ -19,10 +19,11 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *labelStatusWorking;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelTotalWorking;
+//@property (weak, nonatomic) IBOutlet UILabel *labelTotalWorking;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTotalLongBreaking;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTask;
+//@property (weak, nonatomic) IBOutlet UITextView *labelTextViewTask;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GetTodoItemOrderByDateCompletedTask : NSObject
+@interface GetTodoItemWasDoneOrderByDateCompletedTask : NSObject
 
-- (NSMutableArray *) getTodoItemToDatbase: (MoneyDBController *) _moneyDBController;
+- (NSMutableArray *) getTodoItemToDatbase: (MoneyDBController *) _moneyDBController where: (NSArray *) args;
 @end

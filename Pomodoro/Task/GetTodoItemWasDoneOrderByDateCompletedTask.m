@@ -6,18 +6,18 @@
 //  Copyright © 2015 ZooStudio. All rights reserved.
 //
 
-#import "GetTodoItemOrderByDateCompletedTask.h"
+#import "GetTodoItemWasDoneOrderByDateCompletedTask.h"
 #import "DBUtil.h"
 
-@implementation GetTodoItemOrderByDateCompletedTask
+@implementation GetTodoItemWasDoneOrderByDateCompletedTask
 
-- (NSMutableArray *) getTodoItemToDatbase:(MoneyDBController *)_moneyDBController {
+- (NSMutableArray *) getTodoItemToDatbase:(MoneyDBController *)_moneyDBController where:(NSArray *)args {
     
     NSString *query = @"SELECT * FROM todos \
-                        WHERE status = 1 AND isdeleted = 0 \
+                        WHERE status = 1 AND isdeleted = 0 AND projectid = ?\
                         ORDER BY date_completed DESC";
     
-    NSArray *arr = [_moneyDBController rawQueryWithCommand:query args:nil];
+    NSArray *arr = [_moneyDBController rawQueryWithCommand:query args:args];
     
     NSMutableArray *arrTodoItem = [[NSMutableArray alloc] init];
     for (NSDictionary *todo in arr) {

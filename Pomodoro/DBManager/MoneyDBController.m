@@ -29,7 +29,10 @@ static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
 
 static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"projectmanage\" \
                                                 (projectid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \
-                                                 projectname text)";
+                                                 projectname text, \
+                                                 startdate DATETIME, \
+                                                 enddate DATETIME, \
+                                                 description text)";
 @implementation MoneyDBController
 @synthesize sqlite,onCompletion,onFailure;
 
@@ -100,6 +103,20 @@ static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"pro
         [self executeQuery:@"ALTER TABLE todos \
                              ADD projectid INTEGER"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 5] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 7) {
+        
+        [self executeQuery:@"ALTER TABLE projectmanage \
+                             ADD startdate DATETIME"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 7] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 8) {
+        
+        [self executeQuery:@"ALTER TABLE projectmanage \
+                             ADD enddate DATETIME"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 8] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 9) {
+        [self executeQuery:@"ALTER TABLE projectmanage \
+                             ADD description text"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 9] UTF8String], nil, nil, nil);
     }
     
 }
@@ -130,7 +147,7 @@ static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"pro
     [self executeQuery:TABLE_CREATE_TASKS];
     [self executeQuery:TABLE_CREATE_PROJECTMANAGE];
     
-    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 5] UTF8String], nil, nil, nil);
+    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 7] UTF8String], nil, nil, nil);
 }
 
 

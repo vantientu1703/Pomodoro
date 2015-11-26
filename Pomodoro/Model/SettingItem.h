@@ -18,4 +18,6 @@
 @property (nonatomic, assign) BOOL isActive;
 @property (nonatomic, assign) BOOL isChanged;
 @property (nonatomic, assign) int indexPathForCell;
+@property (nonatomic, assign) long projectID;
+
 @end

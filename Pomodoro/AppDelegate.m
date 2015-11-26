@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "MoneyDBController.h"
 #import "SettingItem.h"
+#import "AGPushNoteView.h"
+
 @interface AppDelegate ()
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
@@ -64,24 +66,33 @@
     _timerNotificationcenterItem.timeSeconds = _timerNotificationcenterItem.totalTime - (_timerNotificationcenterItem.timeMinutes * 60);
     
         if (_timerNotificationcenterItem.totalTime == 0) {
+            
             if (_timerNotificationcenterItem.isWorking) {
+                
                 _timerNotificationcenterItem.totalWorking ++;
                 _timerNotificationcenterItem.isWorking = false;
+                
                 if (_settingItem.switchOnOffLongBreak == 0) {
+                    [self pushNotification:@"This is time to break"];
                     _timerNotificationcenterItem.stringStatusWorking = @"Breking";
                     _timerNotificationcenterItem.totalTime = _settingItem.timeBreak * 60;
                 } else {
                     if (_timerNotificationcenterItem.totalWorking > 0 && _timerNotificationcenterItem.totalWorking % _settingItem.frequency == 0) {
+                        [self pushNotification:@"This is time to long break"];
                         _timerNotificationcenterItem.totalTime = _settingItem.timeLongBreak * 60;
                         _timerNotificationcenterItem.stringStatusWorking = @"Long Breaking";
                     } else {
+                        [self pushNotification:@"This is time to break"];
                         _timerNotificationcenterItem.totalTime = _settingItem.timeBreak * 60;
                         _timerNotificationcenterItem.stringStatusWorking = @"Breaking";
                     }
                 }
-                
+
             } else if (!_timerNotificationcenterItem.isWorking) {
+                
+                [self pushNotification:@"This is time to work"];
                 _timerNotificationcenterItem.isWorking = true;
+                
                 if (_timerNotificationcenterItem.totalWorking > 0 && _timerNotificationcenterItem.totalWorking % _settingItem.frequency == 0) {
                     _timerNotificationcenterItem.totalLongBreaking ++;
                 }
@@ -89,6 +100,19 @@
                 _timerNotificationcenterItem.totalTime = _settingItem.timeWork * 60;
             }
         }
+}
+
+- (void) pushNotification: (NSString *) stringNotification {
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    localNotification.alertBody = stringNotification;
+    localNotification.fireDate = [NSDate date];
+    localNotification.soundName = @"chuongtit.mp3";
+    //localNotification.applicationIconBadgeNumber = 1;
+    localNotification.alertAction = @"Go on application";
+    localNotification.category = @"Email";
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "TodoItem.h"
 #import "MoneyDBController.h"
-
+#import "ProjectManageItem.h"
 @interface DBUtil : NSObject
 
 + (NSDictionary *) ToDoItemToDBItem: (TodoItem *) todoItem;
 + (TodoItem *) dbItemToToDoItem: (NSDictionary *) todoItem;
++ (NSDictionary *) projectManageItemToDBItem: (ProjectManageItem *) projectManage;
++ (ProjectManageItem *) dbItemToProjectManageItem: (NSDictionary *) projectManage;
 @end

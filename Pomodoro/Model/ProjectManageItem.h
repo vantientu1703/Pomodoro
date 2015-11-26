@@ -12,5 +12,8 @@
 
 @property (nonatomic, assign) long projectID;
 @property (nonatomic, strong) NSString *projectName;
+@property (nonatomic, strong) NSDate *startDate;
+@property (nonatomic, strong) NSDate *endDate;
+@property (nonatomic, strong) NSString *projectDescription;
 
 @end

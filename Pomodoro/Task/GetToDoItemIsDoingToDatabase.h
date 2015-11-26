@@ -10,7 +10,7 @@
 #import "MoneyDBController.h"
 #import "TodoItem.h"
 
-@interface GetToDoItemToDatabase : NSObject
+@interface GetToDoItemIsDoingToDatabase : NSObject
 
 + (NSMutableArray *) getTodoItemToDatabase: (MoneyDBController *) moneyDBController where: (NSArray *) arrays;
 

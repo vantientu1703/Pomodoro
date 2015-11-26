@@ -18,7 +18,7 @@
 
 @implementation TimerViewController
 {
-    NSTimer *timer;
+    NSTimer *autoScrollTimer;
     int minutes;
     int seconds;
     BOOL isStartting;
@@ -52,8 +52,7 @@
     
     if (isActive && _timerNotificationCenterItem.isRunTimer) { // nếu timer = nil thì bắt đầu chạy timer
         [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and: _timerNotificationCenterItem.timeSeconds];
-        [_labelTask setText:_timerNotificationCenterItem.stringTaskname];
-        NSString *string = _timerNotificationCenterItem.stringTaskname;
+        _labelTask.text = _timerNotificationCenterItem.stringTaskname;
         [appDelegate startStopTimer];
         [self updateLabelTotalWorkingAndBreaking:_timerNotificationCenterItem.totalWorking andLongBreaking:_timerNotificationCenterItem.totalLongBreaking];
         
@@ -80,9 +79,9 @@
     }
     
     userDefaults = [NSUserDefaults standardUserDefaults];
-    //[userDefaults setInteger:0 forKey:keyIsChanged];
+    [userDefaults setInteger:0 forKey:keyIsChanged];
     [userDefaults setInteger:0 forKey:keyisActive];
-    //_settingItem.isChanged = 0;
+    _settingItem.isChanged = 0;
     _settingItem.isActive = 0;
 }
 - (void)viewDidLoad {
@@ -92,7 +91,7 @@
 
 #pragma mark setup view
 - (void) setupView {
-    _labelTotalWorking.adjustsFontSizeToFitWidth = YES;
+    //_labelTotalWorking.adjustsFontSizeToFitWidth = YES;
     _labelTask.text = @"";
     _labelStatusWorking.text = @"";
 }
@@ -143,16 +142,32 @@
     }
     _labelSecond.text = [NSString stringWithFormat:@"00"];
     
-    [_labelTotalWorking setText:@"Number Of Time Work: 0"];
-    [_labelTotalLongBreaking setText:@"Number Of Time Long Break: 0"];
+    //[_labelTotalWorking setText:@"Number Of Time Work: 0"];
+    //[_labelTotalLongBreaking setText:@"Number Of Time Long Break: 0"];
+    [self updateLabelTotalWorkingAndBreaking:_timerNotificationCenterItem.totalWorking andLongBreaking:_timerNotificationCenterItem.totalLongBreaking];
     [_labelStatusWorking setText:@""];
     [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
 }
 - (void) updateLabelTotalWorkingAndBreaking: (int) itotalWorking andLongBreaking: (int) itotalLongBreaking {
-    [_labelTotalWorking setText:[NSString stringWithFormat:@"Number Of Time Work: %d", itotalWorking]];
-    [_labelTotalLongBreaking setText:[NSString stringWithFormat:@"Number Of Time Long Break: %d", itotalLongBreaking]];
+    //[_labelTotalWorking setText:[NSString stringWithFormat:@"Number Of Time Work: %d", itotalWorking]];
+    [_labelTotalLongBreaking setText:[NSString stringWithFormat:@"Pomodoros : %d", itotalLongBreaking]];
 }
 #pragma mark button Start
+
+
+- (IBAction)stopOnClicked:(id)sender {
+    
+    _timerNotificationCenterItem.isRunTimer = false;
+    [_timerNotificationCenterItem.timer invalidate];
+    _timerNotificationCenterItem.timer = nil;
+    _timerNotificationCenterItem.isWorking = true;
+    _timerNotificationCenterItem.timeMinutes = _settingItem.timeWork;
+    _timerNotificationCenterItem.timeSeconds = 0;
+    _timerNotificationCenterItem.totalLongBreaking = 0;
+    _timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
+    [self setTextForLabelWhenSettingWasChanged];
+
+}
 
 - (IBAction)buttonStartOnClicked:(id)sender {
     if ([_timerNotificationCenterItem.timer isValid]) {
@@ -171,7 +186,11 @@
 }
 
 
+#pragma mark - auto scroll text 
 
+- (void) autoScrollText {
+    
+}
 
 
 

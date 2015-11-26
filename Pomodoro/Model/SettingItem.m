@@ -11,7 +11,6 @@
 @implementation SettingItem
 
 - (instancetype) init {
-    
     self = [super init];
     if (self) {
         [self loadSetting];
@@ -53,20 +52,24 @@
     [self setTimeWork:(int)[userDefault integerForKey:keyTimeWork]];
     if (self.timeWork == 0) {
         [userDefault setInteger:25 forKey:keyTimeWork];
+        [self setTimeWork:25];
     }
     
     [self setTimeBreak:(int)[userDefault integerForKey:keyTimeBreak]];
     if (self.timeBreak == 0) {
         [userDefault setInteger:5 forKey:keyTimeBreak];
+        [self setTimeBreak:5];
     }
     
     [self setTimeLongBreak: (int)[userDefault integerForKey:keyTimeLongBreak]];
     if (self.timeLongBreak == 0) {
         [userDefault setInteger:15 forKey:keyTimeLongBreak];
+        [self setTimeLongBreak:15];
     }
     [self setFrequency:(int) [userDefault integerForKey:keyFrequency]];
     if (self.frequency == 0) {
         [userDefault setInteger:4 forKey:keyFrequency];
+        [self setFrequency:4];
     }
     [self setSwitchOnOffLongBreak:(int)[userDefault integerForKey:keySwitchOnOffLongBreak]];
     
@@ -75,11 +78,15 @@
     [self setIsChanged:(BOOL)[userDefault integerForKey:keyIsChanged]];
     if (self.isChanged != 0) {
         [userDefault setInteger:0 forKey:keyIsChanged];
+        [self setIsChanged:false];
     }
     [self setIndexPathForCell:(int)[userDefault integerForKey:keyIndexPathForCell]];
     if (self.indexPathForCell != -1) {
         [userDefault setInteger:-1 forKey:keyIndexPathForCell];
+        [self setIndexPathForCell:-1];
     }
+    
+    [self setProjectID:(long)[userDefault integerForKey:keyIndexRowProjectManage]];
 }
 
 

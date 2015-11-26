@@ -264,7 +264,10 @@
     [_timerNotificationCenterItem.timer invalidate];
     _timerNotificationCenterItem.timer = nil;
     _timerNotificationCenterItem.timeMinutes = _timerWork;
+    _timerNotificationCenterItem.totalWorking = 0;
+    _timerNotificationCenterItem.totalLongBreaking = 0;
     
+    [self.navigationController popViewControllerAnimated:YES];
     self.navigationItem.rightBarButtonItem = nil;
 }
 

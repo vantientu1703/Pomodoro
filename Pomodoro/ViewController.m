@@ -10,17 +10,19 @@
 #import "MoneyDBController.h"
 #import "TodoItem.h"
 #import "DBUtil.h"
-#import "GetToDoItemToDatabase.h"
+#import "GetToDoItemIsDoingToDatabase.h"
 #import "SWTableViewCell.h"
 #import "UMTableViewCell.h"
 #import "UpdateToDoItemToDatabase.h"
 #import "CustomTableViewCell.h"
 #import "DeleteTodoItemToDatabaseTask.h"
 #import "UndoView.h"
-#import "GetTodoItemOrderByDateCompletedTask.h"
+#import "GetTodoItemWasDoneOrderByDateCompletedTask.h"
 #import "AppDelegate.h"
 #import "SettingItem.h"
 #import "TimerNotificationcenterItem.h"
+#import "AGPushNoteView.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate>
 
@@ -55,16 +57,28 @@
     BOOL isStartting;
     TimerNotificationcenterItem *timerNotificationCenterItem;
     SettingItem *_settingItem;
+    AVAudioPlayer *audioPlayer;
 }
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
-    [self loadData];
-    totalTodos = _arrTodos.count;
-    [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos] forSegmentAtIndex:0];
+    size = [[UIScreen mainScreen] bounds].size;
     
     appDelegate = [[UIApplication sharedApplication] delegate];
     timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
+    _settingItem = appDelegate.settingItem;
+    
+    _segmentControl.selectedSegmentIndex = 0;
+    [self loadData];
+    
+    totalTodos = _arrTodos.count;
+    
+    if (totalTodos > 0) {
+        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos]
+                forSegmentAtIndex:0];
+    } else {
+        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
+    }
     
     CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
     cell.delegate = self;
@@ -77,7 +91,6 @@
         [self updateLabelForCell];
     }
     
-    _settingItem = appDelegate.settingItem;
     _settingItem.isChanged = 0;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -86,22 +99,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setupRegisterUserNotificationSetting];
     size = [[UIScreen mainScreen] bounds].size;
     _status = false;
     _isUndo = false;
     _indexIsEditing = -1;
     _indexPath = nil;
     _segmentControl.selectedSegmentIndex = 0;
+    
     _txtItemTodo = [[UITextField alloc] initWithFrame:CGRectMake(0, size.height, size.width, 40)];
     [self.view addSubview:_txtItemTodo];
-    
     _txtItemTodo.placeholder = @"Adding new task";
     _txtItemTodo.textColor = [UIColor blackColor];
     [_txtItemTodo setBackgroundColor:[UIColor whiteColor]];
-    _txtItemTodo.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    _txtItemTodo.layer.shadowOffset = CGSizeMake(1, 1);
-    _txtItemTodo.layer.shadowOpacity = 1;
     _txtItemTodo.hidden = YES;
     _txtItemTodo.delegate = self;
 
@@ -120,7 +130,7 @@
     [self registerForKeyboardNotification];
     
     totalTodos = _arrTodos.count;
-    [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos] forSegmentAtIndex:0];
+    //[_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos] forSegmentAtIndex:0];
     
     //gọi hàm chạy bắt đầu chạy timer
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -130,20 +140,61 @@
     isStartting = true;
 }
 
+#pragma mark register user notification setting
+
+- (void) setupRegisterUserNotificationSetting{
+    
+    UIMutableUserNotificationAction *notificationAction1 = [[UIMutableUserNotificationAction alloc] init];
+    notificationAction1.identifier = @"Accept";
+    notificationAction1.title = @"Accept";
+    notificationAction1.activationMode = UIUserNotificationActivationModeBackground;
+    notificationAction1.destructive = NO;
+    notificationAction1.authenticationRequired = NO;
+    
+    UIMutableUserNotificationAction *notificationAction2 = [[UIMutableUserNotificationAction alloc] init];
+    notificationAction2.identifier = @"Reject";
+    notificationAction2.title = @"Reject";
+    notificationAction2.activationMode = UIUserNotificationActivationModeBackground;
+    notificationAction2.destructive = YES;
+    notificationAction2.authenticationRequired = YES;
+    
+    UIMutableUserNotificationAction *notificationAction3 = [[UIMutableUserNotificationAction alloc] init];
+    notificationAction3.identifier = @"Reply";
+    notificationAction3.title = @"Reply";
+    notificationAction3.activationMode = UIUserNotificationActivationModeForeground;
+    notificationAction3.destructive = NO;
+    notificationAction3.authenticationRequired = YES;
+    
+    UIMutableUserNotificationCategory *notificationCategory = [[UIMutableUserNotificationCategory alloc] init];
+    notificationCategory.identifier = @"Email";
+    [notificationCategory setActions:@[notificationAction1,notificationAction2,notificationAction3] forContext:UIUserNotificationActionContextDefault];
+    [notificationCategory setActions:@[notificationAction1,notificationAction2] forContext:UIUserNotificationActionContextMinimal];
+    
+    NSSet *categories = [NSSet setWithObjects:notificationCategory, nil];
+    
+    UIUserNotificationType notificationType = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    
+    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:notificationType categories:categories];
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+}
+
 #pragma mark load data from database
 - (void) loadData {
 
+    NSString *stringID = [NSString stringWithFormat:@"%ld",_settingItem.projectID];
+    NSArray *arr = [[NSArray alloc] initWithObjects:stringID, nil];
     if (_segmentControl.selectedSegmentIndex == 0) {
         
-        _arrTodos = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:@[@"0",@"0"]];
+        _arrTodos = [GetToDoItemIsDoingToDatabase getTodoItemToDatabase:_moneyDBController where:arr];
         
-        _arrTodosRe_Oder = [GetToDoItemToDatabase getTodoItemToDatabase:_moneyDBController where:@[@"0",@"0"]];
+        _arrTodosRe_Oder = [GetToDoItemIsDoingToDatabase getTodoItemToDatabase:_moneyDBController where:arr];
         [self.tableView reloadData];
     } else {
         NSMutableArray *arrTodoItemDateCompleteds;
         
-        GetTodoItemOrderByDateCompletedTask *getTodoItemOrderByDateCompleted = [[GetTodoItemOrderByDateCompletedTask alloc] init];
-        arrTodoItemDateCompleteds = [getTodoItemOrderByDateCompleted getTodoItemToDatbase:_moneyDBController];
+        GetTodoItemWasDoneOrderByDateCompletedTask *getTodoItemOrderByDateCompleted = [[GetTodoItemWasDoneOrderByDateCompletedTask alloc] init];
+        arrTodoItemDateCompleteds = [getTodoItemOrderByDateCompleted getTodoItemToDatbase:_moneyDBController where:arr];
         
         if (arrTodoItemDateCompleteds.count != 0) {
             
@@ -195,10 +246,12 @@
                 [todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
             }
             _todoItemDictionarys = todoItemDictionarys;
-            
             [self.tableView reloadData];
-
+        } else {
+            _arrTitleSections = [[NSMutableArray alloc] init];
+            [self.tableView reloadData];
         }
+        
     }
 }
 
@@ -375,6 +428,7 @@
             _txtItemTodo.hidden = YES;
             _todoItem = [[TodoItem alloc] init];
             _todoItem.content = _txtItemTodo.text;
+            _todoItem.projectID = _settingItem.projectID;
             
             [_moneyDBController insert:@"todos" data:[DBUtil ToDoItemToDBItem:_todoItem ]];
             
@@ -562,7 +616,12 @@
         if (_segmentControl.selectedSegmentIndex == 0) {
             
             totalTodos --;
-            [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+            if (totalTodos > 0) {
+                [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+            } else {
+                [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
+            }
+            
             
             TodoItem *todoItem = _arrTodos [indexPath.row];
             todoItem.status = true;
@@ -597,8 +656,8 @@
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
             
             [self.tableView reloadData];
+            [self loadData];
         }
-        
     }
 }
 
@@ -611,7 +670,11 @@
         if (_segmentControl.selectedSegmentIndex == 0) {
             
             totalTodos --;
-            [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+            if (totalTodos > 0) {
+                [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+            } else {
+                [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
+            }
             _isUndo = false;
             
             if (_undoView) {
@@ -705,7 +768,7 @@
             [userDefaults setInteger:0 forKey:keyIsChanged];
             settingItem.isChanged = 0;
 
-            self.tabBarController.selectedIndex = 2;
+            self.tabBarController.selectedIndex = 1;
             
         } else {
             
@@ -721,7 +784,7 @@
                 timerNotificationCenterItem.stringTaskname = todoItem.content;
                 [userDefaults setInteger:1 forKey:keyisActive];
                 settingItem.isActive = 1;
-                self.tabBarController.selectedIndex = 2;
+                self.tabBarController.selectedIndex = 1;
                 isStartting = false;
             }
         }
@@ -735,8 +798,43 @@
 - (void) updateLabelForCell: (NSNotification *) notification { // label cell đc cập nhật liên tục khi timer running     
     CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
     cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell: timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
+    if (timerNotificationCenterItem.timeMinutes == 0 && timerNotificationCenterItem.timeSeconds == 0) {
+        DebugLog(@"____________%@", timerNotificationCenterItem.stringStatusWorking);
+        if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Breaking"]) {
+            [self pushNoteView:@"This is time to break"];
+        } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Working"]) {
+            [self pushNoteView:@"This is time to work"];
+        } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Long Breaking"]) {
+            [self pushNoteView:@"This is time to long break"];
+        }
+        [self playSound];
+        [self performSelector:@selector(removePushView) withObject:nil afterDelay:3];
+    }
 }
 
+#pragma mark push and remove note view
+
+- (void) playSound {
+    NSString *soundFile = [[NSBundle mainBundle] pathForResource:@"chuongtit" ofType:@"mp3"];
+    NSURL *url = [NSURL fileURLWithPath:soundFile];
+    NSError *error;
+    
+    audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    [audioPlayer prepareToPlay];
+    [audioPlayer play];
+    
+}
+- (void) removePushView {
+    [AGPushNoteView close];
+}
+
+- (void) pushNoteView: (NSString *) stringNotePush {
+    
+    [AGPushNoteView showWithNotificationMessage:stringNotePush];
+    [AGPushNoteView setMessageAction:^(NSString *message) {
+        [AGPushNoteView showWithNotificationMessage:message completion:^{}];
+    }];
+}
 #pragma mark set Text Label For Cell
 
 - (NSString *) setTextLabelForCell: (int) minutes and: (int) seconds {

@@ -23,4 +23,7 @@
 @property (nonatomic, strong) NSDate *dateDeleted;
 
 @property (nonatomic, strong) NSString *stringTimer;
+
+@property (nonatomic, assign) long projectID;
+
 @end
