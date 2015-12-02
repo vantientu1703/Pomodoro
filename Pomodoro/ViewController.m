@@ -23,8 +23,15 @@
 #import "TimerNotificationcenterItem.h"
 #import "AGPushNoteView.h"
 #import <AVFoundation/AVFoundation.h>
+#import "EditableTableController.h"
+#import "MenuProjectManageTableViewController.h"
+#import "GetProjectManageItemToDatabaseTask.h"
+#import "MenuAnimation.h"
 
-@interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate>
+
+
+static NSString *cellIdentifer = @"cellIdentifer";
+@interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate, EditableTableControllerDelegate, MenuAnimationDelegate>
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
 @property (nonatomic, strong) TodoItem *todoItem;
@@ -35,6 +42,12 @@
 @property (nonatomic, strong) NSMutableArray *arrTodosRe_Oder;
 @property (nonatomic, strong) UndoView *undoView;
 @property (nonatomic, strong) NSMutableArray *arrTitleSections;
+@property (nonatomic, strong) EditableTableController *editableTableController;\
+@property (nonatomic, strong) TodoItem *todoItemBeingMove;
+@property (nonatomic, strong) TodoItem *todoItemReplaceholder;
+@property (nonatomic, strong) MenuProjectManageTableViewController *menuProjectManageTableViewController;
+@property (nonatomic, strong) NSMutableArray *arrProjectManageItems;
+@property (nonatomic, strong) MenuAnimation *menuAnimation;
 
 @end
 
@@ -58,27 +71,24 @@
     TimerNotificationcenterItem *timerNotificationCenterItem;
     SettingItem *_settingItem;
     AVAudioPlayer *audioPlayer;
+    UIView *viewGrayBackground;
+    BOOL isShowMenu;
+
 }
+
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
-    size = [[UIScreen mainScreen] bounds].size;
+    [self loadData];
     
+    size = [[UIScreen mainScreen] bounds].size;
+
     appDelegate = [[UIApplication sharedApplication] delegate];
     timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
     _settingItem = appDelegate.settingItem;
     
     _segmentControl.selectedSegmentIndex = 0;
     [self loadData];
-    
-    totalTodos = _arrTodos.count;
-    
-    if (totalTodos > 0) {
-        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos]
-                forSegmentAtIndex:0];
-    } else {
-        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
-    }
     
     CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
     cell.delegate = self;
@@ -95,6 +105,9 @@
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:0 forKey:keyIsChanged];
+    
+    isShowMenu = true;
+    [self setupEditTableView];
 }
 
 - (void)viewDidLoad {
@@ -139,7 +152,65 @@
                                                object:nil];
     isStartting = true;
 }
+#pragma mark set Edit tableview
 
+- (void) setupEditTableView {
+    
+    if (_segmentControl.selectedSegmentIndex == 0) {
+        self.tableView.estimatedRowHeight = 50;
+        [self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:cellIdentifer];
+        self.editableTableController = [[EditableTableController alloc] initWithTableView:self.tableView];
+        self.editableTableController.delegate = self;
+        
+        _todoItemReplaceholder = [[TodoItem alloc] init];
+        _todoItemReplaceholder.todo_id = 0;
+        _todoItemReplaceholder.content = @"content";
+        _todoItemReplaceholder.pomodoros = 0;
+    }
+    
+}
+- (void) updateTodoItemToDatabase {
+    
+    if (_segmentControl.selectedSegmentIndex == 0) {
+        if (_sourceIndexOfRow < _destinationIndexPathOfRow) {
+            for (NSInteger i = _sourceIndexOfRow; i <= _destinationIndexPathOfRow; i++) {
+                TodoItem *todoItem = [[TodoItem alloc] init];
+                todoItem = [_arrTodos objectAtIndex:i];
+                
+                TodoItem *todosItemReOder = [[TodoItem alloc] init];
+                todosItemReOder = [_arrTodosRe_Oder objectAtIndex:i];
+                todosItemReOder.content = todoItem.content;
+                todosItemReOder.status = todoItem.status;
+                todosItemReOder.pomodoros = todoItem.pomodoros;
+                todosItemReOder.dateDeleted = todoItem.dateDeleted;
+                todosItemReOder.dateCompleted = todoItem.dateCompleted;
+                todosItemReOder.isDelete = todoItem.isDelete;
+                todosItemReOder.projectID = todoItem.projectID;
+                
+                UpdateToDoItemToDatabase *updateTodoItemTask = [[UpdateToDoItemToDatabase alloc]initWithTodoItem:todosItemReOder];
+                [updateTodoItemTask doQuery:_moneyDBController];
+            }
+        } else {
+            for (NSInteger i = _destinationIndexPathOfRow; i <= _sourceIndexOfRow; i++) {
+                TodoItem *todoItem = [[TodoItem alloc] init];
+                todoItem = [_arrTodos objectAtIndex:i];
+                
+                TodoItem *todosItemReOder = [[TodoItem alloc] init];
+                todosItemReOder = [_arrTodosRe_Oder objectAtIndex:i];
+                todosItemReOder.content = todoItem.content;
+                todosItemReOder.status = todoItem.status;
+                todosItemReOder.pomodoros = todoItem.pomodoros;
+                todosItemReOder.dateDeleted = todoItem.dateDeleted;
+                todosItemReOder.dateCompleted = todoItem.dateCompleted;
+                todosItemReOder.isDelete = todoItem.isDelete;
+                todosItemReOder.projectID = todoItem.projectID;
+                
+                UpdateToDoItemToDatabase *updateTodoItemTask = [[UpdateToDoItemToDatabase alloc]initWithTodoItem:todosItemReOder];
+                [updateTodoItemTask doQuery:_moneyDBController];
+            }
+        }
+    }
+}
 #pragma mark register user notification setting
 
 - (void) setupRegisterUserNotificationSetting{
@@ -182,6 +253,9 @@
 #pragma mark load data from database
 - (void) loadData {
 
+    GetProjectManageItemToDatabaseTask *getProjectManageItemToDatabaseTask = [[GetProjectManageItemToDatabaseTask alloc] init];
+    _arrProjectManageItems = [getProjectManageItemToDatabaseTask getProjectManageItemToDatabase:_moneyDBController];
+    
     NSString *stringID = [NSString stringWithFormat:@"%ld",_settingItem.projectID];
     NSArray *arr = [[NSArray alloc] initWithObjects:stringID, nil];
     if (_segmentControl.selectedSegmentIndex == 0) {
@@ -253,6 +327,15 @@
         }
         
     }
+    
+    totalTodos = _arrTodos.count;
+    
+    if (totalTodos > 0) {
+        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos]
+                forSegmentAtIndex:0];
+    } else {
+        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
+    }
 }
 
 
@@ -269,35 +352,6 @@
     } else {
         [_tableView setEditing:NO animated:YES];
         [_editButton setTitle:@"Edit"];
-        if (_segmentControl.selectedSegmentIndex == 0) {
-            if (_sourceIndexOfRow < _destinationIndexPathOfRow) {
-                for (NSInteger i = _sourceIndexOfRow; i <= _destinationIndexPathOfRow; i++) {
-                    TodoItem *todoItem = [[TodoItem alloc] init];
-                    todoItem = [_arrTodos objectAtIndex:i];
-                    
-                    TodoItem *todosItemReOder = [[TodoItem alloc] init];
-                    todosItemReOder = [_arrTodosRe_Oder objectAtIndex:i];
-                    todosItemReOder.content = todoItem.content;
-                    todosItemReOder.status = todoItem.status;
-                    
-                    UpdateToDoItemToDatabase *updateTodoItemTask = [[UpdateToDoItemToDatabase alloc]initWithTodoItem:todosItemReOder];
-                    [updateTodoItemTask doQuery:_moneyDBController];
-                }
-            } else {
-                for (NSInteger i = _destinationIndexPathOfRow; i <= _sourceIndexOfRow; i++) {
-                    TodoItem *todoItem = [[TodoItem alloc] init];
-                    todoItem = [_arrTodos objectAtIndex:i];
-                    
-                    TodoItem *todosItemReOder = [[TodoItem alloc] init];
-                    todosItemReOder = [_arrTodosRe_Oder objectAtIndex:i];
-                    todosItemReOder.content = todoItem.content;
-                    todosItemReOder.status = todoItem.status;
-                    
-                    UpdateToDoItemToDatabase *updateTodoItemTask = [[UpdateToDoItemToDatabase alloc]initWithTodoItem:todosItemReOder];
-                    [updateTodoItemTask doQuery:_moneyDBController];
-                }
-            }
-        }
     }
         
 }
@@ -338,11 +392,83 @@
     if (_indexIsEditing == -1) {
         
         [_txtItemTodo becomeFirstResponder];
-//        [_tableView setNeedsLayout];
     }
 }
 
-#pragma mark notification keyboard 
+
+- (IBAction)menuOnClicked:(id)sender {
+
+    [self showMenu];
+}
+
+#pragma mark MenuAnimationDelegate
+
+- (void) closeMenuAnimation {
+    
+    [self removeMenuAndViewGrayBackground];
+    [self loadData];
+}
+
+#pragma mark - gray background 
+
+- (void) showMenu {
+    
+    if (isShowMenu) {
+        isShowMenu = false;
+        CGFloat statusHeightNavigationBar = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.bounds.size.height;
+        
+        viewGrayBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        viewGrayBackground.backgroundColor = [UIColor grayColor];
+        viewGrayBackground.alpha = 0.0f;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(removeMenuAndViewGrayBackground:)];
+        tap.cancelsTouchesInView = NO;
+        [viewGrayBackground addGestureRecognizer:tap];
+
+        [self.view addSubview:viewGrayBackground];
+        
+        _menuAnimation = [[MenuAnimation alloc] initWithFrame:CGRectMake(0, -size.height / 2 + statusHeightNavigationBar, size.width, size.height / 2)];
+        _menuAnimation.delegate = self;
+        [self.view addSubview:_menuAnimation];
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            _menuAnimation.frame = CGRectMake(0, statusHeightNavigationBar, _menuAnimation.frame.size.width, _menuAnimation.frame.size.height);
+            viewGrayBackground.alpha = 0.7f;
+            viewGrayBackground.frame = CGRectMake(0, 0, viewGrayBackground.frame.size.width, viewGrayBackground.frame.size.height);
+            
+        } completion:^(BOOL finished) {
+        }];
+
+    } else {
+        [self removeMenuAndViewGrayBackground];
+    }
+}
+
+- (void) removeMenuAndViewGrayBackground {
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        _menuAnimation.frame = CGRectMake(0, -size.height / 2, size.width, _menuAnimation.frame.size.height);
+        viewGrayBackground.alpha = 0.0f;
+        
+    } completion:^(BOOL finished) {
+        isShowMenu = true;
+        [viewGrayBackground removeFromSuperview];
+    }];
+}
+
+- (void) removeMenuAndViewGrayBackground: (UITapGestureRecognizer *) tap {
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        _menuAnimation.frame = CGRectMake(0, -size.height / 2, size.width, size.height * 2 / 3);
+        viewGrayBackground.alpha = 0.0f;
+        
+    } completion:^(BOOL finished) {
+        isShowMenu = true;
+        [viewGrayBackground removeFromSuperview];
+    }];
+}
+
+#pragma mark notification keyboard
 
 - (void) registerForKeyboardNotification {
     
@@ -482,16 +608,13 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *cellIdentifer = @"cellIndetifer";
-    
     CustomTableViewCell *cell = (CustomTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
-    if (cell == nil) {
+    //if (cell == nil) {
     
         NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"CustomTableViewCell" owner:self options:nil];
         
         cell = [xib objectAtIndex:0];
-    }
-    
+    //}
     if (_status == false) {
         
         cell.leftUtilityButtons = [self leftButtonsStatusToDo];
@@ -510,32 +633,30 @@
         TodoItem *todoItem = [[TodoItem alloc] init];
         todoItem = [_arrTodos objectAtIndex:indexPath.row];
         cell.txtTask.text = todoItem.content;
+        cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItem.pomodoros];
+        
     } else if (_segmentControl.selectedSegmentIndex == 1){
         
-        DebugLog(@"segument: %ld", _segmentControl.selectedSegmentIndex);
         NSString *titleSection = [_arrTitleSections objectAtIndex:indexPath.section];
-        
-        DebugLog(@"section: %ld",(long)indexPath.section);
         TodoItem *todoItemDict = [[TodoItem alloc] init];
         NSArray *arrTodoItem = [_todoItemDictionarys objectForKey:titleSection];
         todoItemDict = [arrTodoItem objectAtIndex:indexPath.row];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"hh:mm a"];
-        NSString *todoItemTimeCompleted = [dateFormatter stringFromDate:todoItemDict.dateCompleted];
-        cell.labelTime.text = todoItemTimeCompleted;
+        cell.labelTime.text = [dateFormatter stringFromDate:todoItemDict.dateCompleted];
         cell.txtTask.text = todoItemDict.content;
+        cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItemDict.pomodoros];
     }
     return cell;
 }
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (_segmentControl.selectedSegmentIndex == 1) {
-        
-        return 50;
-    }
-    return 45;
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+//- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return 50;
+//}
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (_segmentControl.selectedSegmentIndex == 1) {
@@ -544,6 +665,37 @@
     }
     return @"";
 }
+
+#pragma mark table view edit
+
+//- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//    return UITableViewCellEditingStyleNone;
+//}
+//
+//- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+//    
+//    TodoItem *todoItem = [[TodoItem alloc] init];
+//    todoItem = [_arrTodos objectAtIndex:sourceIndexPath.row];
+//    
+//    _sourceIndexOfRow = sourceIndexPath.row;
+//    
+//    [_arrTodos removeObjectAtIndex:sourceIndexPath.row];
+//    [_arrTodos insertObject:todoItem atIndex:destinationIndexPath.row];
+//    
+//    _destinationIndexPathOfRow = destinationIndexPath.row;
+//    
+//    DebugLog(@"%ld - %ld",(long)_sourceIndexOfRow, (long)_destinationIndexPathOfRow);
+//}
+//
+//
+//- (NSIndexPath *) tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+//    
+//    return proposedDestinationIndexPath;
+//}
+
+#pragma mark - SWTTableViewDelegate
+
 - (NSArray *) rightButtonsTodoPause {
     NSMutableArray *rightUtilitylButtons = [[NSMutableArray alloc] init];
     
@@ -615,14 +767,20 @@
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         if (_segmentControl.selectedSegmentIndex == 0) {
             
+            timerNotificationCenterItem.isRunTimer = false;
+            [timerNotificationCenterItem.timer invalidate];
+            timerNotificationCenterItem.timer = nil;
+            timerNotificationCenterItem.isWorking = true;
+            timerNotificationCenterItem.timeMinutes = _settingItem.timeWork;
+            timerNotificationCenterItem.timeSeconds = 0;
+            timerNotificationCenterItem.totalLongBreaking = 0;
+            timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
             totalTodos --;
             if (totalTodos > 0) {
                 [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
             } else {
                 [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
             }
-            
-            
             TodoItem *todoItem = _arrTodos [indexPath.row];
             todoItem.status = true;
             todoItem.dateCompleted = [NSDate date];
@@ -660,6 +818,9 @@
         }
     }
 }
+
+
+
 
 - (void) swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
     
@@ -744,9 +905,10 @@
         
         TodoItem *todoItem = [TodoItem new];
         todoItem = [_arrTodos objectAtIndex:_indexPath.row];
+        timerNotificationCenterItem.todoItem = todoItem;
         DebugLog(@"_indexPath: %@", _indexPath);
         if (_indexPath.row != settingItem.indexPathForCell) { // so sách index path đang chạy timer vs index path vừa ấn có giống nhau hay không.. nếu không giống nhau thì chạy lại timer từ đâu
-           
+            isStartting = true;
             timerNotificationCenterItem.isRunTimer = true; // cài lại toàn bộ các giá trị liên quan đến timer
             [timerNotificationCenterItem.timer invalidate];
             timerNotificationCenterItem.timer = nil;
@@ -767,7 +929,7 @@
             
             [userDefaults setInteger:0 forKey:keyIsChanged];
             settingItem.isChanged = 0;
-
+            isStartting = false;
             self.tabBarController.selectedIndex = 1;
             
         } else {
@@ -790,24 +952,102 @@
         }
     }
 }
+
+#pragma mark editableTableControllerDelegate
+
+- (void) editableTableController:(EditableTableController *)controller willBeginMovingCellAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [self.tableView beginUpdates];
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    self.todoItemBeingMove = [_arrTodos objectAtIndex:indexPath.row];
+    //[_arrTodos replaceObjectAtIndex:indexPath.row withObject:self.todoItemBeingMove];
+    [self.tableView endUpdates];
+}
+
+- (void) editableTableController:(EditableTableController *)controller movedCellWithInitialIndexPath:(NSIndexPath *)initialIndexPath fromAboveIndexPath:(NSIndexPath *)fromIndexPath toAboveIndexPath:(NSIndexPath *)toIndexPath {
+    
+    [self.tableView beginUpdates];
+    
+    [self.tableView moveRowAtIndexPath:toIndexPath toIndexPath:fromIndexPath];
+    TodoItem *todoItemToIndex = [_arrTodos objectAtIndex:toIndexPath.row];
+    [_arrTodos removeObjectAtIndex:toIndexPath.row ];
+    if (fromIndexPath.row == _arrTodos.count) {
+     
+        [_arrTodos addObject:todoItemToIndex];
+    } else {
+        [_arrTodos insertObject:todoItemToIndex atIndex:fromIndexPath.row];
+    }
+    [self.tableView endUpdates];
+    
+}
+- (BOOL) editableTableController:(EditableTableController *)controller shouldMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath withSuperviewLocation:(CGPoint)location {
+    
+    //CGSize size = [[UIScreen mainScreen] bounds].size;
+    CGRect exampleRect = (CGRect){0, 0,size.width, 50};
+    
+    if (CGRectContainsPoint(exampleRect, location)) {
+        
+        [self.tableView beginUpdates];
+        [self.tableView deleteRowsAtIndexPaths:@[proposedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.arrTodos removeObjectAtIndex:proposedIndexPath.row];
+        [self.tableView endUpdates];
+        self.todoItemBeingMove = nil;
+        return NO;
+    }
+    
+    DebugLog(@"toIndexPath: %ld, fromIndexPath: %ld_______________", (long)initialIndexPath.row, (long) proposedIndexPath.row);
+    
+    //DebugLog(@"_arrTodos : %@___", _arrTodos);
+    for (int i = 0; i < _arrTodos.count; i++) {
+        TodoItem *todoItem = [[TodoItem alloc] init];
+        todoItem = [_arrTodos objectAtIndex:i];
+        DebugLog(@"%@___", todoItem.content);
+    }
+    _sourceIndexOfRow = initialIndexPath.row;
+    _destinationIndexPathOfRow = proposedIndexPath.row;
+    [self updateTodoItemToDatabase];
+    return YES;
+}
+
+- (void) editableTableController:(EditableTableController *)controller didMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+    
+    [self.arrTodos replaceObjectAtIndex:toIndexPath.row withObject:self.todoItemBeingMove];
+    [self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    self.todoItemBeingMove = nil;
+}
 #pragma mark NSTimer
 - (void) updateLabelForCell {  // khi timer invalidate thì label cell đc cập nhật lại cho đúng với thời gian timer dừng
     CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
     cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell:timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
 }
-- (void) updateLabelForCell: (NSNotification *) notification { // label cell đc cập nhật liên tục khi timer running     
+- (void) updateLabelForCell: (NSNotification *) notification { // label cell đc cập nhật liên tục khi timer running
+    
+    
+    TodoItem *todoItem = [[TodoItem alloc] init];
+    todoItem = [_arrTodos objectAtIndex:_indexPath.row];
+    
     CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
     cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell: timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
+    cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", timerNotificationCenterItem.pomodoros];
+    
     if (timerNotificationCenterItem.timeMinutes == 0 && timerNotificationCenterItem.timeSeconds == 0) {
         DebugLog(@"____________%@", timerNotificationCenterItem.stringStatusWorking);
         if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Breaking"]) {
+            
             [self pushNoteView:@"This is time to break"];
         } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Working"]) {
+            
             [self pushNoteView:@"This is time to work"];
+            
         } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Long Breaking"]) {
+            
             [self pushNoteView:@"This is time to long break"];
         }
-        [self playSound];
+        if (_settingItem.isSound) {
+            [self playSound];
+        }
+        
         [self performSelector:@selector(removePushView) withObject:nil afterDelay:3];
     }
 }
@@ -960,32 +1200,6 @@
     } completion:^(BOOL finished) {
         [_undoView removeFromSuperview];
     }];
-}
-#pragma mark table view edit
-
-- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return UITableViewCellEditingStyleNone;
-}
-
-- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    
-    TodoItem *todoItem = [[TodoItem alloc] init];
-    todoItem = [_arrTodos objectAtIndex:sourceIndexPath.row];
-    
-    _sourceIndexOfRow = sourceIndexPath.row;
-
-    [_arrTodos removeObjectAtIndex:sourceIndexPath.row];
-    [_arrTodos insertObject:todoItem atIndex:destinationIndexPath.row];
-    
-        _destinationIndexPathOfRow = destinationIndexPath.row;
-    
-    DebugLog(@"%ld - %ld",(long)_sourceIndexOfRow, (long)_destinationIndexPathOfRow);
-}
-
-- (NSIndexPath *) tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-    
-    return proposedDestinationIndexPath;
 }
 
 

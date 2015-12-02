@@ -12,7 +12,7 @@
 #import "CustomTableViewCell.h"
 #import "SWTableViewCell.h"
 #import "UpdateToDoItemToDatabase.h"
-
+#import "GetTodoItemIsDeletedInProjectToDatabaseTask.h"
 
 
 @interface TodoITemDeletedListViewController () <UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate>
@@ -49,7 +49,7 @@
     GetTodoItemIsDeletedTask *getTodoItemIsDeletedTask = [[GetTodoItemIsDeletedTask alloc] init];
     _arrTodoItemIsDeleted = [getTodoItemIsDeletedTask getTodoItemToDatabase:_moneyDBController ];
     
-    if (_arrTitleSections.count != 0) {
+    if (_arrTodoItemIsDeleted.count != 0) {
         _arrTitleSections = [[NSMutableArray alloc] init];
         TodoItem *todoItem = [[TodoItem alloc] init];
         todoItem = [_arrTodoItemIsDeleted objectAtIndex:0];
@@ -139,14 +139,19 @@
     NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
     [dateFomatter setDateFormat:@"hh:mm a"];
     
+    GetTodoItemIsDeletedInProjectToDatabaseTask *getTodoItemIsDeletedInProjectToDatabaseTask = [[GetTodoItemIsDeletedInProjectToDatabaseTask alloc] init];
+    NSArray *arrProject = [getTodoItemIsDeletedInProjectToDatabaseTask getTodoItemIsDeletedInProjectToDatabase:_moneyDBController whereID:todoItem.projectID];
+    ProjectManageItem *projectManageItem = [ProjectManageItem new];
+    projectManageItem =[arrProject objectAtIndex:0];
+    
     cell.txtTask.enabled = NO;
     cell.delegate = self;
     cell.rightUtilityButtons = [self rightButtons];
     cell.leftUtilityButtons = [self leftButtons];
     
-    cell.labelTime.text = [NSString stringWithFormat:@"%@", [dateFomatter stringFromDate:todoItem.dateDeleted]];
+    cell.labelPomodoros.text = [NSString stringWithFormat:@"%@", [dateFomatter stringFromDate:todoItem.dateDeleted]];
     cell.txtTask.text = todoItem.content;
-    
+    cell.labelTime.text = [NSString stringWithFormat:@"Project : %@", projectManageItem.projectName];
     return cell;
 }
 

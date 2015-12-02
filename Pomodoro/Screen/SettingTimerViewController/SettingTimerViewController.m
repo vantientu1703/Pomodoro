@@ -30,6 +30,9 @@
     [super viewWillAppear:animated];
     
     self.navigationItem.rightBarButtonItem = nil;
+    CGSize scrollViewSize = self.scrollView.bounds.size;
+    
+    self.scrollView.contentSize = CGSizeMake(scrollViewSize.width + 500, 1000);
     
     appDelegate = [[UIApplication sharedApplication] delegate];
     self.settingItem = appDelegate.settingItem;
@@ -84,6 +87,11 @@
         _switchLongBreak.on = NO;
         _changeTimerLongBreak.enabled = NO;
         _changeFrequency.enabled = NO;
+    }
+    if (_settingItem.isSound) {
+        _enableSound.on = YES;
+    }else {
+        _enableSound.on = NO;
     }
     
     userDefaults = [NSUserDefaults standardUserDefaults];
@@ -229,6 +237,18 @@
     
     [self createRightButtonItem];
 }
+
+- (IBAction)EnableSound:(id)sender {
+    
+    if (_enableSound.on == YES) {
+        [userDefaults setBool:true forKey:keyIsSound];
+        _settingItem.isSound = true;
+    } else {
+        [userDefaults setBool:false forKey:keyIsSound];
+        _settingItem.isSound = false;
+    }
+}
+
 
 #pragma mark - UIBarButtonItem
 

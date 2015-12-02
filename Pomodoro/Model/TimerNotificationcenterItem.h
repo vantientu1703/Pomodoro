@@ -21,5 +21,6 @@
 @property (nonatomic, assign) int totalLongBreaking;
 @property (nonatomic, assign) int totalTime;
 @property (nonatomic, strong) NSString *stringTaskname;
-
+@property (nonatomic, strong) TodoItem *todoItem;
+@property (nonatomic, assign) int pomodoros;
 @end

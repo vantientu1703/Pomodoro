@@ -7,17 +7,29 @@
 //
 
 #import "CustomTableViewCellProjectManage.h"
+#import "AddProjectViewController.h"
+
+@interface CustomTableViewCellProjectManage ()
+
+@property (nonatomic, weak) UITableView *containningTableView;
+
+@end
 
 @implementation CustomTableViewCellProjectManage
 
 - (void)awakeFromNib {
-    // Initialization code
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
+- (IBAction)editOnClicked:(id)sender {
+    
+    [_delegate pushEditView:_indexPath];
+}
 @end

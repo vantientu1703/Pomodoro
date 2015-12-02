@@ -19,5 +19,5 @@
 @property (nonatomic, assign) BOOL isChanged;
 @property (nonatomic, assign) int indexPathForCell;
 @property (nonatomic, assign) long projectID;
-
+@property (nonatomic, assign) BOOL isSound;
 @end

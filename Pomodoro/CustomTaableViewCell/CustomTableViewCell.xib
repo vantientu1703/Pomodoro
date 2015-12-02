@@ -14,16 +14,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="350" height="54"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfq-0V-ie0">
-                        <rect key="frame" x="15" y="28" width="228" height="18"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="18" id="877-hh-suQ"/>
-                            <constraint firstAttribute="width" constant="228" id="oza-g6-Fnc"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Task" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5XV-vr-e8Y">
                         <rect key="frame" x="15" y="8" width="327" height="20"/>
                         <constraints>
@@ -33,21 +23,53 @@
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                     </textField>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pomodoros :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dX0-Bs-gNR">
+                        <rect key="frame" x="200" y="28" width="150" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="150" id="Y4s-XR-Eoi"/>
+                            <constraint firstAttribute="height" constant="18" id="cTZ-ck-W17"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfq-0V-ie0">
+                        <rect key="frame" x="15" y="28" width="169" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="877-hh-suQ"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="169" id="mC0-nB-x2C"/>
+                            <constraint firstAttribute="width" constant="169" id="oza-g6-Fnc"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="tfq-0V-ie0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="Mv8-vc-oIa"/>
                     <constraint firstAttribute="trailingMargin" secondItem="tfq-0V-ie0" secondAttribute="trailing" constant="99" id="PLX-CC-Mk0"/>
                     <constraint firstItem="5XV-vr-e8Y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="X3U-zg-it6"/>
+                    <constraint firstItem="dX0-Bs-gNR" firstAttribute="top" secondItem="5XV-vr-e8Y" secondAttribute="bottom" id="a09-hu-pgV"/>
                     <constraint firstItem="5XV-vr-e8Y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="e3H-3J-YLG"/>
                     <constraint firstItem="5XV-vr-e8Y" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="h8x-Cy-15S"/>
+                    <constraint firstItem="dX0-Bs-gNR" firstAttribute="leading" secondItem="tfq-0V-ie0" secondAttribute="trailing" constant="16" id="n3S-hS-oUX"/>
                     <constraint firstItem="tfq-0V-ie0" firstAttribute="top" secondItem="5XV-vr-e8Y" secondAttribute="bottom" id="unw-Bt-T4K"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="PLX-CC-Mk0"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="dX0-Bs-gNR" secondAttribute="trailing" constant="8" id="dMU-iZ-rAZ"/>
+            </constraints>
             <connections>
+                <outlet property="labelPomodoros" destination="dX0-Bs-gNR" id="Y8e-fy-wlp"/>
                 <outlet property="labelTime" destination="tfq-0V-ie0" id="wLP-S7-j2y"/>
                 <outlet property="txtTask" destination="5XV-vr-e8Y" id="J4L-6V-zYQ"/>
             </connections>
-            <point key="canvasLocation" x="232" y="276.5"/>
+            <point key="canvasLocation" x="258" y="279.5"/>
         </tableViewCell>
     </objects>
 </document>

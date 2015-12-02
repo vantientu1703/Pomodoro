@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CustomTableViewProjectManageDelegate
+
+- (void) pushEditView: (NSIndexPath *) indexPath;
+
+@end
 @interface CustomTableViewCellProjectManage : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *labelProjectname;
@@ -17,5 +22,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelTotalTodo;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTotalDone;
+
+@property (nonatomic, strong) id<CustomTableViewProjectManageDelegate> delegate;
+
+@property (nonatomic, strong) NSIndexPath *indexPath;
+
+@property (weak, nonatomic) IBOutlet UIView *vieBackground;
+
+
 
 @end

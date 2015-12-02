@@ -26,4 +26,5 @@
 
 @property (nonatomic, assign) long projectID;
 
+@property (nonatomic, assign) int pomodoros;
 @end

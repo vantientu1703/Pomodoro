@@ -13,8 +13,10 @@
 #import "AppDelegate.h"
 #import "GetToDoItemIsDoingToDatabase.h"
 #import "GetTodoItemWasDoneOrderByDateCompletedTask.h"
+#import "DetailProjectManageViewController.h"
 
-@interface ProjectManageViewController () <UITextFieldDelegate>
+
+@interface ProjectManageViewController () <UITextFieldDelegate,CustomTableViewProjectManageDelegate>
 
 @property (nonatomic, strong) NSMutableArray *arrProjectManageItem;
 @property (nonatomic, strong) NSMutableArray *arrTaskTodos;
@@ -71,6 +73,7 @@
 - (void) addProjectManageItem {
     
     AddProjectViewController *addProjectViewController = [AddProjectViewController new];
+    addProjectViewController.stringTitle = @"add";
     [self.navigationController pushViewController:addProjectViewController animated:YES];
 }
 
@@ -101,12 +104,13 @@
     ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
     projectManageItem = [_arrProjectManageItem objectAtIndex:indexPath.row];
     
+    cell.delegate = self;
     cell.labelProjectname.text = projectManageItem.projectName;
     
     if ([[dateFomatter stringFromDate:projectManageItem.endDate] isEqualToString:@"1970 / 01 / 01"]) {
-        cell.labelStartEndDateTime.text = [NSString stringWithFormat:@"%@", [dateFomatter stringFromDate:projectManageItem.startDate]];
+        cell.labelStartEndDateTime.text = @": No select";
     } else {
-        cell.labelStartEndDateTime.text = [NSString stringWithFormat:@"%@ - %@", [dateFomatter stringFromDate:projectManageItem.startDate], [dateFomatter stringFromDate:projectManageItem.endDate]];
+        cell.labelStartEndDateTime.text = [NSString stringWithFormat:@": %@", [dateFomatter stringFromDate:projectManageItem.endDate]];
     }
     
     NSString *stringID = [NSString stringWithFormat:@"%ld", projectManageItem.projectID];
@@ -119,7 +123,7 @@
     
     cell.labelTotalTodo.text = [NSString stringWithFormat:@": %lu", (unsigned long)_arrTaskTodos.count];
     cell.labelTotalDone.text = [NSString stringWithFormat:@": %lu", (unsigned long)_arrTaskDones.count];
-    
+    cell.indexPath = indexPath;
     return cell;
 }
 
@@ -130,11 +134,14 @@
     ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
     projectManageItem = [_arrProjectManageItem objectAtIndex:indexPath.row];
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:projectManageItem.projectID forKey:keyIndexRowProjectManage];
-    _settingItem.projectID = projectManageItem.projectID;
     
-    self.tabBarController.selectedIndex = 0;
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setInteger:projectManageItem.projectID forKey:keyIndexRowProjectManage];
+//    _settingItem.projectID = projectManageItem.projectID;
+    
+    DetailProjectManageViewController *detailProjectManageViewController = [[DetailProjectManageViewController alloc] init];
+    detailProjectManageViewController.projectManageItem = projectManageItem;
+    [self.navigationController pushViewController:detailProjectManageViewController animated:YES];
 }
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     

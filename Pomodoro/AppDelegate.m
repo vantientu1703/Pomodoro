@@ -10,6 +10,9 @@
 #import "MoneyDBController.h"
 #import "SettingItem.h"
 #import "AGPushNoteView.h"
+#import "UpdateToDoItemToDatabase.h"
+
+
 
 @interface AppDelegate ()
 
@@ -95,6 +98,15 @@
                 
                 if (_timerNotificationcenterItem.totalWorking > 0 && _timerNotificationcenterItem.totalWorking % _settingItem.frequency == 0) {
                     _timerNotificationcenterItem.totalLongBreaking ++;
+                    TodoItem *todoItem = [[TodoItem alloc] init];
+                    todoItem = _timerNotificationcenterItem.todoItem;
+                    int pomodoros = todoItem.pomodoros;
+                    pomodoros ++;
+                    todoItem.pomodoros = pomodoros;
+                    _timerNotificationcenterItem.pomodoros = pomodoros;
+                    UpdateToDoItemToDatabase *updateToDoItemToDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem: todoItem];
+                    [updateToDoItemToDatabase doQuery:_moneyDBController];
+                    //cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItem.pomodoros];
                 }
                 _timerNotificationcenterItem.stringStatusWorking = @"Working";
                 _timerNotificationcenterItem.totalTime = _settingItem.timeWork * 60;

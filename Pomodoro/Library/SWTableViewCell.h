@@ -32,7 +32,8 @@ typedef NS_ENUM(NSInteger, SWCellState)
 - (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state;
 - (void)swipeableTableViewCellDidEndScrolling:(SWTableViewCell *)cell;
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didScroll:(UIScrollView *)scrollView;
-
+- (void) beingMovedCellWhenLongPress;
+- (void) endMovedCellWhenTapped;
 @end
 
 @interface SWTableViewCell : UITableViewCell
@@ -49,5 +50,5 @@ typedef NS_ENUM(NSInteger, SWCellState)
 - (void)showRightUtilityButtonsAnimated:(BOOL)animated;
 
 - (BOOL)isUtilityButtonsHidden;
-
+@property (nonatomic, assign) BOOL isEditting;
 @end

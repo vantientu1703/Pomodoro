@@ -23,6 +23,8 @@
 #define Pomodoro_Prefix_h
 #define todos @"todos"
 #define projectmanage @"projectmanage"
+
+// key settingItem
 #define keyTimeWork @"keyTimeWork"
 #define keyTimeBreak @"keyTimeBreak"
 #define keyTimeLongBreak @"keyTimeLongBreak"
@@ -33,7 +35,10 @@
 #define keyStartTimer @"startTimer"
 #define keyPauseTimer @"pauseTimer"
 #define keyIndexPathForCell @"keyIndexPathForCell"
-#define keyIndexRowProjectManage @"keyIndexRowProjectManage"
+#define keyProjectID @"keyProjectID"
+#define keyIsSound @"keyIsSound"
+
+
 #define Pomodorosqlite @"Pomodoro.sqlite"
 #import "MoneyDBController.h"
 #import "TodoItem.h"

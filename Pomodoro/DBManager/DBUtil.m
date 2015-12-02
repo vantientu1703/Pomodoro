@@ -22,6 +22,7 @@
     [dictionary setValue:[NSString stringWithFormat:@"%f",[todoItem.dateCompleted timeIntervalSince1970]] forKey:@"date_completed"];
     [dictionary setValue:[NSString stringWithFormat:@"%f",[todoItem.dateDeleted timeIntervalSince1970]] forKey:@"date_deleted"];
     [dictionary setValue:[NSString stringWithFormat:@"%ld", todoItem.projectID] forKey:@"projectid"];
+    [dictionary setValue:[NSString stringWithFormat:@"%d", todoItem.pomodoros] forKey:@"pomodoros"];
     //[dictionary setValue:[NSString stringWithFormat:@"%ld", todoItem.todo_id] forKey:@"id"];
     
     return dictionary;
@@ -38,6 +39,8 @@
     todoItem.dateCompleted = [NSDate dateWithTimeIntervalSince1970:[todo [@"4"]doubleValue]];
     todoItem.dateDeleted = [NSDate dateWithTimeIntervalSince1970:[todo [@"5"]doubleValue]];
     todoItem.projectID = [todo [@"6"]longLongValue];
+    todoItem.pomodoros = [todo [@"7"]intValue];
+    
     return todoItem;
 }
 

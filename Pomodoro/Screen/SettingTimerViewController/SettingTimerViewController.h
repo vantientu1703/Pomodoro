@@ -26,4 +26,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelFrequency;
 
 @property (weak, nonatomic) IBOutlet UISwitch *switchLongBreak;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+@property (weak, nonatomic) IBOutlet UISwitch *enableSound;
+
+
+
 @end

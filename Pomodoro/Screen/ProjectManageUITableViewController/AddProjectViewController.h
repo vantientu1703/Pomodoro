@@ -16,11 +16,9 @@
 
 @property (weak, nonatomic) IBOutlet UITextView *txtDescription;
 
+@property (nonatomic, strong) NSString *stringTitle;
 
-
-
-
-
+@property (nonatomic, strong) ProjectManageItem *projectManageItem;
 
 
 @end

@@ -86,7 +86,10 @@
         [self setIndexPathForCell:-1];
     }
     
-    [self setProjectID:(long)[userDefault integerForKey:keyIndexRowProjectManage]];
+    [self setProjectID:(long)[userDefault integerForKey:keyProjectID]];
+    
+    [self setIsSound:(BOOL)[userDefault integerForKey:keyIsSound]];
+    
 }
 
 

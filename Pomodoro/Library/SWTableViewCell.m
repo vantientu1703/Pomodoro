@@ -13,7 +13,7 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
 
 #define kSectionIndexWidth 15
 #define kAccessoryTrailingSpace 15
-#define kLongPressMinimumDuration 0.16f
+#define kLongPressMinimumDuration 0.5f
 
 @interface SWTableViewCell () <UIScrollViewDelegate,  UIGestureRecognizerDelegate>
 
@@ -384,6 +384,11 @@ static NSString * const kTableViewPanState = @"state";
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan && !self.isHighlighted && self.shouldHighlight)
     {
         [self setHighlighted:YES animated:NO];
+//        if (!_isEditting) {
+//            [_delegate beingMovedCellWhenLongPress];
+//            _isEditting = true;
+//        }
+        
     }
     
     else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
