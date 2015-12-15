@@ -17,13 +17,17 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) UISearchBar *searchBar;
+
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardContraint;
+
+@property (strong, nonatomic) UILabel *labelProjectname;
+
 
 @end
 

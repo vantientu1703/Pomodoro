@@ -11,20 +11,12 @@
 @interface TodoItem : NSObject
 
 @property (nonatomic, assign) long todo_id ;
-
 @property (nonatomic, strong) NSString *content;
-
 @property (nonatomic, assign) BOOL status;
-
 @property (nonatomic, assign) BOOL isDelete;
-
 @property (nonatomic, strong) NSDate *dateCompleted;
-
 @property (nonatomic, strong) NSDate *dateDeleted;
-
-@property (nonatomic, strong) NSString *stringTimer;
-
 @property (nonatomic, assign) long projectID;
-
 @property (nonatomic, assign) int pomodoros;
+@property (nonatomic, assign) int priority;
 @end

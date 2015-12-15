@@ -12,6 +12,7 @@
 
 - (void) closeMenuAnimation;
 
+
 @end
 
 @interface MenuAnimation : UIView <UITableViewDataSource, UITableViewDelegate>

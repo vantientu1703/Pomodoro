@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingTimerViewController : UIViewController
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBottomScrollView;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *changeTimerWork;
 
@@ -31,6 +32,7 @@
 
 @property (weak, nonatomic) IBOutlet UISwitch *enableSound;
 
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 
 @end

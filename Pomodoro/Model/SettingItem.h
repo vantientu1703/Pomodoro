@@ -17,7 +17,12 @@
 @property (nonatomic, assign) int switchOnOffLongBreak;
 @property (nonatomic, assign) BOOL isActive;
 @property (nonatomic, assign) BOOL isChanged;
-@property (nonatomic, assign) int indexPathForCell;
+@property (nonatomic, assign) int indexPathRow;
+@property (nonatomic, assign) int indexPathSection;
 @property (nonatomic, assign) long projectID;
 @property (nonatomic, assign) BOOL isSound;
+@property (nonatomic, strong) NSString *projectName;
+@property (nonatomic, assign) BOOL isStartupApp;
+@property (nonatomic, assign) int indexPriority;
+
 @end

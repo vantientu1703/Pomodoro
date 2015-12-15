@@ -19,7 +19,8 @@ static NSString *TABLE_CREATE_TASKS = @"CREATE TABLE IF NOT EXISTS \"todos\" \
                                          date_completed DATETIME, \
                                          date_deleted DATETIME, \
                                          projectid INTEGER, \
-                                         pomodoros INTEGER DEFAULT 0)";
+                                         pomodoros INTEGER DEFAULT 0, \
+                                         priority INTEGER DEFAULT 0)";
 
 static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
                                 (\"id\" INTEGER PRIMARY KEY NOT NULL, \
@@ -122,6 +123,10 @@ static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"pro
         [self executeQuery:@"ALTER TABLE todos \
                              ADD pomodoros INTEGER DEFAULT 0"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 10] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 11) {
+        [self executeQuery:@"ALTER TABLE todos \
+                             ADD priority INTEGER DEFAULT 0"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 11] UTF8String], nil, nil, nil);
     }
     
 }
@@ -152,7 +157,9 @@ static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"pro
     [self executeQuery:TABLE_CREATE_TASKS];
     [self executeQuery:TABLE_CREATE_PROJECTMANAGE];
     
-    sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 7] UTF8String], nil, nil, nil);
+    //ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
+    
+    //sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 7] UTF8String], nil, nil, nil);
 }
 
 

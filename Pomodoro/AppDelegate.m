@@ -77,7 +77,7 @@
                 
                 if (_settingItem.switchOnOffLongBreak == 0) {
                     [self pushNotification:@"This is time to break"];
-                    _timerNotificationcenterItem.stringStatusWorking = @"Breking";
+                    _timerNotificationcenterItem.stringStatusWorking = @"Breaking";
                     _timerNotificationcenterItem.totalTime = _settingItem.timeBreak * 60;
                 } else {
                     if (_timerNotificationcenterItem.totalWorking > 0 && _timerNotificationcenterItem.totalWorking % _settingItem.frequency == 0) {

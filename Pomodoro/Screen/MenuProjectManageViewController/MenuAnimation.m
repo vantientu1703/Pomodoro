@@ -16,6 +16,7 @@
     NSMutableArray *_arrProjectManageItems;
     MoneyDBController *_moneyDBController;
     UITableView *_tableView;
+    NSInteger indexPathRowCell;
 }
 - (instancetype) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -65,22 +66,22 @@
     
     NSUserDefaults *userDefaukts = [NSUserDefaults standardUserDefaults];
     [userDefaukts setInteger:projectManageItem.projectID forKey:keyProjectID];
+    NSArray *arr = [[NSArray alloc] initWithObjects:projectManageItem.projectName, nil];
+    [userDefaukts setObject:arr forKey:keyProjectname];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     SettingItem *settingItem = appDelegate.settingItem;
     settingItem.projectID = projectManageItem.projectID;
+    settingItem.projectName = projectManageItem.projectName;
+    
     [_delegate closeMenuAnimation];
+    
+    indexPathRowCell = indexPath.row;
 }
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 40;
 }
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
-}
 
-- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Project Manage";
-}
 
 
 

@@ -34,13 +34,18 @@
 #define keyIsChanged @"keyisChanged"
 #define keyStartTimer @"startTimer"
 #define keyPauseTimer @"pauseTimer"
-#define keyIndexPathForCell @"keyIndexPathForCell"
+#define keyIndexPathRow @"keyIndexPathRow"
+#define keyIndexPathSection @"keyIndexPathSection"
 #define keyProjectID @"keyProjectID"
 #define keyIsSound @"keyIsSound"
+#define keyProjectname @"keyProjectName"
+#define keyIsStartupApp @"keyIsStartupApp"
+#define keyIndexPriority @"keyIndexPriority"
 
 
 #define Pomodorosqlite @"Pomodoro.sqlite"
 #import "MoneyDBController.h"
 #import "TodoItem.h"
 #import "ProjectManageItem.h"
+#import "DBUtil.h"
 #endif /* Pomodoro_Prefix_h */

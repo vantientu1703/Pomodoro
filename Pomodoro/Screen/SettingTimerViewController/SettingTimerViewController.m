@@ -30,10 +30,7 @@
     [super viewWillAppear:animated];
     
     self.navigationItem.rightBarButtonItem = nil;
-    CGSize scrollViewSize = self.scrollView.bounds.size;
-    
-    self.scrollView.contentSize = CGSizeMake(scrollViewSize.width + 500, 1000);
-    
+        
     appDelegate = [[UIApplication sharedApplication] delegate];
     self.settingItem = appDelegate.settingItem;
     userDefaults = [NSUserDefaults standardUserDefaults];
@@ -95,6 +92,7 @@
     }
     
     userDefaults = [NSUserDefaults standardUserDefaults];
+    //self.constraintBottomScrollView.constant = 50;
     
 }
 

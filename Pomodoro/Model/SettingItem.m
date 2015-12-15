@@ -80,16 +80,32 @@
         [userDefault setInteger:0 forKey:keyIsChanged];
         [self setIsChanged:false];
     }
-    [self setIndexPathForCell:(int)[userDefault integerForKey:keyIndexPathForCell]];
-    if (self.indexPathForCell != -1) {
-        [userDefault setInteger:-1 forKey:keyIndexPathForCell];
-        [self setIndexPathForCell:-1];
+    [self setIndexPathRow:(int)[userDefault integerForKey:keyIndexPathRow]];
+    if (self.indexPathRow != -1) {
+        [userDefault setInteger:-1 forKey:keyIndexPathRow];
+        [self setIndexPathRow:-1];
+    }
+    
+    [self setIndexPathSection:(int)[userDefault integerForKey:keyIndexPathSection]];
+    if (self.indexPathSection != -1) {
+        [userDefault setInteger:-1 forKey:keyIndexPathSection];
+        [self setIndexPathSection:-1];
     }
     
     [self setProjectID:(long)[userDefault integerForKey:keyProjectID]];
-    
     [self setIsSound:(BOOL)[userDefault integerForKey:keyIsSound]];
     
+    NSArray *arr = [userDefault objectForKey:keyProjectname];
+    if (arr.count != 0) {
+        [self setProjectName:[NSString stringWithFormat:@"%@",[arr objectAtIndex:0]]];
+    }
+    
+    [self setIsStartupApp:(BOOL)[userDefault boolForKey:keyIsStartupApp]];
+    [self setIndexPriority:(int)[userDefault integerForKey:keyIndexPriority]];
+    if (self.indexPriority == 0) {
+        [userDefault setInteger:1 forKey:keyFrequency];
+        [self setIndexPriority:1];
+    }
 }
 
 

@@ -41,7 +41,7 @@
     _settingItem = appDelegate.settingItem;
     _timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
 //    _settingItem.indexPathForCell = -1;
-    [userDefaults setInteger:-1 forKey:keyIndexPathForCell];
+    [userDefaults setInteger:-1 forKey:keyIndexPathRow];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateLabelMinutesAndSeconds:)
