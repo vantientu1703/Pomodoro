@@ -17,7 +17,7 @@
 @interface AppDelegate ()
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
-
+@property (nonatomic, strong) NSUserDefaults *shareUserDefaults;
 
 @end
 
@@ -36,6 +36,9 @@
     self.settingItem = [SettingItem new];
     self.timerNotificationcenterItem = [TimerNotificationcenterItem new];
     [self setupTimerNotificationCenterItem];
+    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    
+    [_shareUserDefaults setObject:@"appisrunning" forKey:@"keycheckappisrunning"];
         return YES;
 }
 - (void) setupTimerNotificationCenterItem {
@@ -46,7 +49,10 @@
     _timerNotificationcenterItem.totalLongBreaking = 0;
     _timerNotificationcenterItem.isRunTimer = nil;
     _timerNotificationcenterItem.stringStatusWorking = @"Working";
-
+    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"keytimeminutes"];
+    [shareUserDefaults setInteger:0 forKey:@"keytimeseconds"];
+    [shareUserDefaults synchronize];
 }
 - (void) startStopTimer {
     if (_timerNotificationcenterItem.isRunTimer) {
@@ -68,13 +74,15 @@
     _timerNotificationcenterItem.timeMinutes = _timerNotificationcenterItem.totalTime / 60;
     _timerNotificationcenterItem.timeSeconds = _timerNotificationcenterItem.totalTime - (_timerNotificationcenterItem.timeMinutes * 60);
     
+    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"keytimeminutes"];
+    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeSeconds forKey:@"keytimeseconds"];
+    [shareUserDefaults synchronize];
         if (_timerNotificationcenterItem.totalTime == 0) {
-            
             if (_timerNotificationcenterItem.isWorking) {
                 
                 _timerNotificationcenterItem.totalWorking ++;
                 _timerNotificationcenterItem.isWorking = false;
-                
                 if (_settingItem.switchOnOffLongBreak == 0) {
                     [self pushNotification:@"This is time to break"];
                     _timerNotificationcenterItem.stringStatusWorking = @"Breaking";
@@ -90,12 +98,10 @@
                         _timerNotificationcenterItem.stringStatusWorking = @"Breaking";
                     }
                 }
-
             } else if (!_timerNotificationcenterItem.isWorking) {
                 
                 [self pushNotification:@"This is time to work"];
                 _timerNotificationcenterItem.isWorking = true;
-                
                 if (_timerNotificationcenterItem.totalWorking > 0 && _timerNotificationcenterItem.totalWorking % _settingItem.frequency == 0) {
                     _timerNotificationcenterItem.totalLongBreaking ++;
                     TodoItem *todoItem = [[TodoItem alloc] init];
@@ -126,6 +132,8 @@
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 
 }
+
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -146,6 +154,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [_shareUserDefaults setObject:@"appisstop" forKey:@"keycheckappisrunning"];
+    DebugLog(@"App is running");
 }
 
 @end

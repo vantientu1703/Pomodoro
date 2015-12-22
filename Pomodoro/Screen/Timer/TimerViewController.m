@@ -119,7 +119,7 @@
              minute = _settingItem.timeWork;
         } else {
            
-            if (_timerNotificationCenterItem.totalWorking > 0 && _timerNotificationCenterItem.totalWorking % _settingItem.frequency == 0) {
+            if (_timerNotificationCenterItem.totalWorking > 0 && _timerNotificationCenterItem.totalWorking % _settingItem.frequency == 0 && _settingItem.switchOnOffLongBreak == true) {
                 minute = _settingItem.timeLongBreak;
             } else {
                 minute = _settingItem.timeBreak;
@@ -141,15 +141,11 @@
         _labelMinute.text = [NSString stringWithFormat:@"0%d",minute];
     }
     _labelSecond.text = [NSString stringWithFormat:@"00"];
-    
-    //[_labelTotalWorking setText:@"Number Of Time Work: 0"];
-    //[_labelTotalLongBreaking setText:@"Number Of Time Long Break: 0"];
     [self updateLabelTotalWorkingAndBreaking:_timerNotificationCenterItem.totalWorking andLongBreaking:_timerNotificationCenterItem.totalLongBreaking];
     [_labelStatusWorking setText:@""];
     [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
 }
 - (void) updateLabelTotalWorkingAndBreaking: (int) itotalWorking andLongBreaking: (int) itotalLongBreaking {
-    //[_labelTotalWorking setText:[NSString stringWithFormat:@"Number Of Time Work: %d", itotalWorking]];
     [_labelTotalLongBreaking setText:[NSString stringWithFormat:@"Pomodoros : %d", itotalLongBreaking]];
 }
 #pragma mark button Start

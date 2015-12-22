@@ -285,6 +285,11 @@
     _timerNotificationCenterItem.totalWorking = 0;
     _timerNotificationCenterItem.totalLongBreaking = 0;
     
+    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    [shareUserDefaults setInteger:_timerWork forKey:@"keytimeminutes"];
+    [shareUserDefaults setInteger:0 forKey:@"keytimeseconds"];
+    [shareUserDefaults synchronize];
+    
     [self.navigationController popViewControllerAnimated:YES];
     self.navigationItem.rightBarButtonItem = nil;
 }

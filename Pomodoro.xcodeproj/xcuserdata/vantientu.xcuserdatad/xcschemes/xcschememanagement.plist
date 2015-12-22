@@ -9,6 +9,16 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>PomodoroWidget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>TimerNotificationCenterWidget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -23,6 +33,16 @@
 			<true/>
 		</dict>
 		<key>EF3F0ED61BDA22C900AB0DC3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EFDB82C31C25AE40004D47CC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EFDB82EC1C25C125004D47CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

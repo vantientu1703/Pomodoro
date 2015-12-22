@@ -56,6 +56,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
 @property (nonatomic, strong) NSMutableArray *arrAllTodoItems;
 @property (nonatomic, strong) NSMutableArray *arrTodoItemsFollowPriorityAllSection;
 @property (nonatomic, strong) PriorityView *priorityView;
+@property (nonatomic, strong) NSUserDefaults *shareUserDefaults;
 
 @end
 
@@ -97,8 +98,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
     [super viewWillAppear:animated];
+    
     isPriority = true;
     appDelegate = [[UIApplication sharedApplication] delegate];
     timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
@@ -119,11 +120,11 @@ static NSString *cellIdentifer = @"cellIdentifer";
         cell.rightUtilityButtons = [self rightButtonsStatusToDo];
         [self updateLabelForCell];
     }
-    
     _settingItem.isChanged = 0;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:0 forKey:keyIsChanged];
+    
     [self setupEditTableView];
     [self removeMenuAndViewGrayBackground];
 }
@@ -166,6 +167,11 @@ static NSString *cellIdentifer = @"cellIdentifer";
                                              selector:@selector(updateLabelForCell:)
                                                  name:keyStartTimer
                                                object:nil];
+    
+    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    [_shareUserDefaults setBool:true forKey:@"keyisstartting"];
+    [_shareUserDefaults synchronize];
+    isStartting = [_shareUserDefaults boolForKey:@"keyisstartting"];
     isStartting = true;
 }
 
@@ -1275,6 +1281,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
             
             [userDefaults setInteger:0 forKey:keyIsChanged];
             settingItem.isChanged = 0;
+            
             isStartting = false;
             self.tabBarController.selectedIndex = 1;
             
@@ -1306,7 +1313,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [self.tableView beginUpdates];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    self.todoItemBeingMove = [_arrTodos objectAtIndex:indexPath.row];
+    //self.todoItemBeingMove = [_arrTodos objectAtIndex:indexPath.row];
     //[_arrTodos replaceObjectAtIndex:indexPath.row withObject:self.todoItemBeingMove];
     [self.tableView endUpdates];
 }
@@ -1328,10 +1335,15 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
     
-    todoItemFromIndexPath.priority = (int)toIndexPath.section + 1;
-    UpdateToDoItemToDatabase *updateTodoItemToDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemFromIndexPath];
-    [updateTodoItemToDatabase doQuery:_moneyDBController];
-    
+    if (toIndexPath.section == 3) {
+        todoItemFromIndexPath.priority = 0;
+        UpdateToDoItemToDatabase *updateTodoItemToDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemFromIndexPath];
+        [updateTodoItemToDatabase doQuery:_moneyDBController];
+    } else {
+        todoItemFromIndexPath.priority = (int)toIndexPath.section + 1;
+        UpdateToDoItemToDatabase *updateTodoItemToDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemFromIndexPath];
+        [updateTodoItemToDatabase doQuery:_moneyDBController];
+    }
     [self loadTodoItemsPriority];
     
     for (int i = 0; i < [_arrTodoItemsFollowPriorityAllSection[toIndexPath.section] count]; i ++) {
