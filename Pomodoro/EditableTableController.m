@@ -35,9 +35,10 @@ static CGFloat ZoomAnimationDuration = 0.20f;
 
 - (instancetype)initWithTableView:(UITableView *)tableView
 {
-    
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    int numberOfSections = (int)[userDefaults integerForKey:@"key_number_sections"];
     NSAssert(tableView != nil, @"tableView cannot be nil.");
-    NSAssert([tableView numberOfSections] == 4, @"This class currently supports single section tableViews only.");
+    NSAssert([tableView numberOfSections] == numberOfSections, @"This class currently supports single section tableViews only.");
     NSAssert(tableView.estimatedRowHeight > 0, @"The tableView's estimatedRowHeight must be set.");
     
     self = [super init];

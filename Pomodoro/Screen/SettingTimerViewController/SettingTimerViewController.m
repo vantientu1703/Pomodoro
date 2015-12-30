@@ -33,7 +33,7 @@
         
     appDelegate = [[UIApplication sharedApplication] delegate];
     self.settingItem = appDelegate.settingItem;
-    userDefaults = [NSUserDefaults standardUserDefaults];
+    userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     
     [userDefaults setInteger:0 forKey:keyIsChanged];
     _settingItem.isChanged = 0;
@@ -48,7 +48,7 @@
     _labelTimerBreak.text = [NSString stringWithFormat:@"%d minutes",_timeBreak];
     _labelTimerLongBreak.text = [NSString stringWithFormat:@"%d minutes",_timeLongBreak];
     _labelFrequency.text = [NSString stringWithFormat:@"Every %d",_frequency];
-
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,10 +56,14 @@
     appDelegate = [[UIApplication sharedApplication] delegate];
     self.settingItem = appDelegate.settingItem;
     _timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
+    userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    
     DebugLog(@"TimeWork: __%d", _settingItem.timeWork);
     DebugLog(@"TimeBreak: __%d", _settingItem.timeBreak);
     DebugLog(@"TimeLongBreak: __%d", _settingItem.timeLongBreak);
     DebugLog(@"Frequency: __%d", _settingItem.frequency);
+    DebugLog(@"Enable Longbreak: %d", _settingItem.switchOnOffLongBreak);
+    
     _changeTimerWork.selectedSegmentIndex = -1;
     _changeTimerBreak.selectedSegmentIndex = -1;
     _changeTimerLongBreak.selectedSegmentIndex = -1;
@@ -90,9 +94,6 @@
     }else {
         _enableSound.on = NO;
     }
-    
-    userDefaults = [NSUserDefaults standardUserDefaults];
-    //self.constraintBottomScrollView.constant = 50;
     
 }
 
@@ -285,10 +286,8 @@
     _timerNotificationCenterItem.totalWorking = 0;
     _timerNotificationCenterItem.totalLongBreaking = 0;
     
-    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [shareUserDefaults setInteger:_timerWork forKey:@"keytimeminutes"];
-    [shareUserDefaults setInteger:0 forKey:@"keytimeseconds"];
-    [shareUserDefaults synchronize];
+    [userDefaults setBool:true forKey:@"key_is_changed_from_containingapp"];
+    [userDefaults setObject:@"" forKey:@"key_timer_running"];
     
     [self.navigationController popViewControllerAnimated:YES];
     self.navigationItem.rightBarButtonItem = nil;

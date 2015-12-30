@@ -36,10 +36,9 @@
     self.settingItem = [SettingItem new];
     self.timerNotificationcenterItem = [TimerNotificationcenterItem new];
     [self setupTimerNotificationCenterItem];
-    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     
-    [_shareUserDefaults setObject:@"appisrunning" forKey:@"keycheckappisrunning"];
-        return YES;
+    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    return YES;
 }
 - (void) setupTimerNotificationCenterItem {
     _timerNotificationcenterItem.totalTime = _settingItem.timeWork * 60;
@@ -50,8 +49,8 @@
     _timerNotificationcenterItem.isRunTimer = nil;
     _timerNotificationcenterItem.stringStatusWorking = @"Working";
     NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"keytimeminutes"];
-    [shareUserDefaults setInteger:0 forKey:@"keytimeseconds"];
+    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"key_time_minutes"];
+    [shareUserDefaults setInteger:0 forKey:@"key_time_seconds"];
     [shareUserDefaults synchronize];
 }
 - (void) startStopTimer {
@@ -73,11 +72,8 @@
     _timerNotificationcenterItem.totalTime --;
     _timerNotificationcenterItem.timeMinutes = _timerNotificationcenterItem.totalTime / 60;
     _timerNotificationcenterItem.timeSeconds = _timerNotificationcenterItem.totalTime - (_timerNotificationcenterItem.timeMinutes * 60);
+    [_shareUserDefaults setInteger:_timerNotificationcenterItem.totalTime forKey:@"key_total_time"];
     
-    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"keytimeminutes"];
-    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeSeconds forKey:@"keytimeseconds"];
-    [shareUserDefaults synchronize];
         if (_timerNotificationcenterItem.totalTime == 0) {
             if (_timerNotificationcenterItem.isWorking) {
                 
@@ -133,19 +129,24 @@
 
 }
 
-
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo {
+    
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    
+    [_shareUserDefaults setObject:@"appisrunningbackground" forKey:@"keycheckappisrunning"];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [_shareUserDefaults setObject:@"appisrunningforeground" forKey:@"keycheckappisrunning"];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -155,7 +156,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [_shareUserDefaults setObject:@"appisstop" forKey:@"keycheckappisrunning"];
-    DebugLog(@"App is running");
 }
 
 @end

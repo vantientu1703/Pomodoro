@@ -32,21 +32,21 @@
 #import "GetTodoItemsFollowPriorityToDatabaseTask.h"
 #import "PriorityView.h"
 
+#define CELL_HEIGHT 50
 
 static NSString *cellIdentifer = @"cellIdentifer";
 @interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate, EditableTableControllerDelegate, MenuAnimationDelegate,PriorityViewDelegate>
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
 @property (nonatomic, strong) TodoItem *todoItem;
-@property (nonatomic, assign) BOOL status;
-@property (nonatomic, assign) NSInteger indexPathRow;
-@property (nonatomic, assign) CGFloat heightKeyboard;
 @property (nonatomic, strong) UndoView *undoView;
 @property (nonatomic, strong) EditableTableController *editableTableController;
 @property (nonatomic, strong) TodoItem *todoItemBeingMove;
 @property (nonatomic, strong) TodoItem *todoItemReplaceholder;
 @property (nonatomic, strong) MenuProjectManageTableViewController *menuProjectManageTableViewController;
 @property (nonatomic, strong) MenuAnimation *menuAnimation;
+@property (nonatomic, strong) PriorityView *priorityView;
+
 @property (nonatomic, strong) NSMutableArray *arrProjectManageItems;
 @property (nonatomic, strong) NSMutableArray *arrTitleSections;
 @property (nonatomic, strong) NSMutableArray *arrTodosRe_Oder;
@@ -55,78 +55,119 @@ static NSString *cellIdentifer = @"cellIdentifer";
 @property (nonatomic, strong) NSMutableArray *arrTodoItemWasDone;
 @property (nonatomic, strong) NSMutableArray *arrAllTodoItems;
 @property (nonatomic, strong) NSMutableArray *arrTodoItemsFollowPriorityAllSection;
-@property (nonatomic, strong) PriorityView *priorityView;
 @property (nonatomic, strong) NSUserDefaults *shareUserDefaults;
 
+@property (nonatomic, assign) BOOL status;
+@property (nonatomic, assign) NSInteger indexPathRow;
+@property (nonatomic, assign) CGFloat heightKeyboard;
 @end
 
 @implementation ViewController
 {
-    int heightTableview, widthTableview;
-    
-    NSInteger _sourceIndexOfRow, _destinationIndexPathOfRow;
     
     TodoItem *_todoItemUndo;
-    BOOL _isUndo;
-    int _indexIsEditing;
-    NSIndexPath *_indexPath;
-    NSString *_contentTextTask;
-    NSMutableDictionary *_todoItemDictionarys;
-    UIBarButtonItem *_showEditBtn;
-    CGSize size;
-    NSInteger totalTodos;
     AppDelegate *appDelegate;
-    BOOL isStartting;
     TimerNotificationcenterItem *timerNotificationCenterItem;
     SettingItem *_settingItem;
-    AVAudioPlayer *audioPlayer;
-    UIView *viewGrayBackground;
+    
+    int heightTableview, widthTableview;
+    int priority;
+    int _indexIsEditing;
+    
+    BOOL _isUndo;
+    BOOL isStartting;
     BOOL isShowMenu;
-    NSString *_projectName;
-    UIButton *doneOrCancelBtn;
     BOOL isFiltered;
+    BOOL isSearching;
+    BOOL isSelectSegmentControl;
+    BOOL isPriority;
+    
+    NSInteger totalTodos;
+    NSInteger _sourceIndexOfRow, _destinationIndexPathOfRow;
+    NSIndexPath *_indexPath;
+    
+    NSString *_projectName;
     NSString *statusUseKeyboard;
     NSString *stringSearching;
+    NSString *_contentTextTask;
+    
+    NSMutableDictionary *_todoItemDictionarys;
+    NSMutableArray *_arrTodoItemsPriorityHight, *_arrTodoItemsPriorityMedium, *_arrTodoItemsPriorityLow, *_arrTodoItemsNoPriority;
+    
+    UIBarButtonItem *_showEditBtn;
+    UIButton *doneOrCancelBtn;
+    
+    CGSize size;
+    
+    AVAudioPlayer *audioPlayer;
+    
+    UIView *viewGrayBackground;
     UIView *viewHeader;
-    BOOL isSearching;
+    
     UISegmentedControl *segmentController;
-    BOOL isSelectSegmentControl;
-    //UIView *priorityView;
-    int priority;
-    BOOL isPriority;
-     NSMutableArray *_arrTodoItemsPriorityHight, *_arrTodoItemsPriorityMedium, *_arrTodoItemsPriorityLow, *_arrTodoItemsNoPriority;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     isPriority = true;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+
+    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     appDelegate = [[UIApplication sharedApplication] delegate];
     timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
     _settingItem = appDelegate.settingItem;
     [self startupApp];
     [self loadData];
     
+    if ([[_shareUserDefaults stringForKey:@"key_timer_running"] isEqualToString:@"running"]) {
+        self.tabBarController.selectedIndex = 1;
+    }
     size = [[UIScreen mainScreen] bounds].size;
-    _segmentControl.selectedSegmentIndex = 0;
+//    if (!_segmentControl.selectedSegmentIndex == 1) {
+//        
+//    }
+//    _segmentControl.selectedSegmentIndex = 0;
     
     CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
     cell.delegate = self;
     
-    if (timerNotificationCenterItem.isRunTimer) { // label cell đc cập nhật khi chuyển tab view
+    NSString *stringTimerRunning;
+    stringTimerRunning = [_shareUserDefaults stringForKey:@"key_timer_running"];
+    if ([stringTimerRunning isEqualToString:@"stop_containing_app"] || [stringTimerRunning isEqualToString:@"stop"]) {
+        timerNotificationCenterItem.isRunTimer = false;
+        [_shareUserDefaults setObject:@"" forKey:@"key_timer_running"];
+        [self.tableView reloadData];
+    } else if ([stringTimerRunning isEqualToString:@"pause"]) {
+        [_shareUserDefaults setObject:@"" forKey:@"key_timer_running"];
+        timerNotificationCenterItem.isRunTimer = false;
+        [appDelegate startStopTimer];
+    } else if ([stringTimerRunning isEqualToString:@"start"]) {
+        [_shareUserDefaults setObject:@"" forKey:@"key_timer_running"];
+        timerNotificationCenterItem.isRunTimer = true;
+        [appDelegate startStopTimer];
+    }
+    
+    if (timerNotificationCenterItem.isRunTimer) {
+        // label cell đc cập nhật khi chuyển tab view
+        isStartting = false;
         cell.rightUtilityButtons = [self rightButtonsTodoPause];
         [self updateLabelForCell];
     } else {
+        isStartting = true;
         cell.rightUtilityButtons = [self rightButtonsStatusToDo];
         [self updateLabelForCell];
     }
+    
     _settingItem.isChanged = 0;
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     [userDefaults setInteger:0 forKey:keyIsChanged];
     
     [self setupEditTableView];
     [self removeMenuAndViewGrayBackground];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
@@ -147,8 +188,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [_txtItemTodo setBackgroundColor:[UIColor whiteColor]];
     _txtItemTodo.hidden = YES;
     _txtItemTodo.delegate = self;
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
     _searchBar.delegate = self;
     
     _moneyDBController = [MoneyDBController getInstance];
@@ -158,6 +197,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     
     _showEditBtn = self.navigationItem.rightBarButtonItem;
     [self loadData];
+    [self.tableView reloadData];
     [self registerForKeyboardNotification];
     
     totalTodos = _arrTodos.count;
@@ -167,11 +207,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
                                              selector:@selector(updateLabelForCell:)
                                                  name:keyStartTimer
                                                object:nil];
-    
-    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [_shareUserDefaults setBool:true forKey:@"keyisstartting"];
-    [_shareUserDefaults synchronize];
-    isStartting = [_shareUserDefaults boolForKey:@"keyisstartting"];
     isStartting = true;
 }
 
@@ -179,7 +214,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
 
 - (void) startupApp {
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     if (!_settingItem.isStartupApp) {
         _settingItem.isStartupApp = true;
         [userDefaults setBool:true forKey:keyIsStartupApp];
@@ -239,12 +274,20 @@ static NSString *cellIdentifer = @"cellIdentifer";
 - (void) setupEditTableView {
     
     if (_segmentControl.selectedSegmentIndex == 0) {
-        self.tableView.estimatedRowHeight = 50;
+        
+        [_shareUserDefaults setInteger:4 forKey:@"key_number_sections"];
+        self.tableView.estimatedRowHeight = CELL_HEIGHT;
         [self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:cellIdentifer];
         self.editableTableController = [[EditableTableController alloc] initWithTableView:self.tableView];
         self.editableTableController.delegate = self;
+    } else if (_segmentControl.selectedSegmentIndex == 1) {
+        [_shareUserDefaults setInteger:_arrTitleSections.count forKey:@"key_number_sections"];
+        self.tableView.estimatedRowHeight = CELL_HEIGHT;
+        [self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:cellIdentifer];
+        self.editableTableController = [[EditableTableController alloc] initWithTableView:self.tableView];
+        self.editableTableController.enabled = NO;
+        self.editableTableController.delegate = nil;
     }
-    
 }
 - (void) updateTodoItemToDatabase {
     
@@ -345,7 +388,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
         _arrTodos = [GetToDoItemIsDoingToDatabase getTodoItemToDatabase:_moneyDBController where:arr];
         
         _arrTodosRe_Oder = [GetToDoItemIsDoingToDatabase getTodoItemToDatabase:_moneyDBController where:arr];
-        [self.tableView reloadData];
     } else {
         NSMutableArray *arrTodoItemDateCompleteds;
         
@@ -383,7 +425,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
                     [_arrTitleSections addObject:dateTodoItemCompare];
                 }
             }
-            
             NSMutableDictionary *todoItemDictionarys = [[NSMutableDictionary alloc] init];
             
             for (int i = 0; i < _arrTitleSections.count; i ++) {
@@ -403,14 +444,10 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 [todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
             }
             _todoItemDictionarys = todoItemDictionarys;
-            [self.tableView reloadData];
         } else {
             _arrTitleSections = [[NSMutableArray alloc] init];
-            [self.tableView reloadData];
         }
-        
     }
-    
     totalTodos = _arrTodos.count;
     
     if (totalTodos > 0) {
@@ -438,11 +475,12 @@ static NSString *cellIdentifer = @"cellIdentifer";
     
     switch (_segmentControl.selectedSegmentIndex) {
         case 0:
-            
             self.navigationItem.rightBarButtonItem = _showEditBtn;
             _status = false;
             isFiltered = NO;
+            self.editableTableController.enabled = YES;
             [self loadData];
+            [self.tableView reloadData];
             break;
             
         case 1:
@@ -452,8 +490,11 @@ static NSString *cellIdentifer = @"cellIdentifer";
             isFiltered = NO;
             _status = true;
             [_txtItemTodo resignFirstResponder];
+            
+            self.editableTableController.delegate = self;
+            self.editableTableController.enabled = NO;
             [self loadData];
-            //[self.tableView reloadData];
+            [self.tableView reloadData];
             
             break;
             
@@ -472,7 +513,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     isSearching = false;
     self.navigationItem.rightBarButtonItem = _showEditBtn;
     [self loadData];
-
+    [self.tableView reloadData];
     if (_indexIsEditing == 1) {
         
         [_txtItemTodo becomeFirstResponder];
@@ -492,7 +533,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [self removeMenuAndViewGrayBackground];
     [self loadData];
    
-    //[self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
 #pragma mark - gray background 
@@ -654,6 +695,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         _priorityView.frame = CGRectMake(0, size.height, size.width, 20);
     }  completion:^(BOOL finished) {
         [self loadData];
+        [self.tableView reloadData];
         _searchBar.frame = CGRectMake(_searchBar.frame.origin.x, _searchBar.frame.origin.y, _searchBar.frame.size.width - 70, 44);\
         [_priorityView removeFromSuperview];
     }];
@@ -712,6 +754,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     }
     isFiltered = NO;
     [self loadData];
+    [self.tableView reloadData];
     _indexIsEditing = 0;
     priority = 0;
     return YES;
@@ -791,6 +834,17 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 cell.txtTask.text = todoItem.content;
                 cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItem.pomodoros];
             }
+            
+            UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(10, CELL_HEIGHT - 1, size.width - 10, 1)];/// change size as you need.
+            separatorLineView.backgroundColor = [UIColor lightGrayColor];
+            separatorLineView.alpha = 0.7f;// you can also put image here
+            if (indexPath.section < 3) {
+                if (indexPath.row != arrTodoItems.count - 1) {
+                    [cell.contentView addSubview:separatorLineView];
+                }
+            } else {
+                [cell.contentView addSubview:separatorLineView];
+            }
         } else if (_segmentControl.selectedSegmentIndex == 1){
             
             NSString *titleSection = [_arrTitleSections objectAtIndex:indexPath.section];
@@ -803,6 +857,17 @@ static NSString *cellIdentifer = @"cellIdentifer";
             cell.labelTime.text = [dateFormatter stringFromDate:todoItemDict.dateCompleted];
             cell.txtTask.text = todoItemDict.content;
             cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItemDict.pomodoros];
+            
+            UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(10, CELL_HEIGHT - 1, size.width - 10, 1)];/// change size as you need.
+            separatorLineView.backgroundColor = [UIColor lightGrayColor];
+            separatorLineView.alpha = 0.7f;// you can also put image here
+            if (indexPath.section != _arrTitleSections.count && _arrTitleSections.count > 1) {
+                if (indexPath.row < arrTodoItem.count && arrTodoItem.count > 1) {
+                    [cell.contentView addSubview:separatorLineView];
+                }
+            } else {
+                [cell.contentView addSubview:separatorLineView];
+            }
         }
     }
     
@@ -816,7 +881,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 50;
+    
+    return CELL_HEIGHT;
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -876,7 +942,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 [doneOrCancelBtn addTarget:self action:@selector(cancelOnClicked) forControlEvents:UIControlEventTouchUpInside];
                 [viewHeader addSubview:doneOrCancelBtn];
                 
-                UIView *viewRed = [[UIView alloc] initWithFrame:CGRectMake(0, _searchBar.frame.size.height, size.width, 20)];
+                UIView *viewRed = [[UIView alloc] initWithFrame:CGRectMake(0, _searchBar.frame.size.height, size.width, 10)];
                 NSArray *arrTodoItemsPriorityHight = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:0];
                 if (arrTodoItemsPriorityHight.count > 0) {
                     viewRed.backgroundColor = [UIColor redColor];
@@ -886,23 +952,23 @@ static NSString *cellIdentifer = @"cellIdentifer";
             return viewHeader;
         }
         if (section == 1) {
-            UIView *viewBlue = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 40)];
+            UIView *viewBlue = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
             viewBlue.backgroundColor = [UIColor blueColor];
             return viewBlue;
         }
         if (section == 2) {
-            UIView *viewYellow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 40)];
+            UIView *viewYellow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
             viewYellow.backgroundColor = [UIColor yellowColor];
             return viewYellow;
         }
         if (section == 3) {
-            UIView *viewWhite = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 40)];
+            UIView *viewWhite = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
             viewWhite.backgroundColor = [UIColor lightGrayColor];
             return viewWhite;
         }
     }
     
-    return Nil;
+    return nil;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -910,7 +976,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         if (section == 0) {
             NSArray *arrTodoItems = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:0];
             if (isSearching || arrTodoItems.count > 0) {
-                return 60;
+                return 50;
             }
             return 40;
         }
@@ -919,14 +985,14 @@ static NSString *cellIdentifer = @"cellIdentifer";
             if (arrTodoItems.count == 0) {
                 return 0;
             }
-            return 20;
+            return 10;
         }
         if (section == 2) {
             NSArray *arrTodoItems = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:2];
             if (arrTodoItems.count == 0) {
                 return 0;
             }
-            return 20;
+            return 10;
         }
         if (section == 3) {
             NSArray *arrTodoItems = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:3];
@@ -935,10 +1001,10 @@ static NSString *cellIdentifer = @"cellIdentifer";
             } else if (_arrTodoItemsPriorityHight.count == 0 && _arrTodoItemsPriorityMedium.count == 0 && _arrTodoItemsPriorityLow.count == 0){
                 return 0;
             }
-            return 20;
+            return 10;
         }
     } else {
-        return 40;
+        return 30;
     }
     
     return 40;
@@ -1157,8 +1223,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 [_todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
                 
                 [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-                [self.tableView reloadData];
                 [self loadData];
+                [self.tableView reloadData];
             }
         }
     }
@@ -1170,8 +1236,21 @@ static NSString *cellIdentifer = @"cellIdentifer";
     _indexPathRow = indexPath.row;
     _indexPath = indexPath;
     if (index == 0) {
-        if (_segmentControl.selectedSegmentIndex == 0) {
+        
+        if (indexPath.section == _settingItem.indexPathSection && indexPath.row == _settingItem.indexPathRow) {
+            timerNotificationCenterItem.isRunTimer = false;
+            [timerNotificationCenterItem.timer invalidate];
+            timerNotificationCenterItem.timer = nil;
+            timerNotificationCenterItem.isWorking = true;
+            timerNotificationCenterItem.timeMinutes = _settingItem.timeWork;
+            timerNotificationCenterItem.timeSeconds = 0;
+            timerNotificationCenterItem.totalLongBreaking = 0;
+            timerNotificationCenterItem.totalWorking = 0;
+            timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
             
+            [_shareUserDefaults setObject:@"stop_containing_app" forKey:@"key_timer_running"];
+        }
+        if (_segmentControl.selectedSegmentIndex == 0) {
             totalTodos --;
             if (totalTodos > 0) {
                 [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
@@ -1185,7 +1264,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 [_undoView removeFromSuperview];
                 [self animateUndoViewDisplay];
             } else {
-                
                 [self animateUndoViewDisplay];
             }
             
@@ -1201,7 +1279,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
             
             [self performSelector:@selector(deleteRowFromTableview) withObject:self afterDelay:3];
         } else if (_segmentControl.selectedSegmentIndex == 1){
-            
             if (_undoView) {
                 
                 [self deleteTodoItemToDatabase];
@@ -1246,7 +1323,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         [self.tableView reloadData];
         _indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
         
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
         SettingItem *settingItem;;
         settingItem = appDelegate.settingItem;
         
@@ -1282,25 +1359,42 @@ static NSString *cellIdentifer = @"cellIdentifer";
             [userDefaults setInteger:0 forKey:keyIsChanged];
             settingItem.isChanged = 0;
             
+            [userDefaults setObject:@"Working" forKey:@"key_status_working"];
+            [userDefaults setInteger:timerNotificationCenterItem.totalLongBreaking forKey:@"key_total_pomodoro"];
+            [userDefaults setInteger:timerNotificationCenterItem.totalWorking forKey:@"key_total_work"];
+            [userDefaults setInteger:timerNotificationCenterItem.timeMinutes forKey:@"key_time_minutes"];
+            [userDefaults setInteger:timerNotificationCenterItem.timeSeconds forKey:@"key_time_seconds"];
+            [userDefaults setObject:@"start_containing_app" forKey:@"key_timer_running"];
+            
             isStartting = false;
             self.tabBarController.selectedIndex = 1;
             
         } else {
             
             if (!isStartting) {
-                timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = false
+                timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = false thì timer invalidate
                 [self updateLabelForCell];
                 [appDelegate startStopTimer];
                 isStartting = true;
                 
+                [userDefaults setObject:@"pause_containing_app" forKey:@"key_timer_running"];
+                [userDefaults setInteger:timerNotificationCenterItem.timeMinutes forKey:@"key_time_minutes"];
+                [userDefaults setInteger:timerNotificationCenterItem.timeSeconds forKey:@"key_time_seconds"];
+                
             } else if (isStartting){
                 
-                timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = true
+                timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = true thì timer isvalid
                 timerNotificationCenterItem.stringTaskname = todoItem.content;
                 [userDefaults setInteger:1 forKey:keyisActive];
                 settingItem.isActive = 1;
                 self.tabBarController.selectedIndex = 1;
                 isStartting = false;
+                
+                [userDefaults setInteger:timerNotificationCenterItem.totalLongBreaking forKey:@"key_total_pomodoro"];
+                [userDefaults setInteger:timerNotificationCenterItem.totalWorking forKey:@"key_total_work"];
+                [userDefaults setInteger:timerNotificationCenterItem.timeMinutes forKey:@"key_time_minutes"];
+                [userDefaults setInteger:timerNotificationCenterItem.timeSeconds forKey:@"key_time_seconds"];
+                [userDefaults setObject:@"start_containing_app" forKey:@"key_timer_running"];
             }
         }
     }
@@ -1322,7 +1416,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     
     [self.tableView beginUpdates];
     
-    //[self.tableView moveRowAtIndexPath:toIndexPath toIndexPath:fromIndexPath];
+    //[self.tableView moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
     NSMutableArray *arrTodoItemsFromIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:fromIndexPath.section];
     NSMutableArray *arrTodoItemsToIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:toIndexPath.section];
     
@@ -1365,30 +1459,55 @@ static NSString *cellIdentifer = @"cellIdentifer";
         
         UpdateToDoItemToDatabase *updateTodoItemToDatabaseTask = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemToDatabase];
         [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
+        [self.tableView reloadData];
     }
     
 }
 - (BOOL) editableTableController:(EditableTableController *)controller shouldMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath withSuperviewLocation:(CGPoint)location {
     
-    NSMutableArray *arrTodoItemsProposeIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:proposedIndexPath.section];
-    CGRect exampleRect = (CGRect){0, 0,size.width, 50};
-    
-    if (CGRectContainsPoint(exampleRect, location)) {
-        
-        [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:@[proposedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [arrTodoItemsProposeIndexPath removeObjectAtIndex:proposedIndexPath.row];
-        [self.tableView endUpdates];
-        self.todoItemBeingMove = nil;
-        return NO;
-    }
-    _sourceIndexOfRow = initialIndexPath.row;
-    _destinationIndexPathOfRow = proposedIndexPath.row;
+//    NSMutableArray *arrTodoItemsProposeIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:proposedIndexPath.section];
+//    
+//    NSMutableArray *arrTodoItemsInitialIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:initialIndexPath.section];
+//    
+//    TodoItem *todoItemInitialIndexPath = [arrTodoItemsInitialIndexPath objectAtIndex:initialIndexPath.row];
+//    
+//    CGRect exampleRect = (CGRect){0, 0,size.width, 50.0f};
+//    
+//    if (CGRectContainsPoint(exampleRect, location)) {
+//        
+//        [self.tableView beginUpdates];
+//        [self.tableView deleteRowsAtIndexPaths:@[initialIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//        [arrTodoItemsInitialIndexPath removeObjectAtIndex:initialIndexPath.row];
+//        [self.tableView insertRowsAtIndexPaths:@[proposedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//        [arrTodoItemsProposeIndexPath insertObject:todoItemInitialIndexPath atIndex:proposedIndexPath.row];
+//        
+//        [self.tableView endUpdates];
+//        self.todoItemBeingMove = nil;
+//        return NO;
+//    }
+//    _sourceIndexOfRow = initialIndexPath.row;
+//    _destinationIndexPathOfRow = proposedIndexPath.row;
     return YES;
 }
 
 - (void) editableTableController:(EditableTableController *)controller didMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+    
+    
+//    NSMutableArray *arrTodoItemsProposeIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:toIndexPath.section];
+//    NSMutableArray *arrTodoItemsInitialIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:initialIndexPath.section];
 //    
+//    TodoItem *todoItemInitialIndexPath = [arrTodoItemsInitialIndexPath objectAtIndex:initialIndexPath.row];
+//    
+//    [arrTodoItemsInitialIndexPath removeObjectAtIndex:initialIndexPath.row];
+//    [arrTodoItemsProposeIndexPath insertObject:todoItemInitialIndexPath atIndex:toIndexPath.row];
+//    
+//    [_arrTodoItemsFollowPriorityAllSection replaceObjectAtIndex:initialIndexPath.section withObject:arrTodoItemsInitialIndexPath];
+//    [_arrTodoItemsFollowPriorityAllSection replaceObjectAtIndex:toIndexPath.section withObject:arrTodoItemsProposeIndexPath];
+//    
+//    [self.tableView reloadRowsAtIndexPaths:@[initialIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//    [self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//    [self.tableView reloadData];
+//
 //    [self.arrTodos replaceObjectAtIndex:toIndexPath.row withObject:self.todoItemBeingMove];
 //    [self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 //    self.todoItemBeingMove = nil;
@@ -1407,7 +1526,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         
         CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
         cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell: timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
-        cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", timerNotificationCenterItem.pomodoros];
+        cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItem.pomodoros];
         
         if (timerNotificationCenterItem.timeMinutes == 0 && timerNotificationCenterItem.timeSeconds == 0) {
             DebugLog(@"____________%@", timerNotificationCenterItem.stringStatusWorking);
@@ -1488,6 +1607,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     } else {
 
         [self loadData];
+        [self.tableView reloadData];
         [self animateUndoViewWillBeHidden];
     }
     

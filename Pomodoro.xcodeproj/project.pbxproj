@@ -575,9 +575,9 @@
 		EFAC3D621BE4D3DA00435BCC /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				EF1DA52E1C15C6FD00D6229F /* MainScreen */,
 				EF1DA5331C161D4E00D6229F /* PriorityView */,
 				EF02CDBF1C05B36600EEE780 /* AGPushNoteView */,
-				EF1DA52E1C15C6FD00D6229F /* MainScreen */,
 				EFDAE39C1C0B845B0078BCC0 /* MenuProjectManageViewController */,
 				EFD681D81BE524DD0087083B /* MenuViewController */,
 				EF841FEE1BFF2EB000D7CFC0 /* ProjectManageViewController */,

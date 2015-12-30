@@ -75,7 +75,10 @@
             
         case 1:
         {
-            SettingTimerViewController *settingTimerViewController = [[SettingTimerViewController alloc] init];
+            SettingTimerViewController *settingTimerViewController;
+            if (!settingTimerViewController) {
+                settingTimerViewController = [[SettingTimerViewController alloc] init];
+            }
             settingTimerViewController.title = @"Options Timer";
             [self.navigationController pushViewController:settingTimerViewController animated:YES];
         }

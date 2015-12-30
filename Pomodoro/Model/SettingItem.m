@@ -40,7 +40,7 @@
 
 - (void) loadSetting {
     
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefault = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
 //    [userDefault setInteger:25 forKey:keyTimeWork];
 //    [userDefault setInteger:5 forKey:keyTimeBreak];
 //    [userDefault setInteger:15 forKey:keyTimeLongBreak];
@@ -101,9 +101,10 @@
     }
     
     [self setIsStartupApp:(BOOL)[userDefault boolForKey:keyIsStartupApp]];
+    
     [self setIndexPriority:(int)[userDefault integerForKey:keyIndexPriority]];
     if (self.indexPriority == 0) {
-        [userDefault setInteger:1 forKey:keyFrequency];
+        [userDefault setInteger:1 forKey:keyIndexPriority];
         [self setIndexPriority:1];
     }
 }
