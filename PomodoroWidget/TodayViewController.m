@@ -123,7 +123,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    self.preferredContentSize = CGSizeMake(screenSize.width, 100);
+    self.preferredContentSize = CGSizeMake(screenSize.width, 120);
 //    isRunning = (BOOL)[_shareUserDefaults boolForKey:@"key_check_timer_started"];
 //    if (isRunning == false) {
         _pauseBtn.hidden = YES;
@@ -335,9 +335,9 @@
     _labelMinutes.text = stringMinutes;
     _labelSeconds.text = stringSeconds;
 }
-//- (UIEdgeInsets) widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets {
-//    defaultMarginInsets.bottom = 20.0;
-//    return defaultMarginInsets;
-//}
+- (UIEdgeInsets) widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets {
+    defaultMarginInsets.bottom = 10.0f;
+    return defaultMarginInsets;
+}
 
 @end

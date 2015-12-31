@@ -1238,19 +1238,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
     _indexPath = indexPath;
     if (index == 0) {
         
-        if (indexPath.section == _settingItem.indexPathSection && indexPath.row == _settingItem.indexPathRow) {
-            timerNotificationCenterItem.isRunTimer = false;
-            [timerNotificationCenterItem.timer invalidate];
-            timerNotificationCenterItem.timer = nil;
-            timerNotificationCenterItem.isWorking = true;
-            timerNotificationCenterItem.timeMinutes = _settingItem.timeWork;
-            timerNotificationCenterItem.timeSeconds = 0;
-            timerNotificationCenterItem.totalLongBreaking = 0;
-            timerNotificationCenterItem.totalWorking = 0;
-            timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
-            
-            [_shareUserDefaults setObject:@"stop_containing_app" forKey:@"key_timer_running"];
-        }
         if (_segmentControl.selectedSegmentIndex == 0) {
             totalTodos --;
             if (totalTodos > 0) {
@@ -1626,6 +1613,19 @@ static NSString *cellIdentifer = @"cellIdentifer";
         [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
         
         DebugLog(@"deleted todoItem mat roi");
+        _indexPath = nil;
+            timerNotificationCenterItem.isRunTimer = false;
+            [timerNotificationCenterItem.timer invalidate];
+            timerNotificationCenterItem.timer = nil;
+            timerNotificationCenterItem.isWorking = true;
+            timerNotificationCenterItem.timeMinutes = _settingItem.timeWork;
+            timerNotificationCenterItem.timeSeconds = 0;
+            timerNotificationCenterItem.totalLongBreaking = 0;
+            timerNotificationCenterItem.totalWorking = 0;
+            timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
+            
+            [_shareUserDefaults setObject:@"stop_containing_app" forKey:@"key_timer_running"];
+        
         [self animateUndoViewWillBeHidden];
     }
 }

@@ -58,6 +58,23 @@
 		EFD4ABF31C031BAA006DF63E /* AddProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFD4ABF11C031BAA006DF63E /* AddProjectViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		EFD681DB1BE525230087083B /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD681DA1BE525230087083B /* MenuViewController.m */; settings = {ASSET_TAGS = (); }; };
 		EFD681DE1BE5295A0087083B /* GetTodoItemIsDeletedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA201C353C6E0082830D /* ColumnChartConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7C9FC1C353C6E0082830D /* ColumnChartConfig.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA211C353C6E0082830D /* DataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7C9FE1C353C6E0082830D /* DataItem.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA221C353C6E0082830D /* DrawConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA001C353C6E0082830D /* DrawConfig.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA231C353C6E0082830D /* MLAnimData.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA021C353C6E0082830D /* MLAnimData.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA241C353C6E0082830D /* MLColumnData.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA041C353C6E0082830D /* MLColumnData.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA251C353C6E0082830D /* MLLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA061C353C6E0082830D /* MLLineItem.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA261C353C6E0082830D /* MLSeriesX.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA081C353C6E0082830D /* MLSeriesX.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA271C353C6E0082830D /* MLSeriesY.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA0A1C353C6E0082830D /* MLSeriesY.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA281C353C6E0082830D /* PieChartConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA0D1C353C6E0082830D /* PieChartConfig.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA291C353C6E0082830D /* PieData.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA0F1C353C6E0082830D /* PieData.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA2A1C353C6E0082830D /* UIColor+ReadColorFromString.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA131C353C6E0082830D /* UIColor+ReadColorFromString.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA2B1C353C6E0082830D /* UIColumnBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA151C353C6E0082830D /* UIColumnBackgroundView.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA2C1C353C6E0082830D /* UIColumnChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA171C353C6E0082830D /* UIColumnChartView.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA2D1C353C6E0082830D /* UIColumnLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA191C353C6E0082830D /* UIColumnLineView.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA2E1C353C6E0082830D /* UIColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA1B1C353C6E0082830D /* UIColumnView.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA2F1C353C6E0082830D /* UIPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA1D1C353C6E0082830D /* UIPieceView.m */; settings = {ASSET_TAGS = (); }; };
+		EFD7CA301C353C6E0082830D /* UIPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7CA1F1C353C6E0082830D /* UIPieChartView.m */; settings = {ASSET_TAGS = (); }; };
 		EFDAE3A21C0B84D10078BCC0 /* MenuProjectManageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDAE3A11C0B84D10078BCC0 /* MenuProjectManageTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		EFDB82EE1C25C125004D47CC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFDB82C61C25AE40004D47CC /* NotificationCenter.framework */; settings = {ASSET_TAGS = (); }; };
 		EFDB82F21C25C125004D47CC /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDB82F11C25C125004D47CC /* TodayViewController.m */; };
@@ -214,6 +231,43 @@
 		EFD681DA1BE525230087083B /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuViewController.m; path = Screen/MenuViewController/MenuViewController.m; sourceTree = "<group>"; };
 		EFD681DC1BE5295A0087083B /* GetTodoItemIsDeletedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTodoItemIsDeletedTask.h; path = Task/GetTodoItemIsDeletedTask.h; sourceTree = "<group>"; };
 		EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemIsDeletedTask.m; path = Task/GetTodoItemIsDeletedTask.m; sourceTree = "<group>"; };
+		EFD7C9FB1C353C6E0082830D /* ColumnChartConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnChartConfig.h; sourceTree = "<group>"; };
+		EFD7C9FC1C353C6E0082830D /* ColumnChartConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnChartConfig.m; sourceTree = "<group>"; };
+		EFD7C9FD1C353C6E0082830D /* DataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataItem.h; sourceTree = "<group>"; };
+		EFD7C9FE1C353C6E0082830D /* DataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataItem.m; sourceTree = "<group>"; };
+		EFD7C9FF1C353C6E0082830D /* DrawConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawConfig.h; sourceTree = "<group>"; };
+		EFD7CA001C353C6E0082830D /* DrawConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawConfig.m; sourceTree = "<group>"; };
+		EFD7CA011C353C6E0082830D /* MLAnimData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLAnimData.h; sourceTree = "<group>"; };
+		EFD7CA021C353C6E0082830D /* MLAnimData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLAnimData.m; sourceTree = "<group>"; };
+		EFD7CA031C353C6E0082830D /* MLColumnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLColumnData.h; sourceTree = "<group>"; };
+		EFD7CA041C353C6E0082830D /* MLColumnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLColumnData.m; sourceTree = "<group>"; };
+		EFD7CA051C353C6E0082830D /* MLLineItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLLineItem.h; sourceTree = "<group>"; };
+		EFD7CA061C353C6E0082830D /* MLLineItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLLineItem.m; sourceTree = "<group>"; };
+		EFD7CA071C353C6E0082830D /* MLSeriesX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLSeriesX.h; sourceTree = "<group>"; };
+		EFD7CA081C353C6E0082830D /* MLSeriesX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSeriesX.m; sourceTree = "<group>"; };
+		EFD7CA091C353C6E0082830D /* MLSeriesY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLSeriesY.h; sourceTree = "<group>"; };
+		EFD7CA0A1C353C6E0082830D /* MLSeriesY.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSeriesY.m; sourceTree = "<group>"; };
+		EFD7CA0B1C353C6E0082830D /* PCAliasName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCAliasName.h; sourceTree = "<group>"; };
+		EFD7CA0C1C353C6E0082830D /* PieChartConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartConfig.h; sourceTree = "<group>"; };
+		EFD7CA0D1C353C6E0082830D /* PieChartConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartConfig.m; sourceTree = "<group>"; };
+		EFD7CA0E1C353C6E0082830D /* PieData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieData.h; sourceTree = "<group>"; };
+		EFD7CA0F1C353C6E0082830D /* PieData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieData.m; sourceTree = "<group>"; };
+		EFD7CA101C353C6E0082830D /* PTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTAnimation.h; sourceTree = "<group>"; };
+		EFD7CA111C353C6E0082830D /* PTLayoutChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTLayoutChange.h; sourceTree = "<group>"; };
+		EFD7CA121C353C6E0082830D /* UIColor+ReadColorFromString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ReadColorFromString.h"; sourceTree = "<group>"; };
+		EFD7CA131C353C6E0082830D /* UIColor+ReadColorFromString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ReadColorFromString.m"; sourceTree = "<group>"; };
+		EFD7CA141C353C6E0082830D /* UIColumnBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColumnBackgroundView.h; sourceTree = "<group>"; };
+		EFD7CA151C353C6E0082830D /* UIColumnBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColumnBackgroundView.m; sourceTree = "<group>"; };
+		EFD7CA161C353C6E0082830D /* UIColumnChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColumnChartView.h; sourceTree = "<group>"; };
+		EFD7CA171C353C6E0082830D /* UIColumnChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColumnChartView.m; sourceTree = "<group>"; };
+		EFD7CA181C353C6E0082830D /* UIColumnLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColumnLineView.h; sourceTree = "<group>"; };
+		EFD7CA191C353C6E0082830D /* UIColumnLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColumnLineView.m; sourceTree = "<group>"; };
+		EFD7CA1A1C353C6E0082830D /* UIColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColumnView.h; sourceTree = "<group>"; };
+		EFD7CA1B1C353C6E0082830D /* UIColumnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColumnView.m; sourceTree = "<group>"; };
+		EFD7CA1C1C353C6E0082830D /* UIPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPieceView.h; sourceTree = "<group>"; };
+		EFD7CA1D1C353C6E0082830D /* UIPieceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPieceView.m; sourceTree = "<group>"; };
+		EFD7CA1E1C353C6E0082830D /* UIPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPieChartView.h; sourceTree = "<group>"; };
+		EFD7CA1F1C353C6E0082830D /* UIPieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPieChartView.m; sourceTree = "<group>"; };
 		EFDAE3A01C0B84D10078BCC0 /* MenuProjectManageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuProjectManageTableViewController.h; path = Screen/MenuProjectManageViewController/MenuProjectManageTableViewController.h; sourceTree = "<group>"; };
 		EFDAE3A11C0B84D10078BCC0 /* MenuProjectManageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuProjectManageTableViewController.m; path = Screen/MenuProjectManageViewController/MenuProjectManageTableViewController.m; sourceTree = "<group>"; };
 		EFDB82C61C25AE40004D47CC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -507,6 +561,7 @@
 		EF3F0EF91BDA291F00AB0DC3 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				EFD7C9FA1C353C6E0082830D /* MoneyChart */,
 				EFE421291C085CE4008DB4E7 /* EditTableView */,
 				EF1DA52F1C15D71400D6229F /* SwipeTableCell */,
 			);
@@ -618,6 +673,51 @@
 				EFD681DA1BE525230087083B /* MenuViewController.m */,
 			);
 			name = MenuViewController;
+			sourceTree = "<group>";
+		};
+		EFD7C9FA1C353C6E0082830D /* MoneyChart */ = {
+			isa = PBXGroup;
+			children = (
+				EFD7C9FB1C353C6E0082830D /* ColumnChartConfig.h */,
+				EFD7C9FC1C353C6E0082830D /* ColumnChartConfig.m */,
+				EFD7C9FD1C353C6E0082830D /* DataItem.h */,
+				EFD7C9FE1C353C6E0082830D /* DataItem.m */,
+				EFD7C9FF1C353C6E0082830D /* DrawConfig.h */,
+				EFD7CA001C353C6E0082830D /* DrawConfig.m */,
+				EFD7CA011C353C6E0082830D /* MLAnimData.h */,
+				EFD7CA021C353C6E0082830D /* MLAnimData.m */,
+				EFD7CA031C353C6E0082830D /* MLColumnData.h */,
+				EFD7CA041C353C6E0082830D /* MLColumnData.m */,
+				EFD7CA051C353C6E0082830D /* MLLineItem.h */,
+				EFD7CA061C353C6E0082830D /* MLLineItem.m */,
+				EFD7CA071C353C6E0082830D /* MLSeriesX.h */,
+				EFD7CA081C353C6E0082830D /* MLSeriesX.m */,
+				EFD7CA091C353C6E0082830D /* MLSeriesY.h */,
+				EFD7CA0A1C353C6E0082830D /* MLSeriesY.m */,
+				EFD7CA0B1C353C6E0082830D /* PCAliasName.h */,
+				EFD7CA0C1C353C6E0082830D /* PieChartConfig.h */,
+				EFD7CA0D1C353C6E0082830D /* PieChartConfig.m */,
+				EFD7CA0E1C353C6E0082830D /* PieData.h */,
+				EFD7CA0F1C353C6E0082830D /* PieData.m */,
+				EFD7CA101C353C6E0082830D /* PTAnimation.h */,
+				EFD7CA111C353C6E0082830D /* PTLayoutChange.h */,
+				EFD7CA121C353C6E0082830D /* UIColor+ReadColorFromString.h */,
+				EFD7CA131C353C6E0082830D /* UIColor+ReadColorFromString.m */,
+				EFD7CA141C353C6E0082830D /* UIColumnBackgroundView.h */,
+				EFD7CA151C353C6E0082830D /* UIColumnBackgroundView.m */,
+				EFD7CA161C353C6E0082830D /* UIColumnChartView.h */,
+				EFD7CA171C353C6E0082830D /* UIColumnChartView.m */,
+				EFD7CA181C353C6E0082830D /* UIColumnLineView.h */,
+				EFD7CA191C353C6E0082830D /* UIColumnLineView.m */,
+				EFD7CA1A1C353C6E0082830D /* UIColumnView.h */,
+				EFD7CA1B1C353C6E0082830D /* UIColumnView.m */,
+				EFD7CA1C1C353C6E0082830D /* UIPieceView.h */,
+				EFD7CA1D1C353C6E0082830D /* UIPieceView.m */,
+				EFD7CA1E1C353C6E0082830D /* UIPieChartView.h */,
+				EFD7CA1F1C353C6E0082830D /* UIPieChartView.m */,
+			);
+			name = MoneyChart;
+			path = Library/MoneyChart;
 			sourceTree = "<group>";
 		};
 		EFDAE39C1C0B845B0078BCC0 /* MenuProjectManageViewController */ = {
@@ -873,6 +973,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF0E65BD1BF59BD500610703 /* TimerViewController.m in Sources */,
+				EFD7CA281C353C6E0082830D /* PieChartConfig.m in Sources */,
+				EFD7CA2C1C353C6E0082830D /* UIColumnChartView.m in Sources */,
+				EFD7CA2F1C353C6E0082830D /* UIPieceView.m in Sources */,
 				EFE6133C1BE76BA3007B7CD2 /* GetTodoItemWasDoneOrderByDateCompletedTask.m in Sources */,
 				EF9A2D5F1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m in Sources */,
 				EFE421241C0841DB008DB4E7 /* DetailProjectManageViewController.m in Sources */,
@@ -882,6 +985,8 @@
 				EF03920E1BDE235D00C4A622 /* SWCellScrollView.m in Sources */,
 				EF0392131BDE235D00C4A622 /* UMTableViewCell.m in Sources */,
 				EF1DEBDC1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.m in Sources */,
+				EFD7CA241C353C6E0082830D /* MLColumnData.m in Sources */,
+				EFD7CA291C353C6E0082830D /* PieData.m in Sources */,
 				EF1DA5361C161D6D00D6229F /* PriorityView.m in Sources */,
 				EF0E3E0C1C0740E200D6B6A4 /* UpdateProjectManageItemToDatabaseTask.m in Sources */,
 				EFDAE3A21C0B84D10078BCC0 /* MenuProjectManageTableViewController.m in Sources */,
@@ -890,28 +995,40 @@
 				EFE4212C1C085D0E008DB4E7 /* EditableTableController.m in Sources */,
 				EFD248DE1BF9DEFD002BF6DC /* TimerNotificationcenterItem.m in Sources */,
 				EFD681DE1BE5295A0087083B /* GetTodoItemIsDeletedTask.m in Sources */,
+				EFD7CA301C353C6E0082830D /* UIPieChartView.m in Sources */,
 				EF3F0EF41BDA28B500AB0DC3 /* MoneyDBController.m in Sources */,
 				EFD4ABE31C02F90C006DF63E /* CustomTableViewCellProjectManage.m in Sources */,
+				EFD7CA211C353C6E0082830D /* DataItem.m in Sources */,
 				EF3F0F021BDA416300AB0DC3 /* TodoItem.m in Sources */,
 				EF1DA52D1C15B4DC00D6229F /* GetAllTodoItemsToDatabaseTask.m in Sources */,
 				EF3F0EF51BDA28B500AB0DC3 /* ZooDBUtil.m in Sources */,
 				EF3F0EBE1BDA22C800AB0DC3 /* ViewController.m in Sources */,
+				EFD7CA2A1C353C6E0082830D /* UIColor+ReadColorFromString.m in Sources */,
 				EF7971481BE135C2005DBA1B /* UndoView.m in Sources */,
+				EFD7CA271C353C6E0082830D /* MLSeriesY.m in Sources */,
 				EF0391FE1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m in Sources */,
 				EF02CDC31C05B36700EEE780 /* AGPushNoteView.m in Sources */,
 				EFD4ABF21C031BAA006DF63E /* AddProjectViewController.m in Sources */,
 				EF1DA5321C15EF4400D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.m in Sources */,
+				EFD7CA261C353C6E0082830D /* MLSeriesX.m in Sources */,
 				EFD30E6F1C0C422C00B41964 /* MenuAnimation.m in Sources */,
+				EFD7CA2D1C353C6E0082830D /* UIColumnLineView.m in Sources */,
+				EFD7CA231C353C6E0082830D /* MLAnimData.m in Sources */,
 				EF0392121BDE235D00C4A622 /* SWUtilityButtonView.m in Sources */,
 				EF3F0EBB1BDA22C800AB0DC3 /* AppDelegate.m in Sources */,
 				EF0392111BDE235D00C4A622 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				EF03920D1BDE235D00C4A622 /* NSMutableArray+SWUtilityButtons.m in Sources */,
+				EFD7CA2B1C353C6E0082830D /* UIColumnBackgroundView.m in Sources */,
 				EFE1426F1C0373CC0001117C /* ProjectManageViewController.m in Sources */,
+				EFD7CA2E1C353C6E0082830D /* UIColumnView.m in Sources */,
 				EF3F0EB81BDA22C800AB0DC3 /* main.m in Sources */,
 				EFE421281C084AEE008DB4E7 /* DeleteProjectManageToDatabaseTask.m in Sources */,
+				EFD7CA201C353C6E0082830D /* ColumnChartConfig.m in Sources */,
 				EFE613381BE73CD5007B7CD2 /* TodoITemDeletedListViewController.m in Sources */,
 				EF841FF41BFF366600D7CFC0 /* ProjectManageItem.m in Sources */,
 				EF3F0EFD1BDA3FE400AB0DC3 /* DBUtil.m in Sources */,
+				EFD7CA221C353C6E0082830D /* DrawConfig.m in Sources */,
+				EFD7CA251C353C6E0082830D /* MLLineItem.m in Sources */,
 				EF0391E61BDE066300C4A622 /* GetToDoItemIsDoingToDatabase.m in Sources */,
 				EF0E65C01BF5C9A800610703 /* SettingItem.m in Sources */,
 				EF03920F1BDE235D00C4A622 /* SWLongPressGestureRecognizer.m in Sources */,
