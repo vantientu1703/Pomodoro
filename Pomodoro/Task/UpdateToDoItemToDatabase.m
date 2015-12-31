@@ -33,7 +33,7 @@
     
     [arr addObject:[NSString stringWithFormat:@"%ld", _todoItem.todo_id]];
     
-    NSInteger i = [db update:todos data:[DBUtil ToDoItemToDBItem:_todoItem] whereClause:@"id = ?" whereArgs:arr];
+    NSInteger i = [db update:TODOS data:[DBUtil ToDoItemToDBItem:_todoItem] whereClause:@"id = ?" whereArgs:arr];
     
     if ((i != -1)) {
         

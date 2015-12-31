@@ -9,6 +9,8 @@
 #import "TimerViewController.h"
 #import "SettingItem.h"
 #import "AppDelegate.h"
+#import "SettingTimerViewController.h"
+
 
 @interface TimerViewController ()
 
@@ -48,11 +50,11 @@
     _timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
     
     userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [userDefaults setInteger:-1 forKey:keyIndexPathRow];
+    [userDefaults setInteger:-1 forKey:KEY_INDEXPATH_ROW];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateLabelMinutesAndSeconds:)
-                                                 name:keyStartTimer
+                                                 name:KEY_START_TIMER
                                                object:nil];
     
     isActive = _settingItem.isActive;
@@ -60,6 +62,7 @@
     if (isActive && _timerNotificationCenterItem.isRunTimer) { // nếu timer = nil thì bắt đầu chạy timer
         [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and: _timerNotificationCenterItem.timeSeconds];
         _labelTask.text = _timerNotificationCenterItem.stringTaskname;
+        _taskTextView.text = _timerNotificationCenterItem.stringTaskname;
         [appDelegate startStopTimer];
         [self updateLabelTotalWorkingAndBreaking:_timerNotificationCenterItem.totalWorking andLongBreaking:_timerNotificationCenterItem.totalLongBreaking];
         
@@ -139,21 +142,95 @@
         }
     }
     
-    [userDefaults setInteger:0 forKey:keyIsChanged];
+    [userDefaults setInteger:0 forKey:KEY_IS_CHANGED];
     _settingItem.isChanged = 0;
-    [userDefaults setInteger:0 forKey:keyisActive];
+    [userDefaults setInteger:0 forKey:KEY_IS_ACTIVE];
     _settingItem.isActive = 0;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pushTabbarViewControllerIndex2) name:@"appDidBecomeActive"
+                                               object:nil];
 }
+- (void) pushTabbarViewControllerIndex2 {
+    if (isChanged == 1) {
+        _timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
+        _timerNotificationCenterItem.timeSeconds = 0;
+        [_timerNotificationCenterItem.timer invalidate];
+        [self setTextForLabelWhenSettingWasChanged];
+    } else {
+        stringCheckTimerRunning = [userDefaults stringForKey:@"key_timer_running"];
+        totalTime = (int)[userDefaults integerForKey:@"key_total_time"];
+        if ([stringCheckTimerRunning isEqualToString:@"running"]) {
+            
+            [userDefaults setObject:@"" forKey:@"key_timer_running"];
+            [_timerNotificationCenterItem.timer invalidate];
+            _timerNotificationCenterItem.timer = nil;
+            _timerNotificationCenterItem.isRunTimer = true; // run timer
+            _timerNotificationCenterItem.isWorking = [userDefaults boolForKey:@"key_is_working"];
+            _timerNotificationCenterItem.timeMinutes = (int)[userDefaults integerForKey:@"key_time_minutes"];
+            _timerNotificationCenterItem.timeSeconds = (int)[userDefaults integerForKey:@"key_time_seconds"];
+            _timerNotificationCenterItem.totalTime = totalTime;
+            _timerNotificationCenterItem.totalWorking = (int)[userDefaults integerForKey:@"key_total_work"];
+            _timerNotificationCenterItem.totalLongBreaking = (int) [userDefaults integerForKey:@"key_total_pomodoro"];
+            _timerNotificationCenterItem.stringStatusWorking = [userDefaults stringForKey:@"key_status_working"];
+            
+            DebugLog(@"totaolWork: %d ____________", (int) [userDefaults integerForKey:@"key_total_work"]);
+            [appDelegate startStopTimer];
+            [_buttonStart setTitle:@"Pause" forState:UIControlStateNormal];
+        } else if ([stringCheckTimerRunning isEqualToString:@"pause"]) {
+            
+            [userDefaults setObject:@"" forKey:@"key_timer_running"];
+            _timerNotificationCenterItem.isRunTimer = false;
+            [appDelegate startStopTimer];
+            [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:(int)[userDefaults integerForKey:@"key_time_minutes"] and:(int)[userDefaults integerForKey:@"key_time_seconds"]];
+            _timerNotificationCenterItem.timeMinutes = (int)[userDefaults integerForKey:@"key_time_minutes"];
+            _timerNotificationCenterItem.timeSeconds = (int)[userDefaults integerForKey:@"key_time_seconds"];
+            _timerNotificationCenterItem.totalTime = _timerNotificationCenterItem.timeMinutes * 60 + _timerNotificationCenterItem.timeSeconds;
+            [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
+            [_labelStatusWorking setText:[userDefaults stringForKey:@"key_status_working"]];
+        } else if ([stringCheckTimerRunning isEqualToString:@"start"]) {
+            
+            [_timerNotificationCenterItem.timer invalidate];
+            _timerNotificationCenterItem.timer = nil;
+            _timerNotificationCenterItem.isRunTimer = true;
+            _timerNotificationCenterItem.totalTime = totalTime;
+            [appDelegate startStopTimer];
+            [_buttonStart setTitle:@"Pause" forState:UIControlStateNormal];
+        } else if ([stringCheckTimerRunning isEqualToString:@"stop"]) {
+            [userDefaults setObject:@"" forKey:@"key_timer_running"];
+            
+            _timerNotificationCenterItem.isRunTimer = false;
+            [_timerNotificationCenterItem.timer invalidate];
+            _timerNotificationCenterItem.timer = nil;
+            _timerNotificationCenterItem.isWorking = true;
+            _timerNotificationCenterItem.timeMinutes = _settingItem.timeWork;
+            _timerNotificationCenterItem.timeSeconds = 0;
+            _timerNotificationCenterItem.totalLongBreaking = 0;
+            _timerNotificationCenterItem.totalWorking = 0;
+            _timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
+            [self setTextForLabelWhenSettingWasChanged];
+        }
+    }
+    
+    [userDefaults setInteger:0 forKey:KEY_IS_CHANGED];
+    _settingItem.isChanged = 0;
 
+}
 #pragma mark setup view
 - (void) setupView {
     //_labelTotalWorking.adjustsFontSizeToFitWidth = YES;
     _labelTask.text = @"";
+    //[_labelTask setFont:[UIFont fontWithName:@"Thin" size:17]];
+    //_taskTextView.text = @"";
+    _taskTextView.editable = NO;
     _labelStatusWorking.text = @"";
+    _buttonStart.layer.cornerRadius = _buttonStart.frame.size.width / 2;
+    _buttonStart.layer.borderWidth = 2;
+    _buttonStart.layer.borderColor = [UIColor blueColor].CGColor;
 }
 
 - (void) updateLabelMinutesAndSeconds: (NSNotification *) notification { //hàm này đc chạy liên tục khi timer đang chạy để cập nhật liên tục thời gian và label work và break
@@ -194,7 +271,7 @@
 }
 - (void) setTextForLabelWhenSettingWasChanged {
     
-    int minute = _settingItem.timeWork;
+    int minute = _settingItem.timeWork;//Users/vantientu/Desktop/Pomodoro/Pomodoro/Screen/Timer/TimerViewController.m
     if (minute >= 10) {
         _labelMinute.text = [NSString stringWithFormat:@"%d",minute];
     } else {
@@ -222,6 +299,7 @@
     _timerNotificationCenterItem.totalLongBreaking = 0;
     _timerNotificationCenterItem.totalWorking = 0;
     _timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
+    _timerNotificationCenterItem.stringStatusWorking = @"Working";
     [self setTextForLabelWhenSettingWasChanged];
 
     [userDefaults setObject:@"stop_containing_app" forKey:@"key_timer_running"];
@@ -230,10 +308,11 @@
 - (IBAction)buttonStartOnClicked:(id)sender {
     if ([_timerNotificationCenterItem.timer isValid]) {
         _timerNotificationCenterItem.isRunTimer = false;
-        [self setTextForLabelWhenSettingWasChanged];
+        //[self setTextForLabelWhenSettingWasChanged];
         [appDelegate startStopTimer];
         [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and:_timerNotificationCenterItem.timeSeconds];
         _labelStatusWorking.text = _timerNotificationCenterItem.stringStatusWorking;
+        [_buttonStart setTitle:@"Start" forState:UIControlStateNormal];
         [userDefaults setObject:@"pause_containing_app" forKey:@"key_timer_running"];
         //[userDefaults setInteger:_timerNotificationCenterItem.totalTime forKey:@"key_total_time"];
         [userDefaults setInteger:_timerNotificationCenterItem.timeMinutes forKey:@"key_time_minutes"];
@@ -246,7 +325,6 @@
         [_buttonStart setTitle:@"Pause" forState:UIControlStateNormal];
         [appDelegate startStopTimer];
         [self updateLabelMinutesTextAndLabelSecondsTextWhenTimerRun:_timerNotificationCenterItem.timeMinutes and:_timerNotificationCenterItem.timeSeconds];
-        
         [userDefaults setObject:@"start_containing_app" forKey:@"key_timer_running"];
         //[userDefaults setInteger:_timerNotificationCenterItem.totalTime forKey:@"key_total_time"];
         [userDefaults setInteger:_timerNotificationCenterItem.timeMinutes forKey:@"key_time_minutes"];
@@ -260,7 +338,8 @@
         }
     }
 }
-#pragma mark - auto scroll text 
+
+#pragma mark - auto scroll text
 
 - (void) autoScrollText {
     

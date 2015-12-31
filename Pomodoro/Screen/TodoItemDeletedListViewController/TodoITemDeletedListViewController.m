@@ -137,7 +137,7 @@
     todoItem = [arrTodoItem objectAtIndex:indexPath.row];
     
     NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
-    [dateFomatter setDateFormat:@"hh:mm a"];
+    [dateFomatter setDateFormat:@"yyyy - MM - dd hh:mm a"];
     
     GetTodoItemIsDeletedInProjectToDatabaseTask *getTodoItemIsDeletedInProjectToDatabaseTask = [[GetTodoItemIsDeletedInProjectToDatabaseTask alloc] init];
     NSArray *arrProject = [getTodoItemIsDeletedInProjectToDatabaseTask getTodoItemIsDeletedInProjectToDatabase:_moneyDBController whereID:todoItem.projectID];
@@ -152,6 +152,11 @@
     cell.labelPomodoros.text = [NSString stringWithFormat:@"%@", [dateFomatter stringFromDate:todoItem.dateDeleted]];
     cell.txtTask.text = todoItem.content;
     cell.labelTime.text = [NSString stringWithFormat:@"Project : %@", projectManageItem.projectName];
+    
+    UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(10, 59, [[UIScreen mainScreen] bounds].size.width - 10, 1)];/// change size as you need.
+    separatorLineView.backgroundColor = [UIColor lightGrayColor];
+    separatorLineView.alpha = 0.7f;// you can also put image here
+    [cell.contentView addSubview:separatorLineView];
     return cell;
 }
 

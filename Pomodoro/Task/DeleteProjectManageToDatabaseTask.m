@@ -25,7 +25,7 @@
     NSMutableArray *arr = [[NSMutableArray alloc] init];
     [arr addObject:[NSString stringWithFormat:@"%ld",_projectManageItem.projectID]];
     
-    NSInteger i = [_moneyDBController delete:projectmanage conditionString:@"projectid = ?" conditionValue:arr];
+    NSInteger i = [_moneyDBController delete:PROJECTMANAGE conditionString:@"projectid = ?" conditionValue:arr];
     if (i != -1) {
         
         DebugLog(@"Delete was execute successfully");

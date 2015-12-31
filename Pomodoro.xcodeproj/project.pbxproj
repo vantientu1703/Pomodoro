@@ -445,6 +445,7 @@
 				EF8440681BDF1D9000A97CA0 /* CustomTableViewCell */,
 				EF3F0EF91BDA291F00AB0DC3 /* Library */,
 				EF3F0EF81BDA290B00AB0DC3 /* Framework */,
+				EFDDCBF61C350A8E00429134 /* Theme */,
 				EFD11C371BF63EAC00990791 /* Resource */,
 				EF3F0EB61BDA22C800AB0DC3 /* Supporting Files */,
 			);
@@ -649,6 +650,13 @@
 			);
 			path = PomodoroWidget;
 			sourceTree = SOURCE_ROOT;
+		};
+		EFDDCBF61C350A8E00429134 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Theme;
+			sourceTree = "<group>";
 		};
 		EFE421291C085CE4008DB4E7 /* EditTableView */ = {
 			isa = PBXGroup;

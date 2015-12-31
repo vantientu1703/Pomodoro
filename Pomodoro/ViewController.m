@@ -109,7 +109,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    size = [[UIScreen mainScreen] bounds].size;
     isPriority = true;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -124,11 +124,14 @@ static NSString *cellIdentifer = @"cellIdentifer";
     if ([[_shareUserDefaults stringForKey:@"key_timer_running"] isEqualToString:@"running"]) {
         self.tabBarController.selectedIndex = 1;
     }
-    size = [[UIScreen mainScreen] bounds].size;
-//    if (!_segmentControl.selectedSegmentIndex == 1) {
-//        
-//    }
-//    _segmentControl.selectedSegmentIndex = 0;
+    _settingItem.isChanged = 0;
+    
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    [userDefaults setInteger:0 forKey:KEY_IS_CHANGED];
+    
+    [self setupEditTableView];
+    [self removeMenuAndViewGrayBackground];
+    [self.tableView reloadData];
     
     CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
     cell.delegate = self;
@@ -159,17 +162,15 @@ static NSString *cellIdentifer = @"cellIdentifer";
         cell.rightUtilityButtons = [self rightButtonsStatusToDo];
         [self updateLabelForCell];
     }
-    
-    _settingItem.isChanged = 0;
-    
-    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [userDefaults setInteger:0 forKey:keyIsChanged];
-    
-    [self setupEditTableView];
-    [self removeMenuAndViewGrayBackground];
-    [self.tableView reloadData];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pushTabbarViewControllerIndex2) name:@"appDidBecomeActive"
+                                               object:nil];
 }
 
+- (void) pushTabbarViewControllerIndex2 {
+    self.tabBarController.selectedIndex = 1;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupRegisterUserNotificationSetting];
@@ -205,7 +206,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     //gọi hàm chạy bắt đầu chạy timer
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateLabelForCell:)
-                                                 name:keyStartTimer
+                                                 name:KEY_START_TIMER
                                                object:nil];
     isStartting = true;
 }
@@ -217,56 +218,56 @@ static NSString *cellIdentifer = @"cellIdentifer";
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     if (!_settingItem.isStartupApp) {
         _settingItem.isStartupApp = true;
-        [userDefaults setBool:true forKey:keyIsStartupApp];
+        [userDefaults setBool:true forKey:KEY_START_APP];
         
         _settingItem.projectName = @"Book Story";
         NSArray *arr = [[NSArray alloc] initWithObjects:@"Book Story", nil];
-        [userDefaults setObject:arr forKey:keyProjectname];
+        [userDefaults setObject:arr forKey:KEY_PROCJECT_NAME];
         
         _settingItem.projectID = 2;
-        [userDefaults setInteger:2 forKey:keyProjectID];
+        [userDefaults setInteger:2 forKey:KEY_PROJECT_ID];
         
         TodoItem *todoItem = [[TodoItem alloc] init];
         ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
         
         projectManageItem.projectName = @"New Project";
         projectManageItem.startDate = [NSDate date];
-        [_moneyDBController insert:projectmanage data:[DBUtil projectManageItemToDBItem:projectManageItem]];
+        [_moneyDBController insert:PROJECTMANAGE data:[DBUtil projectManageItemToDBItem:projectManageItem]];
         
         todoItem.content = @"What do you do ?";
         todoItem.projectID = 1;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
         todoItem.content = @"Go to school";
         todoItem.projectID = 1;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
         
         projectManageItem.projectName = @"Book Story";
         projectManageItem.startDate = [NSDate date];
-        [_moneyDBController insert:projectmanage data:[DBUtil projectManageItemToDBItem:projectManageItem]];
+        [_moneyDBController insert:PROJECTMANAGE data:[DBUtil projectManageItemToDBItem:projectManageItem]];
         
         todoItem.content = @"The Learn Startup";
         todoItem.projectID = 2;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
         todoItem.content = @"Inferno";
         todoItem.projectID = 2;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
         todoItem.content = @"Angels and Demons";
         todoItem.projectID = 2;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
         
         projectManageItem.projectName = @"Shopping";
         projectManageItem.startDate = [NSDate date];
-        [_moneyDBController insert:projectmanage data:[DBUtil projectManageItemToDBItem:projectManageItem]];
+        [_moneyDBController insert:PROJECTMANAGE data:[DBUtil projectManageItemToDBItem:projectManageItem]];
         
         todoItem.content = @"Go to AppStore";
         todoItem.projectID = 3;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
         todoItem.content = @"Be going to buy T - short";
         todoItem.projectID = 3;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
         todoItem.content = @"Store Lovely";
         todoItem.projectID = 3;
-        [_moneyDBController insert:todos data:[DBUtil ToDoItemToDBItem:todoItem]];
+        [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:todoItem]];
     }
 }
 #pragma mark set Edit tableview
@@ -1347,16 +1348,16 @@ static NSString *cellIdentifer = @"cellIdentifer";
             timerNotificationCenterItem.totalLongBreaking = 0;
             timerNotificationCenterItem.stringTaskname = todoItem.content;
             
-            [userDefaults setInteger:_indexPath.row forKey:keyIndexPathRow];
+            [userDefaults setInteger:_indexPath.row forKey:KEY_INDEXPATH_ROW];
             settingItem.indexPathRow = (int)_indexPath.row;
             
-            [userDefaults setInteger:_indexPath.section forKey:keyIndexPathSection];
+            [userDefaults setInteger:_indexPath.section forKey:KEY_INDEXPATH_SECTION];
             settingItem.indexPathSection = (int)_indexPath.section;
             
-            [userDefaults setInteger:1 forKey:keyisActive];
+            [userDefaults setInteger:1 forKey:KEY_IS_ACTIVE];
             settingItem.isActive = 1;
             
-            [userDefaults setInteger:0 forKey:keyIsChanged];
+            [userDefaults setInteger:0 forKey:KEY_IS_CHANGED];
             settingItem.isChanged = 0;
             
             [userDefaults setObject:@"Working" forKey:@"key_status_working"];
@@ -1385,7 +1386,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 
                 timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = true thì timer isvalid
                 timerNotificationCenterItem.stringTaskname = todoItem.content;
-                [userDefaults setInteger:1 forKey:keyisActive];
+                [userDefaults setInteger:1 forKey:KEY_IS_ACTIVE];
                 settingItem.isActive = 1;
                 self.tabBarController.selectedIndex = 1;
                 isStartting = false;

@@ -26,7 +26,7 @@
     NSMutableArray *arr = [[NSMutableArray alloc] init];
     [arr addObject:[NSString stringWithFormat:@"%ld", _projectManageItem.projectID]];
     
-    NSInteger i = [_moneyDBCotroller update:projectmanage data:[DBUtil projectManageItemToDBItem:_projectManageItem] whereClause:@"projectid = ?" whereArgs:arr];
+    NSInteger i = [_moneyDBCotroller update:PROJECTMANAGE data:[DBUtil projectManageItemToDBItem:_projectManageItem] whereClause:@"projectid = ?" whereArgs:arr];
     
     if ((i != -1)) {
         

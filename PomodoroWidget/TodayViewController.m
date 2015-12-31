@@ -48,9 +48,6 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    self.preferredContentSize = CGSizeMake(screenSize.width, 100);
-    
     _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     
     if ([_shareUserDefaults boolForKey:@"key_is_changed_from_containingapp"] || [[_shareUserDefaults stringForKey:@"key_timer_running"] isEqualToString:@"stop_containing_app"]) {
@@ -64,20 +61,19 @@
         frequency = (int) [_shareUserDefaults integerForKey:@"key_frequency"];
         timeMinutes = timeWork;
         timeSeconds = 0;
-        totalTime = timeWork * 60;
         
-        statusWork = @"Wokiing";
+        totalTime = timeWork * 60;
         totalWorking = 0;
+        statusWork = @"Working";
+        pomodoro = 0;
+        isWorking = true;
+
         enableLongBreak = (int)[_shareUserDefaults integerForKey:@"key_switchonoff_longbreak"];
         
         _pauseBtn.hidden = YES;
         _stopBtn.hidden = YES;
         _startBtn.hidden = NO;
         
-        totalWorking = 0;
-        statusWork = @"Working";
-        pomodoro = 0;
-        isWorking = true;
         _labelStatusWorking.text = @"";
         [self updateLabel];
     }
@@ -87,6 +83,8 @@
     
     if ([stringKeyTimerRunning isEqualToString:@"start_containing_app"]) {
         
+        [timer invalidate];
+        timer = nil;
         [_shareUserDefaults setObject:@"" forKey:@"key_timer_running"];
         timeMinutes = (int) [_shareUserDefaults integerForKey:@"key_time_minutes"];
         timeSeconds = (int) [_shareUserDefaults integerForKey:@"key_time_seconds"];
@@ -111,17 +109,21 @@
     } else if ([stringKeyTimerRunning isEqualToString:@"pause_containing_app"]) {
         
         [_shareUserDefaults setObject:@"" forKey:@"key_timer_running"];
+        [timer invalidate];
         timeMinutes = (int) [_shareUserDefaults integerForKey:@"key_time_minutes"];
         timeSeconds = (int) [_shareUserDefaults integerForKey:@"key_time_seconds"];
         [self updateLabel];
-        [timer invalidate];
-        totalTime = timeMinutes * 60 + timeSeconds;
+        totalTime = timeMinutes * 60 + timeSeconds + 1;
         [_pauseBtn setTitle:@"Start" forState:UIControlStateNormal];
+        _startBtn.hidden = YES;
+        _pauseBtn.hidden = NO;
+        _stopBtn.hidden = NO;
     }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    self.preferredContentSize = CGSizeMake(screenSize.width, 100);
 //    isRunning = (BOOL)[_shareUserDefaults boolForKey:@"key_check_timer_started"];
 //    if (isRunning == false) {
         _pauseBtn.hidden = YES;
@@ -153,7 +155,7 @@
     NSLog(@"seconds : %ld", (long)[_shareUserDefaults integerForKey:@"key_time_break"]);
     
     
-    
+    [_shareUserDefaults setInteger:totalTime - 1 forKey:@"key_total_time"];
     timer = [NSTimer scheduledTimerWithTimeInterval:1
                                              target:self
                                            selector:@selector(runningTimer)
@@ -171,13 +173,16 @@
     [_shareUserDefaults setInteger:pomodoro forKey:@"key_total_pomodoro"];
     [_shareUserDefaults setObject:@"running" forKey:@"key_timer_running"];
     [_shareUserDefaults setInteger:0 forKey:@"key_total_work"];
-    
+    [_shareUserDefaults setInteger:timeMinutes forKey:@"key_time_minutes"];
+    [_shareUserDefaults setInteger:timeSeconds forKey:@"key_time_seconds"];
     _pauseBtn.hidden = NO;
     _stopBtn.hidden = NO;
     _startBtn.hidden = YES;
     
-//    NSURL *url = [NSURL URLWithString:@"pomodoro://"];
-//    [self.extensionContext openURL:url completionHandler:nil];
+    NSURL *url = [NSURL URLWithString:@"pomodoro://"];
+    [self.extensionContext openURL:url completionHandler:^(BOOL success) {
+        
+    }];
     
 }
 
@@ -186,6 +191,8 @@
     timeMinutes = totalTime / 60;
     timeSeconds = totalTime - timeMinutes * 60;
     [_shareUserDefaults setInteger:totalTime forKey:@"key_total_time"];
+    [_shareUserDefaults setInteger:timeMinutes forKey:@"key_time_minutes"];
+    [_shareUserDefaults setInteger:timeSeconds forKey:@"key_time_seconds"];
     
     if (totalTime == 0) {
         if ([statusWork isEqual:@"Working"]) {
@@ -265,14 +272,21 @@
         [_shareUserDefaults setInteger:totalTime forKey:@"key_total_time"];
         [_shareUserDefaults setInteger:timeMinutes forKey:@"key_time_minutes"];
         [_shareUserDefaults setInteger:timeSeconds forKey:@"key_time_seconds"];
+        
+        NSURL *url = [NSURL URLWithString:@"pomodoro://"];
+        [self.extensionContext openURL:url completionHandler:^(BOOL success) {}];
+
     } else {
         [_pauseBtn setTitle:@"Pause" forState:UIControlStateNormal];
+        _pauseBtn.titleLabel.font = [UIFont fontWithName:@"CourierNewPS-BoldMT" size:18];
         timer = [NSTimer scheduledTimerWithTimeInterval:1
                                                  target:self
                                                selector:@selector(runningTimer)
                                                userInfo:nil
                                                 repeats:YES];
         [_shareUserDefaults setObject:@"start" forKey:@"key_timer_running"];
+        NSURL *url = [NSURL URLWithString:@"pomodoro://"];
+        [self.extensionContext openURL:url completionHandler:^(BOOL success) {}];
     }
 }
 - (IBAction)stopBtn:(id)sender {
@@ -299,6 +313,8 @@
     _startBtn.hidden = NO;
     
     _labelStatusWorking.text = @"";
+    NSURL *url = [NSURL URLWithString:@"pomodoro://"];
+    [self.extensionContext openURL:url completionHandler:^(BOOL success) {}];
 }
 
 - (void) updateLabel {

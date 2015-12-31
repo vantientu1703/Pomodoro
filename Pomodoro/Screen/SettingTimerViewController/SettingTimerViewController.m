@@ -35,7 +35,7 @@
     self.settingItem = appDelegate.settingItem;
     userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     
-    [userDefaults setInteger:0 forKey:keyIsChanged];
+    [userDefaults setInteger:0 forKey:KEY_IS_CHANGED];
     _settingItem.isChanged = 0;
     
     _timerWork = _settingItem.timeWork;
@@ -94,9 +94,14 @@
     }else {
         _enableSound.on = NO;
     }
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pushTabbarViewControllerIndex2) name:@"appDidBecomeActive"
+                                               object:nil];
 }
 
+- (void) pushTabbarViewControllerIndex2 {
+    self.tabBarController.selectedIndex = 1;
+}
 #pragma mark - setting timer
 
 - (IBAction)changeTimeWork:(id)sender {
@@ -223,12 +228,12 @@
 - (IBAction)switchLongBreak:(id)sender {
     
     if (_switchLongBreak.on == YES) {
-        [userDefaults setInteger:1 forKey:keySwitchOnOffLongBreak];
+        [userDefaults setInteger:1 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
         _settingItem.switchOnOffLongBreak = 1;
         _changeTimerLongBreak.enabled = YES;
         _changeFrequency.enabled = YES;
     } else {
-        [userDefaults setInteger:0 forKey:keySwitchOnOffLongBreak];
+        [userDefaults setInteger:0 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
         _settingItem.switchOnOffLongBreak = 0;
         _changeFrequency.enabled = NO;
         _changeTimerLongBreak.enabled = NO;
@@ -240,10 +245,10 @@
 - (IBAction)EnableSound:(id)sender {
     
     if (_enableSound.on == YES) {
-        [userDefaults setBool:true forKey:keyIsSound];
+        [userDefaults setBool:true forKey:KEY_IS_SOUND];
         _settingItem.isSound = true;
     } else {
-        [userDefaults setBool:false forKey:keyIsSound];
+        [userDefaults setBool:false forKey:KEY_IS_SOUND];
         _settingItem.isSound = false;
     }
 }
@@ -256,27 +261,27 @@
 }
 
 - (void) hiddenRightButtonItem {
-    [userDefaults setInteger:_timerWork forKey:keyTimeWork];
+    [userDefaults setInteger:_timerWork forKey:KEY_TIME_WORK];
     _settingItem.timeWork = _timerWork;
     
-    [userDefaults setInteger:_timeBreak forKey:keyTimeBreak];
+    [userDefaults setInteger:_timeBreak forKey:KEY_TIME_BREAK];
     _settingItem.timeBreak = _timeBreak;
     
-    [userDefaults setInteger:_timeLongBreak forKey:keyTimeLongBreak];
+    [userDefaults setInteger:_timeLongBreak forKey:KEY_TIME_LONG_BREAK];
     _settingItem.timeLongBreak = _timeLongBreak;
 
-    [userDefaults setInteger:_frequency forKey:keyFrequency];
+    [userDefaults setInteger:_frequency forKey:KEY_FREQUENCY];
     _settingItem.frequency = _frequency;
     
     if (_switchLongBreak.on == YES) {
-        [userDefaults setInteger:1 forKey:keySwitchOnOffLongBreak];
+        [userDefaults setInteger:1 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
         _settingItem.switchOnOffLongBreak = 1;
     } else {
-        [userDefaults setInteger:0 forKey:keySwitchOnOffLongBreak];
+        [userDefaults setInteger:0 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
         _settingItem.switchOnOffLongBreak = 0;
     }
     
-    [userDefaults setInteger:1 forKey:keyIsChanged];
+    [userDefaults setInteger:1 forKey:KEY_IS_CHANGED];
     _settingItem.isChanged = 1;
     
     _timerNotificationCenterItem.isRunTimer = false;

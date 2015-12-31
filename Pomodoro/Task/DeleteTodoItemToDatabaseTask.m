@@ -29,7 +29,7 @@
     
     NSArray *arr = [[NSArray alloc] initWithObjects:todoID, nil];
     
-    NSInteger i = [db delete:todos conditionString:@"id = ?" conditionValue:arr];
+    NSInteger i = [db delete:TODOS conditionString:@"id = ?" conditionValue:arr];
     
     if (i != -1) {
         

@@ -65,9 +65,9 @@
     projectManageItem = [_arrProjectManageItems objectAtIndex:indexPath.row];
     
     NSUserDefaults *userDefaukts = [NSUserDefaults standardUserDefaults];
-    [userDefaukts setInteger:projectManageItem.projectID forKey:keyProjectID];
+    [userDefaukts setInteger:projectManageItem.projectID forKey:KEY_PROJECT_ID];
     NSArray *arr = [[NSArray alloc] initWithObjects:projectManageItem.projectName, nil];
-    [userDefaukts setObject:arr forKey:keyProjectname];
+    [userDefaukts setObject:arr forKey:KEY_PROCJECT_NAME];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     SettingItem *settingItem = appDelegate.settingItem;

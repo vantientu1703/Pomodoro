@@ -170,7 +170,7 @@
             projectManageItem.startDate = [NSDate date];
             projectManageItem.endDate = [datePicker date];
             
-            [_moneyDBController insert:projectmanage data:[DBUtil projectManageItemToDBItem:projectManageItem]];
+            [_moneyDBController insert:PROJECTMANAGE data:[DBUtil projectManageItemToDBItem:projectManageItem]];
         } else if ([_stringTitle isEqualToString:@"edit"]) {
             
             _projectManageItem.projectName = _txtProjectname.text;
