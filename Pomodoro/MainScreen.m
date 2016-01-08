@@ -115,7 +115,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
     isPriority = true;
     _tableView.delegate = self;
     _tableView.dataSource = self;
-
+    
+    _moneyDBController = [MoneyDBController getInstance];
     _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     appDelegate = [[UIApplication sharedApplication] delegate];
     timerNotificationCenterItem = appDelegate.timerNotificationcenterItem;
@@ -199,7 +200,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
     widthTableview = _tableView.bounds.size.width;
     
     _showEditBtn = self.navigationItem.rightBarButtonItem;
-    [self loadData];
     [self.tableView reloadData];
     [self registerForKeyboardNotification];
     
@@ -220,6 +220,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     if (!_settingItem.isStartupApp) {
         _settingItem.isStartupApp = true;
+        
+        self.segmentControl.selectedSegmentIndex = 0;
         [userDefaults setBool:true forKey:KEY_START_APP];
         
         _settingItem.projectName = @"Book Story";
@@ -228,6 +230,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
         
         _settingItem.projectID = 2;
         [userDefaults setInteger:2 forKey:KEY_PROJECT_ID];
+        _settingItem.indexPathRowMenu = 2;
+        [userDefaults setInteger:2 forKey:KEY_INDEXPATH_ROW_MENU];
         
         TodoItem *todoItem = [[TodoItem alloc] init];
         ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
@@ -1433,22 +1437,27 @@ static NSString *cellIdentifer = @"cellIdentifer";
     }
     [self.tableView endUpdates];
     _toIndexPath = toIndexPath;
+    
+    DebugLog(@"________2 : %@ - %@", fromIndexPath, toIndexPath);
 }
 - (BOOL) editableTableController:(EditableTableController *)controller shouldMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath withSuperviewLocation:(CGPoint)location {
     
     CGRect exampleRect = (CGRect){0, 0,[[UIScreen mainScreen] bounds].size.width, CELL_HEIGHT};
     
     if (CGRectContainsPoint(exampleRect, location)) {
-        [self updateDataAfterReoder];
-        [self.tableView reloadData];
+//        [self updateDataAfterReoder];
+//        [self.tableView reloadData];
         return NO;
     }
     return YES;
+    
+    
+    DebugLog(@"___________3: %@ - %@", initialIndexPath, proposedIndexPath);
 }
 
 - (void) editableTableController:(EditableTableController *)controller didMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     
-    [self updateDataAfterReoder];
+    //[self updateDataAfterReoder];
     DebugLog(@"___________4 : %@ - %@", initialIndexPath, toIndexPath);
 }
 
@@ -1456,8 +1465,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
     //NSMutableArray *arrTodoItemInitIndexPath = _arrTodoItemsFollowPriorityAllSection[initialIndexPath.section];
     NSMutableArray *arrTodoItemToIndexPath = _arrTodoItemsFollowPriorityAllSection[_toIndexPath.section];
     
-    //DebugLog(@"%@___", arrTodoItemInitIndexPath);
-    //DebugLog(@"%@____", arrTodoItemToIndexPath);
     if (_toIndexPath.section == 3) {
         self.todoItemBeingMove.priority = 0;
         UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:self.todoItemBeingMove];

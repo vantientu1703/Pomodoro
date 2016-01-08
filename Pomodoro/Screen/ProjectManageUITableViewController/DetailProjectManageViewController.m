@@ -90,10 +90,17 @@
             [_moneyDBController insert:DATACHART data:[DBUtil dataChartToDBItem:dataChartItem]];
         }
     }
-    
+    [self setupView];
     [self loadDataMonth];
     [self loadDataChart:[NSDate date]];
     [self loadDetailDatatChart];
+}
+
+#pragma mark - setup view 
+
+- (void) setupView {
+    self.scrollView.layer.cornerRadius = 5;
+    self.detailDataChartScrollView.layer.cornerRadius = 5;
 }
 #pragma mark - loadData
 - (void) loadDataMonth {
@@ -122,7 +129,7 @@
 }
 - (void) loadDataChart: (NSDate *) date {
     
-    chartView = [[UIColumnChartView alloc]initWithFrame:CGRectMake(10, 0, 600, self.scrollView.frame.size.height)];
+    chartView = [[UIColumnChartView alloc]initWithFrame:CGRectMake(0, 0, 600, self.scrollView.frame.size.height)];
     [chartView setAliasNameDelegate:self];
     dataChart = [[NSMutableArray alloc] init];
     
@@ -203,7 +210,7 @@
     //self.detailDataChartScrollView.backgroundColor = [UIColor blueColor];
     CGSize mainScreen = [[UIScreen mainScreen] bounds].size;
     CGFloat HEIGHT_VIEWDETAIL = 40;
-    UIView *mainView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, mainScreen.width - 20, HEIGHT_VIEWDETAIL * dataChart.count)];
+    UIView *mainView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, mainScreen.width - 20, HEIGHT_VIEWDETAIL * dataChart.count)];
     [self.detailDataChartScrollView addSubview:mainView];
     
     for (int i = 0; i < dataChart.count; i ++) {
@@ -225,7 +232,7 @@
         lineView.backgroundColor = [UIColor lightGrayColor];
         [viewDetail addSubview:lineView];
     }
-    self.detailDataChartScrollView.contentSize = CGSizeMake(mainScreen.width, mainView.frame.size.height);
+    self.detailDataChartScrollView.contentSize = CGSizeMake(mainScreen.width - 20, mainView.frame.size.height);
     
 }
 - (NSString *)onAliasName:(double)value {

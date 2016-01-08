@@ -29,6 +29,7 @@
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     _moneyDBController = [MoneyDBController getInstance];
     [_moneyDBController openDB:[NSString stringWithFormat:@"Pomodoro.sqlite"]];
     
@@ -36,7 +37,7 @@
     self.timerNotificationcenterItem = [TimerNotificationcenterItem new];
     [self setupTimerNotificationCenterItem];
     
-    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    
     return YES;
 }
 - (void) setupTimerNotificationCenterItem {

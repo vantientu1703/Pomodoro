@@ -92,7 +92,7 @@
         [self setIndexPathSection:-1];
     }
     
-    [self setProjectID:(long)[userDefault integerForKey:KEY_PROJECT_ID]];
+    
     [self setIsSound:(BOOL)[userDefault integerForKey:KEY_IS_SOUND]];
     
     NSArray *arr = [userDefault objectForKey:KEY_PROCJECT_NAME];
@@ -101,7 +101,11 @@
     }
     
     [self setIsStartupApp:(BOOL)[userDefault boolForKey:KEY_START_APP]];
-    
+    if (self.isStartupApp == 0) {
+        [self setProjectID:2];
+    } else {
+        [self setProjectID:(long)[userDefault integerForKey:KEY_PROJECT_ID]];
+    }
     [self setIndexPriority:(int)[userDefault integerForKey:KEY_INDEX_PRIORITY]];
     if (self.indexPriority == 0) {
         [userDefault setInteger:1 forKey:KEY_INDEX_PRIORITY];

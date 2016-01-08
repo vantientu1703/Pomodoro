@@ -86,6 +86,7 @@
     int index = (int)[userDefaults integerForKey:KEY_INDEXPATH_ROW_MENU];
     if (index == indexPath.row) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        [cell.textLabel setTextColor:[UIColor greenColor]];
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }

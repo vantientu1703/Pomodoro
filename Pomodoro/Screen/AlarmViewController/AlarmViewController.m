@@ -3,7 +3,8 @@
 //  Pomodoro
 //
 //  Created by Văn Tiến Tú on 1/8/16.
-//  Copyright © 2016 ZooStudio. All rights reserved.
+//  Copyright © 2016 ZooStudio. All rights reserved.;
+
 //
 
 #import "AlarmViewController.h"
@@ -16,8 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = self.stringContentTask;
+    self.title = @"Alarm";
+
 }
-
-
 @end
