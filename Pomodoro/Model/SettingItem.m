@@ -107,6 +107,7 @@
         [userDefault setInteger:1 forKey:KEY_INDEX_PRIORITY];
         [self setIndexPriority:1];
     }
+    [self setIndexPathRowMenu:(int)[userDefault integerForKey:KEY_INDEXPATH_ROW_MENU]];
 }
 
 

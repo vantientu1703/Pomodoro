@@ -65,7 +65,6 @@
     [self drawShadowAngle];
     [self drawLine];
     [self drawLegendImage];
-//    [self drawLegendCirle];
     [self drawLegendTitle];
 }
 
@@ -83,17 +82,6 @@
     [[_data_item color] setStroke];
     [p setLineWidth:1];
     [p stroke];
-    
-//    CGContextSetLineWidth(context, 1.0);
-//    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-//    CGFloat components[] = {0.0, 0.0, 1.0, 1.0};
-//    CGColorRef color = CGColorCreate(colorspace, components);
-//    CGContextSetStrokeColorWithColor(context, color);
-//    CGContextMoveToPoint(context, _data_item.startLine.x   , _data_item.startLine.y);
-//    CGContextAddLineToPoint(context, _data_item.endLine.x  , _data_item.endLine.y);
-//    CGContextStrokePath(context);
-//    CGColorSpaceRelease(colorspace);
-//    CGColorRelease(color);
 }
 
 -(void) drawShadowAngle{
@@ -115,15 +103,6 @@
     
     CGRect rectImage = CGRectMake(x, y, s, s);
     [legendImage drawInRect:rectImage];
-    
-    
-//    UIBezierPath* p =
-//    [UIBezierPath bezierPathWithArcCenter:_data_item.point_legend_image radius:_data_item.diameter_legend_image/2 startAngle:0 endAngle:M_PI*2 clockwise:TRUE];
-//    
-//    UIColor* color = [_data_item color];
-//    [color setStroke];
-//    [p setLineWidth:1];
-//    [p stroke];
 }
 -(void) drawLegendCirle{
     UIBezierPath* p =
@@ -149,14 +128,7 @@
     
     NSString* legend = [NSString stringWithFormat:@"%.0f%%",_data_item.percent];
     [legend drawInRect:rect withFont:[UIFont systemFontOfSize:_draw_config.font_size_legend_title] lineBreakMode:NSLineBreakByCharWrapping alignment:NSTextAlignmentCenter];
-    
-//    UIBezierPath* rectangle = [UIBezierPath bezierPathWithRect:rect];
-//     UIColor* color = [UIColor colorWithRed:134 green:0 blue:30 alpha:0.8];
-//    [color setFill];
-//    [rectangle fill];
-
 }
-
 
 -(void)onStartAnimation{
     [self startAnimChart];

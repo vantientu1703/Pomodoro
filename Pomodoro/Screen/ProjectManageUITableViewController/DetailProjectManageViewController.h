@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailProjectManageViewController : UIViewController
+#import "PCAliasName.h"
+
+@interface DetailProjectManageViewController : UIViewController <PCAliasName>
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segumnentedControl;
 

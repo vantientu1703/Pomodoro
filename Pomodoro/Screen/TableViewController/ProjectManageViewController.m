@@ -138,11 +138,6 @@
     ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
     projectManageItem = [_arrProjectManageItem objectAtIndex:indexPath.row];
     
-    
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    [userDefaults setInteger:projectManageItem.projectID forKey:keyIndexRowProjectManage];
-//    _settingItem.projectID = projectManageItem.projectID;
-    
     DetailProjectManageViewController *detailProjectManageViewController = [[DetailProjectManageViewController alloc] init];
     detailProjectManageViewController.projectManageItem = projectManageItem;
     [self.navigationController pushViewController:detailProjectManageViewController animated:YES];

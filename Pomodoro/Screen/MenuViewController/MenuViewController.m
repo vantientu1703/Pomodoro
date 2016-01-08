@@ -14,6 +14,7 @@
 #import "TodoITemDeletedListViewController.h"
 #import "SettingTimerViewController.h"
 
+#define CELL_HEIGHT 40
 @interface MenuViewController () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
@@ -58,7 +59,7 @@
     cell.accessoryType = UITableViewCellSeparatorStyleSingleLine;
     cell.textLabel.text  = [_arrListTitle objectAtIndex:indexPath.row];
     
-    UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(10, 50 - 1, [[UIScreen mainScreen] bounds].size.width - 10, 1)];/// change size as you need.
+    UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(10,40 - 1, [[UIScreen mainScreen] bounds].size.width - 10, 1)];/// change size as you need.
     separatorLineView.backgroundColor = [UIColor lightGrayColor];
     separatorLineView.alpha = 0.7f;// you can also put image here
     [cell.contentView addSubview:separatorLineView];
@@ -92,11 +93,10 @@
     }
 }
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
     return 0;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 40;
+    return CELL_HEIGHT;
 }
 @end

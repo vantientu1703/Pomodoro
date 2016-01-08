@@ -35,6 +35,10 @@ static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"pro
                                                  startdate DATETIME, \
                                                  enddate DATETIME, \
                                                  description text)";
+
+static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachart\" \
+                                            (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \
+                                             monthyear DATETIME)";
 @implementation MoneyDBController
 @synthesize sqlite,onCompletion,onFailure;
 
@@ -127,8 +131,13 @@ static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"pro
         [self executeQuery:@"ALTER TABLE todos \
                              ADD priority INTEGER DEFAULT 0"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 11] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 12) {
+        [self executeQuery:TABLE_CREAT_DATACHART];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 12] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 13) {
+        [self executeQuery:TABLE_CREAT_DATACHART];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 13] UTF8String], nil, nil, nil);
     }
-    
 }
 - (int) currentVersion {
     
@@ -156,10 +165,9 @@ static NSString *TABLE_CREATE_PROJECTMANAGE = @"CREATE TABLE IF NOT EXISTS \"pro
 
     [self executeQuery:TABLE_CREATE_TASKS];
     [self executeQuery:TABLE_CREATE_PROJECTMANAGE];
+    [self executeQuery:TABLE_CREAT_DATACHART];
     
-    //ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
-    
-    //sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 7] UTF8String], nil, nil, nil);
+    //sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 0] UTF8String], nil, nil, nil);
 }
 
 

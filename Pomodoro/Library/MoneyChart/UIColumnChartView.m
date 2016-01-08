@@ -49,6 +49,17 @@ const int MAX_LINE = 12;
     return self;
 }
 
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        _is_first_time_draw_chart = TRUE;
+        [self setBackgroundColor:[UIColor clearColor]];
+        _paddingRightSeriesY = 5;
+        [self initStep];
+    }
+    return self;
+}
+
 -(void)initStep{
     int i=0;
     double value1 = 1;

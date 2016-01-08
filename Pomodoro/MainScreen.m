@@ -6,7 +6,7 @@
 //  Copyright © 2015 ZooStudio. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MainScreen.h"
 #import "MoneyDBController.h"
 #import "TodoItem.h"
 #import "DBUtil.h"
@@ -31,11 +31,12 @@
 #import "GetAllTodoItemsToDatabaseTask.h"
 #import "GetTodoItemsFollowPriorityToDatabaseTask.h"
 #import "PriorityView.h"
+#import "AlarmViewController.h"
 
 #define CELL_HEIGHT 50
 
 static NSString *cellIdentifer = @"cellIdentifer";
-@interface ViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate, EditableTableControllerDelegate, MenuAnimationDelegate,PriorityViewDelegate>
+@interface MainScreen () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate, EditableTableControllerDelegate, MenuAnimationDelegate,PriorityViewDelegate>
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
 @property (nonatomic, strong) TodoItem *todoItem;
@@ -62,7 +63,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
 @property (nonatomic, assign) CGFloat heightKeyboard;
 @end
 
-@implementation ViewController
+@implementation MainScreen
 {
     
     TodoItem *_todoItemUndo;
@@ -85,6 +86,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     NSInteger totalTodos;
     NSInteger _sourceIndexOfRow, _destinationIndexPathOfRow;
     NSIndexPath *_indexPath;
+    NSIndexPath *_toIndexPath;
     
     NSString *_projectName;
     NSString *statusUseKeyboard;
@@ -733,7 +735,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
             _todoItem.projectID = _settingItem.projectID;
             _todoItem.priority = priority;
             
-            [_moneyDBController insert:@"todos" data:[DBUtil ToDoItemToDBItem:_todoItem ]];
+            [_moneyDBController insert:TODOS data:[DBUtil ToDoItemToDBItem:_todoItem ]];
             [_txtItemTodo resignFirstResponder];
             _txtItemTodo.text = @"";
         }
@@ -754,7 +756,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         [updateTodoItemDatabase doQuery:_moneyDBController];
     }
     isFiltered = NO;
-    [self loadData];
+    //[self loadTodoItemsPriority];
     [self.tableView reloadData];
     _indexIsEditing = 0;
     priority = 0;
@@ -879,6 +881,16 @@ static NSString *cellIdentifer = @"cellIdentifer";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSMutableArray *arrTodoItems = _arrTodoItemsFollowPriorityAllSection[indexPath.section];
+    TodoItem *todoItem = arrTodoItems[indexPath.row];
+    
+    if (_segmentControl.selectedSegmentIndex == 0) {
+        AlarmViewController *alarmViewController = [[AlarmViewController alloc] init];
+        alarmViewController.stringContentTask = todoItem.content;
+        
+        [self.navigationController pushViewController:alarmViewController animated:YES];
+    }
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -1395,46 +1407,78 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [self.tableView beginUpdates];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    NSMutableArray *arrTodoItemBeingMoves = _arrTodoItemsFollowPriorityAllSection[indexPath.section];
+    self.todoItemBeingMove = [arrTodoItemBeingMoves objectAtIndex:indexPath.row];
     //self.todoItemBeingMove = [_arrTodos objectAtIndex:indexPath.row];
     //[_arrTodos replaceObjectAtIndex:indexPath.row withObject:self.todoItemBeingMove];
     [self.tableView endUpdates];
+    
+    DebugLog(@"____1 : %@", indexPath);
 }
 
 - (void) editableTableController:(EditableTableController *)controller movedCellWithInitialIndexPath:(NSIndexPath *)initialIndexPath fromAboveIndexPath:(NSIndexPath *)fromIndexPath toAboveIndexPath:(NSIndexPath *)toIndexPath {
     
-    [self.tableView beginUpdates];
-    
-    //[self.tableView moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
     NSMutableArray *arrTodoItemsFromIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:fromIndexPath.section];
     NSMutableArray *arrTodoItemsToIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:toIndexPath.section];
     
-    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:fromIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    TodoItem *todoItemFromIndexPath = [[TodoItem alloc] init];
-    todoItemFromIndexPath = [arrTodoItemsFromIndexPath objectAtIndex:fromIndexPath.row];
-    
+    [self.tableView beginUpdates];
+    [self.tableView moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
     [arrTodoItemsFromIndexPath removeObjectAtIndex:fromIndexPath.row];
-    [arrTodoItemsToIndexPath insertObject:todoItemFromIndexPath atIndex:toIndexPath.row];
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
-    
-    if (toIndexPath.section == 3) {
-        todoItemFromIndexPath.priority = 0;
-        UpdateToDoItemToDatabase *updateTodoItemToDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemFromIndexPath];
-        [updateTodoItemToDatabase doQuery:_moneyDBController];
-    } else {
-        todoItemFromIndexPath.priority = (int)toIndexPath.section + 1;
-        UpdateToDoItemToDatabase *updateTodoItemToDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemFromIndexPath];
-        [updateTodoItemToDatabase doQuery:_moneyDBController];
+    if (toIndexPath != NULL) {
+        if (toIndexPath.row == arrTodoItemsToIndexPath.count) {
+            [arrTodoItemsToIndexPath addObject:self.todoItemBeingMove];
+        } else {
+            [arrTodoItemsToIndexPath insertObject:self.todoItemBeingMove atIndex:toIndexPath.row];
+        }
     }
+    [self.tableView endUpdates];
+    _toIndexPath = toIndexPath;
+}
+- (BOOL) editableTableController:(EditableTableController *)controller shouldMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath withSuperviewLocation:(CGPoint)location {
+    
+    CGRect exampleRect = (CGRect){0, 0,[[UIScreen mainScreen] bounds].size.width, CELL_HEIGHT};
+    
+    if (CGRectContainsPoint(exampleRect, location)) {
+        [self updateDataAfterReoder];
+        [self.tableView reloadData];
+        return NO;
+    }
+    return YES;
+}
+
+- (void) editableTableController:(EditableTableController *)controller didMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+    
+    [self updateDataAfterReoder];
+    DebugLog(@"___________4 : %@ - %@", initialIndexPath, toIndexPath);
+}
+
+- (void) updateDataAfterReoder {
+    //NSMutableArray *arrTodoItemInitIndexPath = _arrTodoItemsFollowPriorityAllSection[initialIndexPath.section];
+    NSMutableArray *arrTodoItemToIndexPath = _arrTodoItemsFollowPriorityAllSection[_toIndexPath.section];
+    
+    //DebugLog(@"%@___", arrTodoItemInitIndexPath);
+    //DebugLog(@"%@____", arrTodoItemToIndexPath);
+    if (_toIndexPath.section == 3) {
+        self.todoItemBeingMove.priority = 0;
+        UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:self.todoItemBeingMove];
+        [updateTodoItemDatabase doQuery:_moneyDBController];
+    } else {
+        self.todoItemBeingMove.priority = (int)_toIndexPath.row + 1;
+        UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:self.todoItemBeingMove];
+        [updateTodoItemDatabase doQuery:_moneyDBController];
+    }
+    self.todoItemBeingMove = nil;
     [self loadTodoItemsPriority];
     
-    for (int i = 0; i < [_arrTodoItemsFollowPriorityAllSection[toIndexPath.section] count]; i ++) {
+    
+    
+    for (int i = 0; i < [_arrTodoItemsFollowPriorityAllSection[_toIndexPath.section] count]; i ++) {
         
         TodoItem *todoItemToDatabase = [[TodoItem alloc] init];
         TodoItem *todoItemToReorder = [[TodoItem alloc] init];
         
-        todoItemToDatabase = _arrTodoItemsFollowPriorityAllSection[toIndexPath.section][i];
-        todoItemToReorder = arrTodoItemsToIndexPath[i];
+        todoItemToDatabase = _arrTodoItemsFollowPriorityAllSection[_toIndexPath.section][i];
+        todoItemToReorder = arrTodoItemToIndexPath[i];
         
         todoItemToDatabase.content = todoItemToReorder.content;
         todoItemToDatabase.status = todoItemToReorder.status;
@@ -1449,56 +1493,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
         [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
         [self.tableView reloadData];
     }
-    
-}
-- (BOOL) editableTableController:(EditableTableController *)controller shouldMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath withSuperviewLocation:(CGPoint)location {
-    
-//    NSMutableArray *arrTodoItemsProposeIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:proposedIndexPath.section];
-//    
-//    NSMutableArray *arrTodoItemsInitialIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:initialIndexPath.section];
-//    
-//    TodoItem *todoItemInitialIndexPath = [arrTodoItemsInitialIndexPath objectAtIndex:initialIndexPath.row];
-//    
-//    CGRect exampleRect = (CGRect){0, 0,size.width, 50.0f};
-//    
-//    if (CGRectContainsPoint(exampleRect, location)) {
-//        
-//        [self.tableView beginUpdates];
-//        [self.tableView deleteRowsAtIndexPaths:@[initialIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//        [arrTodoItemsInitialIndexPath removeObjectAtIndex:initialIndexPath.row];
-//        [self.tableView insertRowsAtIndexPaths:@[proposedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//        [arrTodoItemsProposeIndexPath insertObject:todoItemInitialIndexPath atIndex:proposedIndexPath.row];
-//        
-//        [self.tableView endUpdates];
-//        self.todoItemBeingMove = nil;
-//        return NO;
-//    }
-//    _sourceIndexOfRow = initialIndexPath.row;
-//    _destinationIndexPathOfRow = proposedIndexPath.row;
-    return YES;
-}
-
-- (void) editableTableController:(EditableTableController *)controller didMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-    
-    
-//    NSMutableArray *arrTodoItemsProposeIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:toIndexPath.section];
-//    NSMutableArray *arrTodoItemsInitialIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:initialIndexPath.section];
-//    
-//    TodoItem *todoItemInitialIndexPath = [arrTodoItemsInitialIndexPath objectAtIndex:initialIndexPath.row];
-//    
-//    [arrTodoItemsInitialIndexPath removeObjectAtIndex:initialIndexPath.row];
-//    [arrTodoItemsProposeIndexPath insertObject:todoItemInitialIndexPath atIndex:toIndexPath.row];
-//    
-//    [_arrTodoItemsFollowPriorityAllSection replaceObjectAtIndex:initialIndexPath.section withObject:arrTodoItemsInitialIndexPath];
-//    [_arrTodoItemsFollowPriorityAllSection replaceObjectAtIndex:toIndexPath.section withObject:arrTodoItemsProposeIndexPath];
-//    
-//    [self.tableView reloadRowsAtIndexPaths:@[initialIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    [self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    [self.tableView reloadData];
-//
-//    [self.arrTodos replaceObjectAtIndex:toIndexPath.row withObject:self.todoItemBeingMove];
-//    [self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    self.todoItemBeingMove = nil;
 }
 #pragma mark NSTimer
 - (void) updateLabelForCell {  // khi timer invalidate thì label cell đc cập nhật lại cho đúng với thời gian timer dừng

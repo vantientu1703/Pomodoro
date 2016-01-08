@@ -23,10 +23,10 @@
             </objects>
             <point key="canvasLocation" x="-168.5" y="-627.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Main Screen-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MainScreen" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -116,7 +116,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="217.5" y="-599.5"/>
+            <point key="canvasLocation" x="291.5" y="-636.5"/>
         </scene>
         <!--Timer-->
         <scene sceneID="YQ7-Gt-mZh">

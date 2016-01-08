@@ -64,7 +64,7 @@
     ProjectManageItem *projectManageItem = [[ProjectManageItem alloc] init];
     projectManageItem = [_arrProjectManageItems objectAtIndex:indexPath.row];
     
-    NSUserDefaults *userDefaukts = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaukts = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     [userDefaukts setInteger:projectManageItem.projectID forKey:KEY_PROJECT_ID];
     NSArray *arr = [[NSArray alloc] initWithObjects:projectManageItem.projectName, nil];
     [userDefaukts setObject:arr forKey:KEY_PROCJECT_NAME];
@@ -77,6 +77,18 @@
     [_delegate closeMenuAnimation];
     
     indexPathRowCell = indexPath.row;
+    [userDefaukts setInteger:indexPath.row forKey:KEY_INDEXPATH_ROW_MENU];
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    int index = (int)[userDefaults integerForKey:KEY_INDEXPATH_ROW_MENU];
+    if (index == indexPath.row) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 40;

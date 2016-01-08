@@ -6,6 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailProjectManageViewController">
             <connections>
+                <outlet property="detailDataChartScrollView" destination="VtC-wv-j3N" id="Vp5-1S-Les"/>
+                <outlet property="monthScrollView" destination="JgO-RC-ToK" id="Oei-Y4-dIm"/>
+                <outlet property="scrollView" destination="g6N-5s-cYa" id="cq3-Lx-o0Q"/>
                 <outlet property="segumnentedControl" destination="lsY-r8-8Tj" id="dSu-6b-RvX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -15,8 +18,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lsY-r8-8Tj">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.png" translatesAutoresizingMaskIntoConstraints="NO" id="SeF-5n-iaH">
+                    <rect key="frame" x="0.0" y="342" width="375" height="1"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="YUT-X8-Pr1"/>
+                    </constraints>
+                </imageView>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lsY-r8-8Tj">
                     <rect key="frame" x="127" y="582" width="121" height="29"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="121" id="JRl-Ra-la1"/>
+                        <constraint firstAttribute="height" constant="28" id="wEX-a6-9yW"/>
+                    </constraints>
                     <segments>
                         <segment title="" image="ic_edit.png"/>
                         <segment title="" image="ic_delete.png"/>
@@ -25,14 +38,76 @@
                         <action selector="selectSegumented:" destination="-1" eventType="valueChanged" id="fED-hh-myN"/>
                     </connections>
                 </segmentedControl>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VtC-wv-j3N" userLabel="Detail Chart Scroll View">
+                    <rect key="frame" x="0.0" y="347" width="375" height="227"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="227" id="BCi-At-4nn"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="BCi-At-4nn"/>
+                        </mask>
+                    </variation>
+                </scrollView>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JgO-RC-ToK">
+                    <rect key="frame" x="0.0" y="60" width="375" height="31"/>
+                </scrollView>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g6N-5s-cYa" userLabel="Chart Scroll View">
+                    <rect key="frame" x="0.0" y="101" width="375" height="238"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="232" id="Geh-pu-AM5"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Geh-pu-AM5"/>
+                        </mask>
+                    </variation>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="VtC-wv-j3N" firstAttribute="top" secondItem="g6N-5s-cYa" secondAttribute="bottom" constant="8" id="0hr-S2-xhz"/>
+                <constraint firstItem="VtC-wv-j3N" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="347" id="1bn-h2-FQd"/>
+                <constraint firstAttribute="trailing" secondItem="g6N-5s-cYa" secondAttribute="trailing" id="46v-XC-hrC"/>
+                <constraint firstItem="SeF-5n-iaH" firstAttribute="top" secondItem="g6N-5s-cYa" secondAttribute="bottom" constant="3" id="4q1-bJ-Gmp"/>
+                <constraint firstItem="g6N-5s-cYa" firstAttribute="top" secondItem="JgO-RC-ToK" secondAttribute="bottom" constant="10" id="AND-Nm-l53"/>
+                <constraint firstItem="VtC-wv-j3N" firstAttribute="top" secondItem="g6N-5s-cYa" secondAttribute="bottom" constant="8" id="AVw-Dk-y80"/>
+                <constraint firstAttribute="trailing" secondItem="SeF-5n-iaH" secondAttribute="trailing" id="Aiy-rU-1ib"/>
+                <constraint firstItem="SeF-5n-iaH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ajd-PF-SEh"/>
+                <constraint firstItem="g6N-5s-cYa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="61" id="DBf-CV-rKg"/>
+                <constraint firstItem="g6N-5s-cYa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JKJ-Ib-boc"/>
+                <constraint firstItem="lsY-r8-8Tj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="127" id="Nua-GU-Y7S"/>
+                <constraint firstAttribute="trailing" secondItem="lsY-r8-8Tj" secondAttribute="trailing" constant="127" id="RYp-2R-uTs"/>
+                <constraint firstAttribute="trailing" secondItem="JgO-RC-ToK" secondAttribute="trailing" id="SPs-70-MMZ"/>
+                <constraint firstItem="lsY-r8-8Tj" firstAttribute="top" secondItem="g6N-5s-cYa" secondAttribute="bottom" constant="3" id="Sa5-Pf-jMd"/>
+                <constraint firstItem="JgO-RC-ToK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="U8H-rX-d2a"/>
+                <constraint firstItem="SeF-5n-iaH" firstAttribute="top" secondItem="g6N-5s-cYa" secondAttribute="bottom" constant="3" id="YCa-VE-Pyv"/>
+                <constraint firstItem="lsY-r8-8Tj" firstAttribute="top" secondItem="VtC-wv-j3N" secondAttribute="bottom" constant="8" id="YuI-KY-Hl3"/>
+                <constraint firstItem="g6N-5s-cYa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="101" id="Zjl-f8-T4y"/>
+                <constraint firstItem="JgO-RC-ToK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="60" id="dyz-4S-G25"/>
+                <constraint firstItem="lsY-r8-8Tj" firstAttribute="top" secondItem="g6N-5s-cYa" secondAttribute="bottom" constant="3" id="jW3-7L-Lbe"/>
+                <constraint firstItem="VtC-wv-j3N" firstAttribute="top" secondItem="SeF-5n-iaH" secondAttribute="bottom" constant="4" id="qSt-xi-ywV"/>
+                <constraint firstAttribute="trailing" secondItem="VtC-wv-j3N" secondAttribute="trailing" id="tsG-sq-6ns"/>
+                <constraint firstAttribute="bottom" secondItem="lsY-r8-8Tj" secondAttribute="bottom" constant="57" id="vO8-V3-ulB"/>
+                <constraint firstItem="VtC-wv-j3N" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ysi-NX-EjA"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="341.5" y="227.5"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="DBf-CV-rKg"/>
+                    <exclude reference="YCa-VE-Pyv"/>
+                    <exclude reference="0hr-S2-xhz"/>
+                    <exclude reference="AVw-Dk-y80"/>
+                    <exclude reference="Sa5-Pf-jMd"/>
+                    <exclude reference="jW3-7L-Lbe"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="391.5" y="218.5"/>
         </view>
     </objects>
     <resources>
         <image name="ic_delete.png" width="16" height="16"/>
         <image name="ic_edit.png" width="16" height="16"/>
+        <image name="line.png" width="640" height="2"/>
     </resources>
 </document>

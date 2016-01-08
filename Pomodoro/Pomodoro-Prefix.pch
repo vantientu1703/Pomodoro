@@ -41,8 +41,10 @@
 #define KEY_PROCJECT_NAME @"key_project_name"
 #define KEY_START_APP @"key_is_startupapp"
 #define KEY_INDEX_PRIORITY @"key_indexpriority"
-#define POMODORO_SQLITE @"Pomodoro.sqlite"
+#define KEY_INDEXPATH_ROW_MENU @"key_indexpath_row_menu"
 
+#define POMODORO_SQLITE @"Pomodoro.sqlite"
+#define DATACHART @"datachart"
 
 #import "MoneyDBController.h"
 #import "TodoItem.h"

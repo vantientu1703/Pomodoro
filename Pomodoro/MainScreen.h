@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface MainScreen : UIViewController
 
 //@property (weak, nonatomic) IBOutlet UITextField *txtItemTodo;
 

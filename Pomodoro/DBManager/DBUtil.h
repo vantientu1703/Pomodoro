@@ -10,10 +10,13 @@
 #import "TodoItem.h"
 #import "MoneyDBController.h"
 #import "ProjectManageItem.h"
+#import "DataChartItem.h"
 @interface DBUtil : NSObject
 
 + (NSDictionary *) ToDoItemToDBItem: (TodoItem *) todoItem;
 + (TodoItem *) dbItemToToDoItem: (NSDictionary *) todoItem;
 + (NSDictionary *) projectManageItemToDBItem: (ProjectManageItem *) projectManage;
 + (ProjectManageItem *) dbItemToProjectManageItem: (NSDictionary *) projectManage;
++ (NSDictionary *) dataChartToDBItem: (DataChartItem *) dataChartItem;
++ (DataChartItem *) dbItemToDataChartItem: (NSDictionary *) dataChart;
 @end

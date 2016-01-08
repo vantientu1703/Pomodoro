@@ -49,7 +49,6 @@
 + (NSDictionary *) projectManageItemToDBItem:(ProjectManageItem *)projectManage {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    //[dictionary setValue:[NSString stringWithFormat:@"%ld",projectManage.projectID] forKey:@"projectid"];
     [dictionary setValue:[NSString stringWithFormat:@"%@",projectManage.projectName] forKey:@"projectname"];
     [dictionary setValue:[NSString stringWithFormat:@"%f",[projectManage.startDate timeIntervalSince1970]] forKey:@"startdate"];
     [dictionary setValue:[NSString stringWithFormat:@"%f",[projectManage.endDate timeIntervalSince1970]] forKey:@"enddate"];
@@ -70,4 +69,47 @@
     
     return projectManageItem;
 }
+
++ (NSDictionary *) dataChartToDBItem:(DataChartItem *)dataChartItem {
+    
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    
+    [dictionary setValue:[NSString stringWithFormat:@"%f",[dataChartItem.monthYear timeIntervalSince1970]] forKey:@"monthyear"];
+    
+    return dictionary;
+}
+
++ (DataChartItem *) dbItemToDataChartItem:(NSDictionary *)dataChart {
+    DataChartItem *dataChartItem = [[DataChartItem alloc] init];
+    
+    dataChartItem.dataChart_ID = [dataChart [@"id"]longLongValue];
+    dataChartItem.monthYear = [NSDate dateWithTimeIntervalSince1970:[dataChart [@"monthyear"]doubleValue]];
+    
+    return dataChartItem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @end
