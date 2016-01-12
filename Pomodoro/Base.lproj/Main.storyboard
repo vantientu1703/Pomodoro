@@ -116,7 +116,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="291.5" y="-636.5"/>
+            <point key="canvasLocation" x="229.5" y="-653.5"/>
         </scene>
         <!--Timer-->
         <scene sceneID="YQ7-Gt-mZh">
@@ -327,7 +327,7 @@
                                             <constraint firstAttribute="height" constant="30" id="D7l-Yt-bBw"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>

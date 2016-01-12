@@ -112,6 +112,7 @@
         [self setIndexPriority:1];
     }
     [self setIndexPathRowMenu:(int)[userDefault integerForKey:KEY_INDEXPATH_ROW_MENU]];
+    [self setTodoItem:(TodoItem *)[userDefault objectForKey:KEY_TODO_ITEM]];
 }
 
 

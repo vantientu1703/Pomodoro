@@ -10,6 +10,7 @@
 
 #ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 #ifdef DEBUG
 #   define DebugLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
@@ -42,9 +43,20 @@
 #define KEY_START_APP @"key_is_startupapp"
 #define KEY_INDEX_PRIORITY @"key_indexpriority"
 #define KEY_INDEXPATH_ROW_MENU @"key_indexpath_row_menu"
-
+#define KEY_TODO_ITEM @"key_todo_item"
+//#define kSemiModalDidHideNotification @"kSemiModalDidHideNotification"
 #define POMODORO_SQLITE @"Pomodoro.sqlite"
 #define DATACHART @"datachart"
+
+// color hex
+
+#define COLOR_GREEN_1 @"#00cc65"
+#define COLOR_GREEN_2 @"#00ff7f"
+#define COLOR_GREEN_3 @"#7fffbf"
+#define COLOR_GREEN_4 @"#e5fff2"
+#define COLOR_LIGHT_PINK @"#fbf1e3"
+#define COLOR_LIGHT_BLUE @"#cde8ed"
+#define COLOR_LIGHT_GRAY @"#fafcff"
 
 #import "MoneyDBController.h"
 #import "TodoItem.h"

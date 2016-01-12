@@ -13,7 +13,7 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
 
 #define kSectionIndexWidth 15
 #define kAccessoryTrailingSpace 15
-#define kLongPressMinimumDuration 0.5f
+#define kLongPressMinimumDuration 0.30f
 
 @interface SWTableViewCell () <UIScrollViewDelegate,  UIGestureRecognizerDelegate>
 
@@ -113,7 +113,7 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
                            ]];
     
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTapped:)];
-    self.tapGestureRecognizer.cancelsTouchesInView = NO;
+    self.tapGestureRecognizer.cancelsTouchesInView = YES;
     self.tapGestureRecognizer.delegate             = self;
     [self.cellScrollView addGestureRecognizer:self.tapGestureRecognizer];
 
@@ -384,11 +384,11 @@ static NSString * const kTableViewPanState = @"state";
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan && !self.isHighlighted && self.shouldHighlight)
     {
         [self setHighlighted:YES animated:NO];
-//        if (!_isEditting) {
-//            [_delegate beingMovedCellWhenLongPress];
-//            _isEditting = true;
-//        }
-        
+        if (!_isEditting) {
+            [_delegate beingMovedCellWhenLongPress];
+            _isEditting = true;
+            return;
+        }
     }
     
     else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)

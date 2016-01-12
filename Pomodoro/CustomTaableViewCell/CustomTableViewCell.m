@@ -7,7 +7,7 @@
 //
 
 #import "CustomTableViewCell.h"
-
+#import "UIColor+Extend.h"
 @implementation CustomTableViewCell 
 
 - (void)awakeFromNib {
@@ -19,6 +19,7 @@
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(beingMovedCell:)];
     [self addGestureRecognizer:longPress];
     // Configure the view for the selected state
+    self.backgroundColor = [[UIColor alloc] initWithHex:COLOR_LIGHT_PINK alpha:1.0f];
 }
 
 - (void) beingMovedCell: (UILongPressGestureRecognizer *) longPress {

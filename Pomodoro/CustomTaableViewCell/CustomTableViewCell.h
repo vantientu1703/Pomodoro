@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "SWTableViewCell.h"
-#import "EditableTableController.h"
 
 @interface CustomTableViewCell : SWTableViewCell
 

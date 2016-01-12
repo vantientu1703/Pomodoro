@@ -24,7 +24,9 @@
     [dictionary setValue:[NSString stringWithFormat:@"%ld", todoItem.projectID] forKey:@"projectid"];
     [dictionary setValue:[NSString stringWithFormat:@"%d", todoItem.pomodoros] forKey:@"pomodoros"];
     [dictionary setValue:[NSString stringWithFormat:@"%d", todoItem.priority] forKey:@"priority"];
-    //[dictionary setValue:[NSString stringWithFormat:@"%ld", todoItem.todo_id] forKey:@"id"];
+    [dictionary setValue:[NSString stringWithFormat:@"%d", todoItem.enableAlarm] forKey:@"enablealarm"];
+    [dictionary setValue:[NSString stringWithFormat:@"%f", [todoItem.timeAlarm timeIntervalSince1970]] forKey:@"timealarm"];
+    [dictionary setValue:[NSString stringWithFormat:@"%d", todoItem.jingtoneID] forKey:@"alarmid"];
     
     return dictionary;
 }
@@ -42,6 +44,9 @@
     todoItem.projectID = [todo [@"6"]longLongValue];
     todoItem.pomodoros = [todo [@"7"]intValue];
     todoItem.priority = [todo [@"8"]intValue];
+    todoItem.enableAlarm = [todo [@"9"]boolValue];
+    todoItem.timeAlarm = [NSDate dateWithTimeIntervalSince1970:[todo [@"10"]doubleValue]];
+    todoItem.jingtoneID =  [todo [@"11"]intValue];
     
     return todoItem;
 }

@@ -19,4 +19,7 @@
 @property (nonatomic, assign) long projectID;
 @property (nonatomic, assign) int pomodoros;
 @property (nonatomic, assign) int priority;
+@property (nonatomic, assign) BOOL enableAlarm;
+@property (nonatomic, strong) NSDate *timeAlarm;
+@property (nonatomic, assign) int jingtoneID;
 @end

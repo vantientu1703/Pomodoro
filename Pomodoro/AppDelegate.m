@@ -126,7 +126,6 @@
     localNotification.category = @"Email";
     
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-
 }
 
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo {

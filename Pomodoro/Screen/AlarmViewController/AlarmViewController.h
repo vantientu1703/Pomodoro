@@ -11,4 +11,5 @@
 @interface AlarmViewController : UIViewController
 
 @property (nonatomic, strong) NSString *stringContentTask;
+- (instancetype) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 @end

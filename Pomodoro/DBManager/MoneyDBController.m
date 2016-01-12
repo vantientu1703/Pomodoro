@@ -20,7 +20,10 @@ static NSString *TABLE_CREATE_TASKS = @"CREATE TABLE IF NOT EXISTS \"todos\" \
                                          date_deleted DATETIME, \
                                          projectid INTEGER, \
                                          pomodoros INTEGER DEFAULT 0, \
-                                         priority INTEGER DEFAULT 0)";
+                                         priority INTEGER DEFAULT 0, \
+                                         enablealarm BO0L DEFAULT 0, \
+                                         timealarm DATETIME, \
+                                         alarmid INTEGER DEFAULT 0)";
 
 static NSString *TABLE_CREATE_COUNT = @"CREATE TABLE IF NOT EXISTS \"counts\" \
                                 (\"id\" INTEGER PRIMARY KEY NOT NULL, \
@@ -137,6 +140,18 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     } else if (dbVersion < 13) {
         [self executeQuery:TABLE_CREAT_DATACHART];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 13] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 14) {
+        [self executeQuery:@"ALTER TABLE todos \
+                             ADD enablealarm BOOL DEFAULT 0"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 14] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 15) {
+        [self executeQuery:@"ALTER TABLE todos \
+         ADD timealarm DATETIME"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 15] UTF8String], nil, nil, nil);
+    } else if (dbVersion < 16) {
+        [self executeQuery:@"ALTER TABLE todos \
+         ADD alarmid INTEGER DEFAULT 0"];
+        sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 16] UTF8String], nil, nil, nil);
     }
 }
 - (int) currentVersion {

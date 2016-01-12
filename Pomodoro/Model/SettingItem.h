@@ -28,7 +28,6 @@
 @property (nonatomic, assign) BOOL isStartupApp;
 
 @property (nonatomic, strong) NSString *projectName;
-
-
+@property (nonatomic, strong) TodoItem *todoItem;
 
 @end

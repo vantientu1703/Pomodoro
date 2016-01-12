@@ -23,8 +23,7 @@
 #import "TimerNotificationcenterItem.h"
 #import "AGPushNoteView.h"
 #import <AVFoundation/AVFoundation.h>
-#import "EditableTableController.h"
-#import "MenuProjectManageTableViewController.h"
+//#import "MenuProjectManageTableViewController.h"
 #import "GetProjectManageItemToDatabaseTask.h"
 #import "MenuAnimation.h"
 #import "ResultsSearchTodoItemTableViewController.h"
@@ -32,19 +31,20 @@
 #import "GetTodoItemsFollowPriorityToDatabaseTask.h"
 #import "PriorityView.h"
 #import "AlarmViewController.h"
+#import "UIViewController+KNSemiModal.h"
+#import "UIColor+Extend.h"
 
 #define CELL_HEIGHT 50
 
 static NSString *cellIdentifer = @"cellIdentifer";
-@interface MainScreen () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate, EditableTableControllerDelegate, MenuAnimationDelegate,PriorityViewDelegate>
+@interface MainScreen () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SWTableViewCellDelegate,UndoViewDelegate,UIGestureRecognizerDelegate, MenuAnimationDelegate,PriorityViewDelegate>
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
 @property (nonatomic, strong) TodoItem *todoItem;
 @property (nonatomic, strong) UndoView *undoView;
-@property (nonatomic, strong) EditableTableController *editableTableController;
 @property (nonatomic, strong) TodoItem *todoItemBeingMove;
 @property (nonatomic, strong) TodoItem *todoItemReplaceholder;
-@property (nonatomic, strong) MenuProjectManageTableViewController *menuProjectManageTableViewController;
+//@property (nonatomic, strong) MenuProjectManageTableViewController *menuProjectManageTableViewController;
 @property (nonatomic, strong) MenuAnimation *menuAnimation;
 @property (nonatomic, strong) PriorityView *priorityView;
 
@@ -82,6 +82,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     BOOL isSearching;
     BOOL isSelectSegmentControl;
     BOOL isPriority;
+    BOOL isAdding;
     
     NSInteger totalTodos;
     NSInteger _sourceIndexOfRow, _destinationIndexPathOfRow;
@@ -111,11 +112,11 @@ static NSString *cellIdentifer = @"cellIdentifer";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     size = [[UIScreen mainScreen] bounds].size;
     isPriority = true;
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    
     _moneyDBController = [MoneyDBController getInstance];
     _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     appDelegate = [[UIApplication sharedApplication] delegate];
@@ -132,7 +133,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     [userDefaults setInteger:0 forKey:KEY_IS_CHANGED];
     
-    [self setupEditTableView];
     [self removeMenuAndViewGrayBackground];
     [self.tableView reloadData];
     
@@ -169,8 +169,26 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(pushTabbarViewControllerIndex2) name:@"appDidBecomeActive"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(semiModalPresented:)
+                                                 name:kSemiModalDidShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(semiModalDismissed:)
+                                                 name:kSemiModalDidHideNotification
+                                               object:nil];
+    isAdding = true;
 }
 
+- (void) semiModalDismissed : (NSNotification *) aNotification {
+    if (aNotification.object == self) {
+        DebugLog(@"dismissed view");
+    }
+}
+
+- (void) semiModalPresented: (NSNotification *) aNotification {
+    
+}
 - (void) pushTabbarViewControllerIndex2 {
     self.tabBarController.selectedIndex = 1;
 }
@@ -178,7 +196,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [super viewDidLoad];
     [self setupRegisterUserNotificationSetting];
     size = [[UIScreen mainScreen] bounds].size;
-    
+    self.tableView.backgroundColor = [[UIColor alloc] initWithHex:COLOR_LIGHT_PINK alpha:1.0f];
     isShowMenu = true;
     _status = false;
     _isUndo = false;
@@ -278,24 +296,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
 }
 #pragma mark set Edit tableview
 
-- (void) setupEditTableView {
-    
-    if (_segmentControl.selectedSegmentIndex == 0) {
-        
-        [_shareUserDefaults setInteger:4 forKey:@"key_number_sections"];
-        self.tableView.estimatedRowHeight = CELL_HEIGHT;
-        [self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:cellIdentifer];
-        self.editableTableController = [[EditableTableController alloc] initWithTableView:self.tableView];
-        self.editableTableController.delegate = self;
-    } else if (_segmentControl.selectedSegmentIndex == 1) {
-        [_shareUserDefaults setInteger:_arrTitleSections.count forKey:@"key_number_sections"];
-        self.tableView.estimatedRowHeight = CELL_HEIGHT;
-        [self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:cellIdentifer];
-        self.editableTableController = [[EditableTableController alloc] initWithTableView:self.tableView];
-        self.editableTableController.enabled = NO;
-        self.editableTableController.delegate = nil;
-    }
-}
+
 - (void) updateTodoItemToDatabase {
     
     if (_segmentControl.selectedSegmentIndex == 0) {
@@ -485,7 +486,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
             self.navigationItem.rightBarButtonItem = _showEditBtn;
             _status = false;
             isFiltered = NO;
-            self.editableTableController.enabled = YES;
             [self loadData];
             [self.tableView reloadData];
             break;
@@ -497,9 +497,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
             isFiltered = NO;
             _status = true;
             [_txtItemTodo resignFirstResponder];
-            
-            self.editableTableController.delegate = self;
-            self.editableTableController.enabled = NO;
+        
             [self loadData];
             [self.tableView reloadData];
             
@@ -512,19 +510,26 @@ static NSString *cellIdentifer = @"cellIdentifer";
 
 - (IBAction)addItem:(id)sender {
     
-    statusUseKeyboard = @"adding";
-    isFiltered = NO;
-    _indexIsEditing = 1;
-    _status = false;
-    _segmentControl.selectedSegmentIndex = 0;
-    isSearching = false;
-    self.navigationItem.rightBarButtonItem = _showEditBtn;
-    [self loadData];
-    [self.tableView reloadData];
-    if (_indexIsEditing == 1) {
-        
-        [_txtItemTodo becomeFirstResponder];
+    if (isAdding) {
+        isFiltered = NO;
+        isPriority = true;
+        _indexIsEditing = 1;
+        _status = false;
+        _segmentControl.selectedSegmentIndex = 0;
+        isSearching = false;
+        self.navigationItem.rightBarButtonItem = _showEditBtn;
+        [self loadData];
+        [self.tableView reloadData];
+        if (_indexIsEditing == 1) {
+            
+            [_txtItemTodo becomeFirstResponder];
+        }
+    } else {
+        isAdding = true;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem:)];
+        [self.tableView setEditing:NO animated:NO];
     }
+    
 }
 
 
@@ -539,8 +544,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
     
     [self removeMenuAndViewGrayBackground];
     [self loadData];
-   
     [self.tableView reloadData];
+    [_txtItemTodo resignFirstResponder];
 }
 
 #pragma mark - gray background 
@@ -635,14 +640,16 @@ static NSString *cellIdentifer = @"cellIdentifer";
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGRect keyboardFrame = [kbFrame CGRectValue];
     CGFloat height = keyboardFrame.size.height;
-
-    if (isPriority) {
-        _priorityView = [[PriorityView alloc] initWithFrame:CGRectMake(0, size.height, size.width, 20)];
-        [self.view addSubview:_priorityView];
-    }
-    _priorityView.delegate = self;
+    
+    //_priorityView.delegate = self;
     [UIView animateWithDuration:animationDuration animations:^{
             if (_indexIsEditing == 1) {
+                if (isPriority) {
+                    _priorityView = [[PriorityView alloc] initWithFrame:CGRectMake(0, size.height, size.width, 20)];
+                    [self.view addSubview:_priorityView];
+                    _priorityView.delegate = self;
+                    isPriority = false;
+                }
                 self.keyboardContraint.constant = height - 40;
                 _txtItemTodo.frame = CGRectMake(6, size.height - height - 40, keyboardFrame.size.width - 8, 40);
                 _txtItemTodo.hidden = NO;
@@ -681,7 +688,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
         } else if (_indexIsEditing == 2){
             [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_indexPath.row inSection:_indexPath.section] atScrollPosition:UITableViewScrollPositionNone animated:YES];
         }
-        isPriority = false;
     }];
 }
 
@@ -744,7 +750,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
             _txtItemTodo.text = @"";
         }
         isPriority = true;
-
     }else if(_indexIsEditing == 2){
         
         NSIndexPath *indexPathSelected = [NSIndexPath indexPathForRow:_indexPath.row inSection:_indexPath.section];
@@ -807,8 +812,10 @@ static NSString *cellIdentifer = @"cellIdentifer";
     
     CustomTableViewCell *cell = (CustomTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
    
-    NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"CustomTableViewCell" owner:self options:nil];
-    cell = [xib objectAtIndex:0];
+    if (cell == nil) {
+        NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"CustomTableViewCell" owner:self options:nil];
+        cell = [xib objectAtIndex:0];
+    }
     
     if (_status == false) {
         cell.leftUtilityButtons = [self leftButtonsStatusToDo];
@@ -886,15 +893,15 @@ static NSString *cellIdentifer = @"cellIdentifer";
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSMutableArray *arrTodoItems = _arrTodoItemsFollowPriorityAllSection[indexPath.section];
-    TodoItem *todoItem = arrTodoItems[indexPath.row];
-    
-    if (_segmentControl.selectedSegmentIndex == 0) {
-        AlarmViewController *alarmViewController = [[AlarmViewController alloc] init];
-        alarmViewController.stringContentTask = todoItem.content;
-        
-        [self.navigationController pushViewController:alarmViewController animated:YES];
-    }
+//    NSMutableArray *arrTodoItems = _arrTodoItemsFollowPriorityAllSection[indexPath.section];
+//    TodoItem *todoItem = arrTodoItems[indexPath.row];
+//    
+//    if (_segmentControl.selectedSegmentIndex == 0) {
+//        AlarmViewController *alarmViewController = [[AlarmViewController alloc] init];
+//        alarmViewController.stringContentTask = todoItem.content;
+//        
+//        [self.navigationController pushViewController:alarmViewController animated:YES];
+//    }
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -962,7 +969,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 UIView *viewRed = [[UIView alloc] initWithFrame:CGRectMake(0, _searchBar.frame.size.height, size.width, 10)];
                 NSArray *arrTodoItemsPriorityHight = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:0];
                 if (arrTodoItemsPriorityHight.count > 0) {
-                    viewRed.backgroundColor = [UIColor redColor];
+                    viewRed.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_1 alpha:1.0f];
                 }
                 [viewHeader addSubview:viewRed];
             }
@@ -970,17 +977,17 @@ static NSString *cellIdentifer = @"cellIdentifer";
         }
         if (section == 1) {
             UIView *viewBlue = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
-            viewBlue.backgroundColor = [UIColor blueColor];
+            viewBlue.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_2 alpha:1.0f];
             return viewBlue;
         }
         if (section == 2) {
             UIView *viewYellow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
-            viewYellow.backgroundColor = [UIColor yellowColor];
+            viewYellow.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_3 alpha:1.0f];
             return viewYellow;
         }
         if (section == 3) {
             UIView *viewWhite = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
-            viewWhite.backgroundColor = [UIColor lightGrayColor];
+            viewWhite.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_4 alpha:1.0f];
             return viewWhite;
         }
     }
@@ -1092,7 +1099,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [self searchTodos];
 }
 
-#pragma mark - SWTTableViewDelegate
+#pragma mark - SWTTableViewDelegate button
 
 - (NSArray *) rightButtonsTodoPause {
     NSMutableArray *rightUtilitylButtons = [[NSMutableArray alloc] init];
@@ -1131,6 +1138,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         NSMutableArray *leftUtilityButtons = [[NSMutableArray alloc] init];
         
         [leftUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:0.07f green:0.75f blue:0.16f alpha:1.0] title:@"Done"];
+    [leftUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:229/255.0f green:87/255.0f blue:16/255.0f alpha:1.0f] title:@"Alarm"];
     
     return leftUtilityButtons;
 }
@@ -1156,13 +1164,12 @@ static NSString *cellIdentifer = @"cellIdentifer";
 //}
 
 - (void) swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index {
-    
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     //int indexDone = 0;
-    
     if (index == 0) {
         //done
-            DebugLog(@"you press button done");
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        DebugLog(@"you press button done");
+        
         if (_segmentControl.selectedSegmentIndex == 0) {
             
             timerNotificationCenterItem.isRunTimer = false;
@@ -1244,6 +1251,21 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 [self.tableView reloadData];
             }
         }
+    } else if (index == 1) {
+        [self loadTodoItemsPriority];
+        [self.tableView reloadData];
+        
+        TodoItem *todoItem = [[TodoItem alloc] init];
+        todoItem = _arrTodoItemsFollowPriorityAllSection[indexPath.section][indexPath.row];
+        _settingItem.todoItem = todoItem;
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background_01.png"]];
+        AlarmViewController *alarmViewController = [[AlarmViewController alloc] initWithNibName:@"AlarmViewController" bundle:nil];
+        
+        [self presentSemiViewController:alarmViewController withOptions:@{ KNSemiModalOptionKeys.pushParentBack    : @(YES),
+                                                                           KNSemiModalOptionKeys.animationDuration : @(0.5),
+                                                                           KNSemiModalOptionKeys.shadowOpacity     : @(0.5),
+                                                                           KNSemiModalOptionKeys.backgroundView : imageView}];
+       
     }
 }
 - (void) swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
@@ -1404,103 +1426,76 @@ static NSString *cellIdentifer = @"cellIdentifer";
     }
 }
 
-#pragma mark editableTableControllerDelegate
 
-- (void) editableTableController:(EditableTableController *)controller willBeginMovingCellAtIndexPath:(NSIndexPath *)indexPath {
-    
-    [self.tableView beginUpdates];
-    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    NSMutableArray *arrTodoItemBeingMoves = _arrTodoItemsFollowPriorityAllSection[indexPath.section];
-    self.todoItemBeingMove = [arrTodoItemBeingMoves objectAtIndex:indexPath.row];
-    //self.todoItemBeingMove = [_arrTodos objectAtIndex:indexPath.row];
-    //[_arrTodos replaceObjectAtIndex:indexPath.row withObject:self.todoItemBeingMove];
-    [self.tableView endUpdates];
-    
-    DebugLog(@"____1 : %@", indexPath);
-}
+#pragma mark editableTableControllerDelegate\
 
-- (void) editableTableController:(EditableTableController *)controller movedCellWithInitialIndexPath:(NSIndexPath *)initialIndexPath fromAboveIndexPath:(NSIndexPath *)fromIndexPath toAboveIndexPath:(NSIndexPath *)toIndexPath {
-    
-    NSMutableArray *arrTodoItemsFromIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:fromIndexPath.section];
-    NSMutableArray *arrTodoItemsToIndexPath = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:toIndexPath.section];
-    
-    [self.tableView beginUpdates];
-    [self.tableView moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
-    [arrTodoItemsFromIndexPath removeObjectAtIndex:fromIndexPath.row];
-    if (toIndexPath != NULL) {
-        if (toIndexPath.row == arrTodoItemsToIndexPath.count) {
-            [arrTodoItemsToIndexPath addObject:self.todoItemBeingMove];
-        } else {
-            [arrTodoItemsToIndexPath insertObject:self.todoItemBeingMove atIndex:toIndexPath.row];
-        }
+- (void) beingMovedCellWhenLongPress {
+    if (_segmentControl.selectedSegmentIndex == 0) {
+        [self.tableView setEditing:YES animated:YES];
+        isAdding = false;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(addItem:)];
     }
-    [self.tableView endUpdates];
-    _toIndexPath = toIndexPath;
-    
-    DebugLog(@"________2 : %@ - %@", fromIndexPath, toIndexPath);
 }
-- (BOOL) editableTableController:(EditableTableController *)controller shouldMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath withSuperviewLocation:(CGPoint)location {
-    
-    CGRect exampleRect = (CGRect){0, 0,[[UIScreen mainScreen] bounds].size.width, CELL_HEIGHT};
-    
-    if (CGRectContainsPoint(exampleRect, location)) {
-//        [self updateDataAfterReoder];
-//        [self.tableView reloadData];
-        return NO;
-    }
-    return YES;
-    
-    
-    DebugLog(@"___________3: %@ - %@", initialIndexPath, proposedIndexPath);
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
 }
 
-- (void) editableTableController:(EditableTableController *)controller didMoveCellFromInitialIndexPath:(NSIndexPath *)initialIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     
-    //[self updateDataAfterReoder];
-    DebugLog(@"___________4 : %@ - %@", initialIndexPath, toIndexPath);
-}
-
-- (void) updateDataAfterReoder {
-    //NSMutableArray *arrTodoItemInitIndexPath = _arrTodoItemsFollowPriorityAllSection[initialIndexPath.section];
-    NSMutableArray *arrTodoItemToIndexPath = _arrTodoItemsFollowPriorityAllSection[_toIndexPath.section];
+    NSMutableArray *arrTodoItemSourceIndePath = _arrTodoItemsFollowPriorityAllSection[sourceIndexPath.section];
+    NSMutableArray *arrTodoItemDestinationIndexPath = _arrTodoItemsFollowPriorityAllSection[destinationIndexPath.section];
     
-    if (_toIndexPath.section == 3) {
-        self.todoItemBeingMove.priority = 0;
-        UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:self.todoItemBeingMove];
+    TodoItem *todoItem = [[TodoItem alloc] init];
+    todoItem = arrTodoItemSourceIndePath[sourceIndexPath.row];
+    
+    [arrTodoItemSourceIndePath removeObjectAtIndex:sourceIndexPath.row];
+    [arrTodoItemDestinationIndexPath insertObject:todoItem atIndex:destinationIndexPath.row];
+    
+    if (destinationIndexPath.section < 3) {
+        todoItem.priority = (int)destinationIndexPath.section + 1;
+        UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItem];
         [updateTodoItemDatabase doQuery:_moneyDBController];
     } else {
-        self.todoItemBeingMove.priority = (int)_toIndexPath.row + 1;
-        UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:self.todoItemBeingMove];
+        todoItem.priority = 0;
+        UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItem];
         [updateTodoItemDatabase doQuery:_moneyDBController];
     }
-    self.todoItemBeingMove = nil;
     [self loadTodoItemsPriority];
     
-    
-    
-    for (int i = 0; i < [_arrTodoItemsFollowPriorityAllSection[_toIndexPath.section] count]; i ++) {
+    for (int i = 0; i < arrTodoItemDestinationIndexPath.count; i ++) {
+        TodoItem *todoItemToDatabase = _arrTodoItemsFollowPriorityAllSection[destinationIndexPath.section][i];
+        TodoItem *todoItemReorder = arrTodoItemDestinationIndexPath[i];
         
-        TodoItem *todoItemToDatabase = [[TodoItem alloc] init];
-        TodoItem *todoItemToReorder = [[TodoItem alloc] init];
+        todoItemToDatabase.content = todoItemReorder.content;
+        todoItemToDatabase.status = todoItemReorder.status;
+        todoItemToDatabase.isDelete = todoItemReorder.isDelete;
+        todoItemToDatabase.dateCompleted = todoItemReorder.dateCompleted;
+        todoItemToDatabase.dateDeleted = todoItemReorder.dateDeleted;
+        todoItemToDatabase.projectID = todoItemReorder.projectID;
+        todoItemToDatabase.pomodoros = todoItemReorder.pomodoros;
+        todoItemToDatabase.priority = todoItemReorder.priority;
         
-        todoItemToDatabase = _arrTodoItemsFollowPriorityAllSection[_toIndexPath.section][i];
-        todoItemToReorder = arrTodoItemToIndexPath[i];
-        
-        todoItemToDatabase.content = todoItemToReorder.content;
-        todoItemToDatabase.status = todoItemToReorder.status;
-        todoItemToDatabase.isDelete = todoItemToReorder.isDelete;
-        todoItemToDatabase.dateCompleted = todoItemToReorder.dateCompleted;
-        todoItemToDatabase.dateDeleted = todoItemToReorder.dateDeleted;
-        todoItemToDatabase.projectID = todoItemToReorder.projectID;
-        todoItemToDatabase.pomodoros = todoItemToReorder.pomodoros;
-        todoItemToDatabase.priority = todoItemToReorder.priority;
-        
-        UpdateToDoItemToDatabase *updateTodoItemToDatabaseTask = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemToDatabase];
-        [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
-        [self.tableView reloadData];
+        UpdateToDoItemToDatabase *updateTodoItemDatabase = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItemToDatabase];
+        [updateTodoItemDatabase doQuery:_moneyDBController];
     }
+    DebugLog(@"___ 1440: %@", _arrTodoItemsFollowPriorityAllSection);
+    DebugLog(@"____ 1441: %@", arrTodoItemDestinationIndexPath);
 }
+
+//- (NSIndexPath *) tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+//    
+//    NSUInteger sectionCount = _arrTodoItemsFollowPriorityAllSection.count;
+//    if (sourceIndexPath.section != proposedDestinationIndexPath.section) {
+//        NSUInteger rowInSourceSection =
+//        (sourceIndexPath.section > proposedDestinationIndexPath.section) ?
+//        0 : sectionCount - 1;
+//        return [NSIndexPath indexPathForRow:rowInSourceSection inSection:sourceIndexPath.section];
+//    } else if (proposedDestinationIndexPath.row >= sectionCount) {
+//        return [NSIndexPath indexPathForRow:sectionCount - 1 inSection:sourceIndexPath.section];
+//    }
+//    // Allow the proposed destination.
+//    return proposedDestinationIndexPath;
+//}
 #pragma mark NSTimer
 - (void) updateLabelForCell {  // khi timer invalidate thì label cell đc cập nhật lại cho đúng với thời gian timer dừng
     CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];

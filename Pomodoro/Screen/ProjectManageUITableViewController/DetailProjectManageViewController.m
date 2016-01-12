@@ -39,14 +39,14 @@
     ColumnChartConfig *columnChartConfig;
     
     NSMutableArray *arrMonthYearDataChart;
-    //NSMutableArray *dataChart;
     NSMutableArray *dataChart;
+    NSMutableArray *arrTodoItemDones;
     
     UIView *viewGrayBackground;
     
     BOOL isShowSelectMonth;
     
-    NSMutableArray *arrTodoItemDones;
+    
 }
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -126,6 +126,13 @@
         [view addSubview:label];
         [self.monthScrollView addSubview:view];
     }
+    for (int i = 0; i < arrMonthYearDataChart.count; i ++) {
+        DataChartItem *dataChartItem = [[DataChartItem alloc] init];
+        dataChartItem = arrMonthYearDataChart[i];
+        if ([[dateFomatter stringFromDate:[NSDate date]] isEqualToString:[dateFomatter stringFromDate:dataChartItem.monthYear]]) {
+            self.scrollView.contentOffset = CGPointMake(size.width * i, 0);
+        }
+    }
 }
 - (void) loadDataChart: (NSDate *) date {
     
@@ -166,7 +173,7 @@
     for (int i = 0; i < dataChart.count; i ++) {
         
         NSString *stringDate;
-        if (i + 1 > 10) {
+        if (i + 1 >= 10) {
             stringDate = [NSString stringWithFormat:@"%d",i + 1];
         } else {
             stringDate = [NSString stringWithFormat:@"0%d", i + 1];
@@ -246,8 +253,12 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM"];
-    
     DebugLog(@"%@", [dateFormatter stringFromDate:date]);
+    
+    int numberOrder = self.scrollView.contentOffset.x / [[UIScreen mainScreen] bounds].size.width;
+    DataChartItem *dataChartItem = [[DataChartItem alloc] init];
+    dataChartItem = arrMonthYearDataChart[numberOrder];
+    [self loadDataChart:dataChartItem.monthYear];
 }
 
 #pragma mark - Implement all buttons
