@@ -12,7 +12,7 @@
 #import "AGPushNoteView.h"
 #import "UpdateToDoItemToDatabase.h"
 #import "MainScreen.h"
-
+#import "DataSoundManager.h"
 
 @interface AppDelegate ()
 
@@ -33,6 +33,7 @@
     _moneyDBController = [MoneyDBController getInstance];
     [_moneyDBController openDB:[NSString stringWithFormat:@"Pomodoro.sqlite"]];
     
+    DataSoundManager *dataSoundManager = [DataSoundManager getSingleton];
     self.settingItem = [SettingItem new];
     self.timerNotificationcenterItem = [TimerNotificationcenterItem new];
     [self setupTimerNotificationCenterItem];

@@ -12,4 +12,7 @@
 
 @property (nonatomic, strong) NSString *nameSong;
 @property (nonatomic, strong) NSString *filePath;
+
+- (instancetype) initWithNameSong: (NSString *) nameSong
+                     withFilePath: (NSString *) filePath;
 @end

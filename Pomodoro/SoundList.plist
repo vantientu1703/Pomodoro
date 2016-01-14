@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>namesong</key>
+		<string>BedRock</string>
+		<key>filepath</key>
+		<string>bedrock</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Blue</string>
+		<key>filepath</key>
+		<string>blue</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Con Heo Đất</string>
+		<key>filepath</key>
+		<string>conheodat</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Crazy</string>
+		<key>filepath</key>
+		<string>crazy</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Cry Cry</string>
+		<key>filepath</key>
+		<string>crycry</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Cười</string>
+		<key>filepath</key>
+		<string>cuoi</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Cute Song</string>
+		<key>filepath</key>
+		<string>cutesong</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Day By Day</string>
+		<key>filepath</key>
+		<string>daybyday</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Electric Rock</string>
+		<key>filepath</key>
+		<string>electricrock</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Face</string>
+		<key>filepath</key>
+		<string>face</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Fire Fly</string>
+		<key>filepath</key>
+		<string>firefly</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Gangnam Style</string>
+		<key>filepath</key>
+		<string>gangnamstyle</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>I&apos;m The Best</string>
+		<key>filepath</key>
+		<string>imthebest</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Low</string>
+		<key>filepath</key>
+		<string>low</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Mario</string>
+		<key>filepath</key>
+		<string>mario</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>My Lady</string>
+		<key>filepath</key>
+		<string>mylady</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Nghe Dễ Thương Quá</string>
+		<key>filepath</key>
+		<string>nghedethuongqua</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Nhạc Chuông Dễ Thương</string>
+		<key>filepath</key>
+		<string>nhacchuongdethuong</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Nokia</string>
+		<key>filepath</key>
+		<string>nokia</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Roly Poly</string>
+		<key>filepath</key>
+		<string>rolypoly</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Scandal</string>
+		<key>filepath</key>
+		<string>scandal</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Sexy Love</string>
+		<key>filepath</key>
+		<string>sexylove</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Sing Lala</string>
+		<key>filepath</key>
+		<string>singlala</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Thu Cuối</string>
+		<key>filepath</key>
+		<string>thucuoi</string>
+	</dict>
+	<dict>
+		<key>namesong</key>
+		<string>Trouble Maker</string>
+		<key>filepath</key>
+		<string>troublemaker</string>
+	</dict>
+</array>
+</plist>

@@ -853,7 +853,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
             separatorLineView.backgroundColor = [UIColor lightGrayColor];
             separatorLineView.alpha = 0.7f;// you can also put image here
             if (indexPath.section < 3) {
-                if (indexPath.row != arrTodoItems.count - 1) {
+                if (indexPath.row != arrTodoItems.count - 1 && arrTodoItems.count > 1) {
                     [cell.contentView addSubview:separatorLineView];
                 }
             } else {
@@ -875,11 +875,11 @@ static NSString *cellIdentifer = @"cellIdentifer";
             UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(10, CELL_HEIGHT - 1, size.width - 10, 1)];/// change size as you need.
             separatorLineView.backgroundColor = [UIColor lightGrayColor];
             separatorLineView.alpha = 0.7f;// you can also put image here
-            if (indexPath.section != _arrTitleSections.count && _arrTitleSections.count > 1) {
-                if (indexPath.row < arrTodoItem.count && arrTodoItem.count > 1) {
+            if (indexPath.section != _arrTitleSections.count - 1 && _arrTitleSections.count > 1) {
+                if (indexPath.row < arrTodoItem.count - 1) {
                     [cell.contentView addSubview:separatorLineView];
                 }
-            } else {
+            } else if (indexPath.section == _arrTitleSections.count - 1){
                 [cell.contentView addSubview:separatorLineView];
             }
         }
