@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SelectDeadlineViewController">
+            <connections>
+                <outlet property="datePicker" destination="57z-Hf-vJ6" id="sKT-1c-uRR"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="57z-Hf-vJ6">
+                    <rect key="frame" x="0.0" y="226" width="375" height="216"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="216" id="Xh2-bZ-F7q"/>
+                    </constraints>
+                    <date key="date" timeIntervalSinceReferenceDate="474538967.39008898">
+                        <!--2016-01-15 08:22:47 +0000-->
+                    </date>
+                </datePicker>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="57z-Hf-vJ6" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="3cq-OG-3bX"/>
+                <constraint firstAttribute="trailing" secondItem="57z-Hf-vJ6" secondAttribute="trailing" id="5hv-Dk-Y2S"/>
+                <constraint firstItem="57z-Hf-vJ6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="7eo-DN-wo9"/>
+                <constraint firstItem="57z-Hf-vJ6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="226" id="Vj3-Cp-MDw"/>
+                <constraint firstItem="57z-Hf-vJ6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zxF-K2-itR"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <point key="canvasLocation" x="589.5" y="149.5"/>
+        </view>
+    </objects>
+</document>

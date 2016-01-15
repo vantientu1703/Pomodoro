@@ -45,7 +45,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(pushTabbarViewControllerIndex2) name:@"appDidBecomeActive"
                                                object:nil];
-    //self.navigationItem.leftBarButtonItem = nil;
 }
 - (void) pushTabbarViewControllerIndex2 {
     self.tabBarController.selectedIndex = 1;

@@ -33,7 +33,7 @@
     _moneyDBController = [MoneyDBController getInstance];
     [_moneyDBController openDB:[NSString stringWithFormat:@"Pomodoro.sqlite"]];
     
-    DataSoundManager *dataSoundManager = [DataSoundManager getSingleton];
+    //DataSoundManager *dataSoundManager = [DataSoundManager getSingleton];
     self.settingItem = [SettingItem new];
     self.timerNotificationcenterItem = [TimerNotificationcenterItem new];
     [self setupTimerNotificationCenterItem];
@@ -47,7 +47,7 @@
     _timerNotificationcenterItem.isWorking = true;
     _timerNotificationcenterItem.totalWorking = 0;
     _timerNotificationcenterItem.totalLongBreaking = 0;
-    _timerNotificationcenterItem.isRunTimer = nil;
+    _timerNotificationcenterItem.isRunTimer = false;
     _timerNotificationcenterItem.stringStatusWorking = @"Working";
     NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     [shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"key_time_minutes"];

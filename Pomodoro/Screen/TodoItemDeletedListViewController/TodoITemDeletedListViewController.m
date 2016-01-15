@@ -12,7 +12,7 @@
 #import "CustomTableViewCell.h"
 #import "SWTableViewCell.h"
 #import "UpdateToDoItemToDatabase.h"
-#import "GetTodoItemIsDeletedInProjectToDatabaseTask.h"
+#import "GetTodoItemInProjectToDatabaseTask.h"
 
 
 @interface TodoITemDeletedListViewController () <UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate>
@@ -28,19 +28,13 @@
 }
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    [self loadData];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
     _moneyDBController = [MoneyDBController getInstance];
-    //[_moneyDBController openDB:Pomodorosqlite];
-    
     [self loadData];
 }
 
@@ -48,7 +42,6 @@
     
     GetTodoItemIsDeletedTask *getTodoItemIsDeletedTask = [[GetTodoItemIsDeletedTask alloc] init];
     _arrTodoItemIsDeleted = [getTodoItemIsDeletedTask getTodoItemToDatabase:_moneyDBController ];
-    
     if (_arrTodoItemIsDeleted.count != 0) {
         _arrTitleSections = [[NSMutableArray alloc] init];
         TodoItem *todoItem = [[TodoItem alloc] init];
@@ -77,11 +70,9 @@
                 [_arrTitleSections addObject:dateTodoItemCompare];
             }
         }
-        
         NSMutableDictionary *todoItemDictionarys = [[NSMutableDictionary alloc] init];
         
         for (int i = 0; i < _arrTitleSections.count; i ++) {
-            
             NSMutableArray *arrTodoItems = [[NSMutableArray alloc] init];
             NSString *keyDate = [_arrTitleSections objectAtIndex:i];
             for (int j = 0; j < _arrTodoItemIsDeleted.count; j ++) {
@@ -97,10 +88,7 @@
             [todoItemDictionarys setObject:arrTodoItems forKey:keyDate];
         }
         _todoItemIsDeletedDictionarys = todoItemDictionarys;
-        
-
     }
-    
     [self.tableView reloadData];
 }
 
@@ -125,8 +113,6 @@
     CustomTableViewCell  *cell = (CustomTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
     
     if (cell == nil) {
-        
-        //cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifer];
         NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"CustomTableViewCell" owner:self options:nil];
         cell = [xib objectAtIndex:0];
     }
@@ -137,10 +123,10 @@
     todoItem = [arrTodoItem objectAtIndex:indexPath.row];
     
     NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
-    [dateFomatter setDateFormat:@"yyyy - MM - dd hh:mm a"];
+    [dateFomatter setDateFormat:@"hh:mm a"];
     
-    GetTodoItemIsDeletedInProjectToDatabaseTask *getTodoItemIsDeletedInProjectToDatabaseTask = [[GetTodoItemIsDeletedInProjectToDatabaseTask alloc] init];
-    NSArray *arrProject = [getTodoItemIsDeletedInProjectToDatabaseTask getTodoItemIsDeletedInProjectToDatabase:_moneyDBController whereID:todoItem.projectID];
+    GetTodoItemInProjectToDatabaseTask *getTodoItemInProjectToDatabaseTask = [[GetTodoItemInProjectToDatabaseTask alloc] init];
+    NSArray *arrProject = [getTodoItemInProjectToDatabaseTask getTodoItemInProjectToDatabase:_moneyDBController whereID:todoItem.projectID];
     ProjectManageItem *projectManageItem = [ProjectManageItem new];
     projectManageItem =[arrProject objectAtIndex:0];
     

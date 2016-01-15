@@ -17,12 +17,16 @@
 #import "GetTodoItemWasDoneOrderByDateCompletedTask.h"
 #import "GetDataChartItemToDatabaseTask.h"
 #import "DataChartItem.h"
-
-
+#import "GetTodoItemInProjectToDatabaseTask.h"
+#import "DeleteTodoItemToDatabaseTask.h"
+#import "GetTodoItemIsDeletedTask.h"
+#import "GetToDoItemIsDoingToDatabase.h"
+#import "GetTodoItemWasDoneOrderByDateCompletedTask.h"
+#import "GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.h"
 
 #define CELL_HEIGHT 40
 
-@interface DetailProjectManageViewController () <UIScrollViewDelegate>
+@interface DetailProjectManageViewController () <UIScrollViewDelegate, AddProjectManagerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *detailDataChartScrollView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -59,7 +63,6 @@
     _moneyDBController = [MoneyDBController getInstance];
     
     isShowSelectMonth = false;
-    
     GetTodoItemWasDoneOrderByDateCompletedTask *getTodoItemWasDoneOrderByDateCompletedTask = [[GetTodoItemWasDoneOrderByDateCompletedTask alloc] init];
     arrTodoItemDones = [getTodoItemWasDoneOrderByDateCompletedTask getTodoItemToDatbase:_moneyDBController where:[NSArray arrayWithObject:[NSString stringWithFormat:@"%ld",self.projectManageItem.projectID]]];
     
@@ -101,11 +104,61 @@
 - (void) setupView {
     self.scrollView.layer.cornerRadius = 5;
     self.detailDataChartScrollView.layer.cornerRadius = 5;
+    
+    NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
+    [dateFomatter setDateFormat:@"yyyy - MM - dd"];
+    _desscriptTextView.editable = NO;
+    _nameProject.text = _projectManageItem.projectName;
+    _startDate.text = [dateFomatter stringFromDate:_projectManageItem.startDate];
+    
+    if ([[dateFomatter stringFromDate:_projectManageItem.endDate] isEqualToString:@"1970 - 01 - 01"]) {
+        _endDate.text = @"NO SELECT";
+    } else {
+        _endDate.text = [dateFomatter stringFromDate:_projectManageItem.endDate];
+    }
+    if ([_projectManageItem.projectDescription isEqual:@"(null)"]) {
+        _desscriptTextView.text = @"write something ...";
+    } else {
+        _desscriptTextView.text = _projectManageItem.projectDescription;
+    }
+    
+    NSArray *arrTotoItems = [GetToDoItemIsDoingToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:[NSString stringWithFormat:@"%ld",_projectManageItem.projectID]]];
+    _totalTodo.text = [NSString stringWithFormat:@"%lu", (unsigned long)arrTotoItems.count];
+    
+    GetTodoItemWasDoneOrderByDateCompletedTask *getTodoItemWasDoneOrderByDateCompleted = [[GetTodoItemWasDoneOrderByDateCompletedTask alloc] init];
+    NSArray *arrToDones = [getTodoItemWasDoneOrderByDateCompleted getTodoItemToDatbase:_moneyDBController where:[NSArray arrayWithObject:[NSString stringWithFormat:@"%ld",_projectManageItem.projectID]]];
+    _totalToDone.text = [NSString stringWithFormat:@"%lu", (unsigned long)arrToDones.count];
+}
+
+- (void) updateInfomationProject:(ProjectManageItem *)projectManagerItem {
+    _projectManageItem = projectManagerItem;
+    NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
+    [dateFomatter setDateFormat:@"yyyy - MM - dd"];
+    _desscriptTextView.editable = NO;
+    _nameProject.text = _projectManageItem.projectName;
+    _startDate.text = [dateFomatter stringFromDate:_projectManageItem.startDate];
+    
+    if ([[dateFomatter stringFromDate:_projectManageItem.endDate] isEqualToString:@"1970 - 01 - 01"]) {
+        _endDate.text = @"NO SELECT";
+    } else {
+        _endDate.text = [dateFomatter stringFromDate:_projectManageItem.endDate];
+    }
+    if ([_projectManageItem.projectDescription isEqualToString:@""]) {
+        _desscriptTextView.text = @"";
+    } else {
+        _desscriptTextView.text = _projectManageItem.projectDescription;
+    }
+    
+    NSArray *arrTotoItems = [GetToDoItemIsDoingToDatabase getTodoItemToDatabase:_moneyDBController where:[NSArray arrayWithObject:[NSString stringWithFormat:@"%ld",_projectManageItem.projectID]]];
+    _totalTodo.text = [NSString stringWithFormat:@"%lu", (unsigned long)arrTotoItems.count];
+    
+    GetTodoItemWasDoneOrderByDateCompletedTask *getTodoItemWasDoneOrderByDateCompleted = [[GetTodoItemWasDoneOrderByDateCompletedTask alloc] init];
+    NSArray *arrToDones = [getTodoItemWasDoneOrderByDateCompleted getTodoItemToDatbase:_moneyDBController where:[NSArray arrayWithObject:[NSString stringWithFormat:@"%ld",_projectManageItem.projectID]]];
+    _totalToDone.text = [NSString stringWithFormat:@"%lu", (unsigned long)arrToDones.count];
 }
 #pragma mark - loadData
 - (void) loadDataMonth {
     self.monthScrollView.delegate = self;
-    //NSArray *arrMonth = [[NSArray alloc] initWithObjects:@"January 2016",@"February 2016",@"March 2016",@"April 2016",@"May 2016",@"June 2016",@"July 2016",@"August 2016",@"September",@"October",@"November 2016",@"December 2016", nil];
     CGSize size = [[UIScreen mainScreen] bounds].size;
     self.monthScrollView.pagingEnabled = YES;
     self.monthScrollView.contentSize = CGSizeMake(size.width * arrMonthYearDataChart.count, self.monthScrollView.frame.size.height);
@@ -266,9 +319,13 @@
     switch (_segumnentedControl.selectedSegmentIndex) {
         case 0:
         {
-            AddProjectViewController *addProjectViewController = [[AddProjectViewController alloc] init];
+            AddProjectViewController *addProjectViewController;
+            if (!addProjectViewController) {
+                addProjectViewController = [[AddProjectViewController alloc] init];
+            }
             addProjectViewController.stringTitle = @"edit";
             addProjectViewController.projectManageItem = _projectManageItem;
+            addProjectViewController.delegate = self;
             [self.navigationController pushViewController:addProjectViewController animated:YES];
             _segumnentedControl.selectedSegmentIndex = -1;
         }
@@ -281,8 +338,20 @@
             
             UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Ok Action") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
                 
+                GetTodoItemIsDeletedFollowProjectIDToDatabaseTask *getTodoItemIsDeletedFollowProjectIDToDatabaseTask = [[GetTodoItemIsDeletedFollowProjectIDToDatabaseTask alloc] init];
+                NSArray *arrTodoItems = [getTodoItemIsDeletedFollowProjectIDToDatabaseTask getTodoItemToDatabase:_moneyDBController whereProjectID:(int)_projectManageItem.projectID];
+                
+                if (arrTodoItems.count > 0) {
+                    for (int i = 0; i < arrTodoItems.count; i ++) {
+                        TodoItem *todoItem = [arrTodoItems objectAtIndex:i];
+                
+                        DeleteTodoItemToDatabaseTask *deleteTodoItemToDatabaseTask = [[DeleteTodoItemToDatabaseTask alloc] initWithTodoItem:todoItem];
+                        [deleteTodoItemToDatabaseTask doQuery:_moneyDBController];
+                    }
+                }
                 DeleteProjectManageToDatabaseTask *deleteProjectManageItemToDatabase = [[DeleteProjectManageToDatabaseTask alloc] initWithProjectManage:_projectManageItem];
                 [deleteProjectManageItemToDatabase doQuery:_moneyDBController];
+                
                 [self.navigationController popViewControllerAnimated:YES];
             }];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel Action") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

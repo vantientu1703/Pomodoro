@@ -94,6 +94,18 @@
         UpdateToDoItemToDatabase *updateTodoItemToDatabaseTask = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:_todoItem];
         [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
         [self registerLocalNotification:_todoItem.jingtoneID];
+    } else {
+        NSArray *arr = [[UIApplication sharedApplication] scheduledLocalNotifications];
+        UILocalNotification *notifi = [[UILocalNotification alloc] init];
+        
+        for (int i = 0; i < arr.count; i ++) {
+            notifi = arr[i];
+            NSDictionary *dictionary = notifi.userInfo;
+            NSString *stringUserInfo = dictionary [@"key_alarm"];
+            if ([stringUserInfo isEqualToString:[NSString stringWithFormat:@"%ld - %ld",_todoItem.todo_id,_todoItem.projectID]]) {
+                [[UIApplication sharedApplication] cancelLocalNotification:notifi];
+            }
+        }
     }
 }
 
@@ -108,6 +120,9 @@
     localNotification.soundName = [NSString stringWithFormat:@"%@.mp3", jingtoneItem.filePath];
     localNotification.alertAction = @"Go on application";
     localNotification.category = @"Email";
+
+    NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%ld - %ld",_todoItem.todo_id,_todoItem.projectID] forKey:@"key_alarm"];
+    localNotification.userInfo = dictionary;
     
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }

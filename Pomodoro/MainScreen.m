@@ -26,7 +26,7 @@
 //#import "MenuProjectManageTableViewController.h"
 #import "GetProjectManageItemToDatabaseTask.h"
 #import "MenuAnimation.h"
-#import "ResultsSearchTodoItemTableViewController.h"
+//#import "ResultsSearchTodoItemTableViewController.h"
 #import "GetAllTodoItemsToDatabaseTask.h"
 #import "GetTodoItemsFollowPriorityToDatabaseTask.h"
 #import "PriorityView.h"
@@ -74,6 +74,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
     int heightTableview, widthTableview;
     int priority;
     int _indexIsEditing;
+    int totalTaskTodo;
+    int totalTodos;
     
     BOOL _isUndo;
     BOOL isStartting;
@@ -84,7 +86,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
     BOOL isPriority;
     BOOL isAdding;
     
-    NSInteger totalTodos;
     NSInteger _sourceIndexOfRow, _destinationIndexPathOfRow;
     NSIndexPath *_indexPath;
     NSIndexPath *_toIndexPath;
@@ -124,6 +125,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     _settingItem = appDelegate.settingItem;
     [self startupApp];
     [self loadData];
+    
     
     if ([[_shareUserDefaults stringForKey:@"key_timer_running"] isEqualToString:@"running"]) {
         self.tabBarController.selectedIndex = 1;
@@ -220,8 +222,6 @@ static NSString *cellIdentifer = @"cellIdentifer";
     _showEditBtn = self.navigationItem.rightBarButtonItem;
     [self.tableView reloadData];
     [self registerForKeyboardNotification];
-    
-    totalTodos = _arrTodos.count;
     
     //gọi hàm chạy bắt đầu chạy timer
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -456,10 +456,10 @@ static NSString *cellIdentifer = @"cellIdentifer";
             _arrTitleSections = [[NSMutableArray alloc] init];
         }
     }
-    totalTodos = _arrTodos.count;
+    totalTodos = (int)_arrTodos.count;
     
     if (totalTodos > 0) {
-        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%lu)",totalTodos]
+        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%d)",totalTodos]
                 forSegmentAtIndex:0];
     } else {
         [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
@@ -493,6 +493,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         case 1:
             
             self.navigationItem.rightBarButtonItem = nil;
+            [_segmentControl setTitle:[NSString stringWithFormat:@"%d",totalTodos] forSegmentAtIndex:0];
             [self.tableView setEditing:NO animated:YES];
             isFiltered = NO;
             _status = true;
@@ -738,7 +739,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
             [_txtItemTodo resignFirstResponder];
         } else {
             totalTodos ++;
-            [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+            [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%d)", totalTodos] forSegmentAtIndex:0];
             _txtItemTodo.hidden = YES;
             _todoItem = [[TodoItem alloc] init];
             _todoItem.content = _txtItemTodo.text;
@@ -1196,7 +1197,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 [self.tableView reloadData];
             } else {
                 if (totalTodos > 0) {
-                    [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+                    [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%d)",totalTodos] forSegmentAtIndex:0];
                 } else {
                     [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
                 }
@@ -1219,7 +1220,9 @@ static NSString *cellIdentifer = @"cellIdentifer";
         } else {
             // Undone
             totalTodos ++;
+            [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%d)",totalTodos] forSegmentAtIndex:0];
             if (isFiltered) {
+                //filtered task to do
                 
                 TodoItem *todoItem = _arrFilteredTodos [indexPath.row];
                 todoItem.status = false;
@@ -1231,7 +1234,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
                 [self.tableView reloadData];
             } else {
-                [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+                
                 NSString *keyDate = [_arrTitleSections objectAtIndex:indexPath.section];
                 NSMutableArray *arrTodoItems = [_todoItemDictionarys objectForKey:keyDate];
                 TodoItem *todoItem = [[TodoItem alloc] init];
@@ -1252,6 +1255,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
             }
         }
     } else if (index == 1) {
+        //button alarm ... push alarm view
+        
         [self loadTodoItemsPriority];
         [self.tableView reloadData];
         
@@ -1279,7 +1284,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         if (_segmentControl.selectedSegmentIndex == 0) {
             totalTodos --;
             if (totalTodos > 0) {
-                [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+                [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%d)",totalTodos] forSegmentAtIndex:0];
             } else {
                 [_segmentControl setTitle:[NSString stringWithFormat:@"To Do"] forSegmentAtIndex:0];
             }
@@ -1583,7 +1588,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     DebugLog(@"Undo is press");
     if (_segmentControl.selectedSegmentIndex == 0) {
         totalTodos ++;
-        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%ld)", (long)totalTodos] forSegmentAtIndex:0];
+        [_segmentControl setTitle:[NSString stringWithFormat:@"To Do (%d)",totalTodos] forSegmentAtIndex:0];
         NSMutableArray *arrTodoItems = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:_indexPath.section];
         [arrTodoItems insertObject:_todoItemUndo atIndex:_indexPath.row];
         [self.tableView reloadData];

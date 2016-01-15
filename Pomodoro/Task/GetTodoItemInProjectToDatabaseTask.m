@@ -6,13 +6,13 @@
 //  Copyright © 2015 ZooStudio. All rights reserved.
 //
 
-#import "GetTodoItemIsDeletedInProjectToDatabaseTask.h"
+#import "GetTodoItemInProjectToDatabaseTask.h"
 #import "DBUtil.h"
 
 
-@implementation GetTodoItemIsDeletedInProjectToDatabaseTask
+@implementation GetTodoItemInProjectToDatabaseTask
 
-- (NSArray *) getTodoItemIsDeletedInProjectToDatabase:(MoneyDBController *)_moneyDBController whereID: (long) projectID {
+- (NSArray *) getTodoItemInProjectToDatabase:(MoneyDBController *)_moneyDBController whereID: (long) projectID {
     
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM projectmanage WHERE projectid = %ld", projectID];
     NSArray *arr = [_moneyDBController rawQueryWithCommand:query args:nil];

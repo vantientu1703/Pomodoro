@@ -15,4 +15,21 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segumnentedControl;
 
 @property (nonatomic, strong) ProjectManageItem *projectManageItem;
+
+@property (weak, nonatomic) IBOutlet UILabel *nameProject;
+@property (weak, nonatomic) IBOutlet UILabel *startDate;
+@property (weak, nonatomic) IBOutlet UILabel *endDate;
+@property (weak, nonatomic) IBOutlet UITextView *desscriptTextView;
+@property (weak, nonatomic) IBOutlet UILabel *totalTodo;
+@property (weak, nonatomic) IBOutlet UILabel *totalToDone;
+
+
+
+
+
+
+
+
+
+
 @end

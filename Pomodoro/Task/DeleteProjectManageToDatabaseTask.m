@@ -27,7 +27,6 @@
     
     NSInteger i = [_moneyDBController delete:PROJECTMANAGE conditionString:@"projectid = ?" conditionValue:arr];
     if (i != -1) {
-        
         DebugLog(@"Delete was execute successfully");
     } else {
         

@@ -35,7 +35,8 @@
 		EF1DA52D1C15B4DC00D6229F /* GetAllTodoItemsToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1DA52C1C15B4DC00D6229F /* GetAllTodoItemsToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
 		EF1DA5321C15EF4400D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1DA5311C15EF4400D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
 		EF1DA5361C161D6D00D6229F /* PriorityView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1DA5351C161D6D00D6229F /* PriorityView.m */; settings = {ASSET_TAGS = (); }; };
-		EF1DEBDC1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1DEBDB1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EF25BCEB1C48E3AA00E535F1 /* SelectDeadlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF25BCE91C48E3AA00E535F1 /* SelectDeadlineViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EF25BCEC1C48E3AA00E535F1 /* SelectDeadlineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF25BCEA1C48E3AA00E535F1 /* SelectDeadlineViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		EF3F0EB81BDA22C800AB0DC3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EB71BDA22C800AB0DC3 /* main.m */; };
 		EF3F0EBB1BDA22C800AB0DC3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EBA1BDA22C800AB0DC3 /* AppDelegate.m */; };
 		EF3F0EBE1BDA22C800AB0DC3 /* MainScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0EBD1BDA22C800AB0DC3 /* MainScreen.m */; };
@@ -51,12 +52,13 @@
 		EF3F0F021BDA416300AB0DC3 /* TodoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF3F0F011BDA416300AB0DC3 /* TodoItem.m */; settings = {ASSET_TAGS = (); }; };
 		EF41ED6C1C3EEA6F00039CBF /* AlarmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF41ED6A1C3EEA6F00039CBF /* AlarmViewController.m */; settings = {ASSET_TAGS = (); }; };
 		EF41ED6D1C3EEA6F00039CBF /* AlarmViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF41ED6B1C3EEA6F00039CBF /* AlarmViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		EF7851521C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EF7851511C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
 		EF7971481BE135C2005DBA1B /* UndoView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF7971471BE135C2005DBA1B /* UndoView.m */; settings = {ASSET_TAGS = (); }; };
 		EF841FF41BFF366600D7CFC0 /* ProjectManageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EF841FF31BFF366600D7CFC0 /* ProjectManageItem.m */; settings = {ASSET_TAGS = (); }; };
 		EF84406C1BDF1DFB00A97CA0 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF84406A1BDF1DFB00A97CA0 /* CustomTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		EF84406D1BDF1DFB00A97CA0 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
 		EF9A2D5F1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
-		EFB377E91C0D9972007C5BE5 /* GetTodoItemIsDeletedInProjectToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB377E81C0D9972007C5BE5 /* GetTodoItemIsDeletedInProjectToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
+		EFB377E91C0D9972007C5BE5 /* GetTodoItemInProjectToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB377E81C0D9972007C5BE5 /* GetTodoItemInProjectToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
 		EFC7604D1C4813CE00D36040 /* SoundList.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFC7604C1C4813CE00D36040 /* SoundList.plist */; settings = {ASSET_TAGS = (); }; };
 		EFC760501C4817FD00D36040 /* DataSoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EFC7604F1C4817FD00D36040 /* DataSoundManager.m */; settings = {ASSET_TAGS = (); }; };
 		EFC7606B1C482E2600D36040 /* bedrock.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EFC760511C482E2600D36040 /* bedrock.mp3 */; settings = {ASSET_TAGS = (); }; };
@@ -221,8 +223,9 @@
 		EF1DA5311C15EF4400D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemsFollowPriorityToDatabaseTask.m; path = Task/GetTodoItemsFollowPriorityToDatabaseTask.m; sourceTree = "<group>"; };
 		EF1DA5341C161D6D00D6229F /* PriorityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PriorityView.h; path = Screen/PriorityView/PriorityView.h; sourceTree = "<group>"; };
 		EF1DA5351C161D6D00D6229F /* PriorityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PriorityView.m; path = Screen/PriorityView/PriorityView.m; sourceTree = "<group>"; };
-		EF1DEBDA1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResultsSearchTodoItemTableViewController.h; path = Screen/ResultsSearchTodoItemViewController/ResultsSearchTodoItemTableViewController.h; sourceTree = "<group>"; };
-		EF1DEBDB1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ResultsSearchTodoItemTableViewController.m; path = Screen/ResultsSearchTodoItemViewController/ResultsSearchTodoItemTableViewController.m; sourceTree = "<group>"; };
+		EF25BCE81C48E3AA00E535F1 /* SelectDeadlineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectDeadlineViewController.h; path = Screen/SelectDeadlineViewController.h; sourceTree = "<group>"; };
+		EF25BCE91C48E3AA00E535F1 /* SelectDeadlineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectDeadlineViewController.m; path = Screen/SelectDeadlineViewController.m; sourceTree = "<group>"; };
+		EF25BCEA1C48E3AA00E535F1 /* SelectDeadlineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SelectDeadlineViewController.xib; path = Screen/SelectDeadlineViewController.xib; sourceTree = "<group>"; };
 		EF3F0EB31BDA22C800AB0DC3 /* Pomodoro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pomodoro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF3F0EB71BDA22C800AB0DC3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF3F0EB91BDA22C800AB0DC3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -252,6 +255,8 @@
 		EF41ED691C3EEA6F00039CBF /* AlarmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlarmViewController.h; path = Screen/AlarmViewController/AlarmViewController.h; sourceTree = "<group>"; };
 		EF41ED6A1C3EEA6F00039CBF /* AlarmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlarmViewController.m; path = Screen/AlarmViewController/AlarmViewController.m; sourceTree = "<group>"; };
 		EF41ED6B1C3EEA6F00039CBF /* AlarmViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlarmViewController.xib; path = Screen/AlarmViewController/AlarmViewController.xib; sourceTree = "<group>"; };
+		EF7851501C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.h; path = Task/GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.h; sourceTree = "<group>"; };
+		EF7851511C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m; path = Task/GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m; sourceTree = "<group>"; };
 		EF7971461BE135C2005DBA1B /* UndoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UndoView.h; path = UndoView/UndoView.h; sourceTree = "<group>"; };
 		EF7971471BE135C2005DBA1B /* UndoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UndoView.m; path = UndoView/UndoView.m; sourceTree = "<group>"; };
 		EF841FF21BFF366600D7CFC0 /* ProjectManageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProjectManageItem.h; path = Model/ProjectManageItem.h; sourceTree = "<group>"; };
@@ -261,8 +266,8 @@
 		EF84406B1BDF1DFB00A97CA0 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CustomTableViewCell.xib; path = CustomTaableViewCell/CustomTableViewCell.xib; sourceTree = "<group>"; };
 		EF9A2D5D1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeleteTodoItemToDatabaseTask.h; path = Task/DeleteTodoItemToDatabaseTask.h; sourceTree = "<group>"; };
 		EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeleteTodoItemToDatabaseTask.m; path = Task/DeleteTodoItemToDatabaseTask.m; sourceTree = "<group>"; };
-		EFB377E71C0D9972007C5BE5 /* GetTodoItemIsDeletedInProjectToDatabaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTodoItemIsDeletedInProjectToDatabaseTask.h; path = Task/GetTodoItemIsDeletedInProjectToDatabaseTask.h; sourceTree = "<group>"; };
-		EFB377E81C0D9972007C5BE5 /* GetTodoItemIsDeletedInProjectToDatabaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemIsDeletedInProjectToDatabaseTask.m; path = Task/GetTodoItemIsDeletedInProjectToDatabaseTask.m; sourceTree = "<group>"; };
+		EFB377E71C0D9972007C5BE5 /* GetTodoItemInProjectToDatabaseTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTodoItemInProjectToDatabaseTask.h; path = Task/GetTodoItemInProjectToDatabaseTask.h; sourceTree = "<group>"; };
+		EFB377E81C0D9972007C5BE5 /* GetTodoItemInProjectToDatabaseTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemInProjectToDatabaseTask.m; path = Task/GetTodoItemInProjectToDatabaseTask.m; sourceTree = "<group>"; };
 		EFC7604C1C4813CE00D36040 /* SoundList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SoundList.plist; sourceTree = "<group>"; };
 		EFC7604E1C4817FD00D36040 /* DataSoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataSoundManager.h; path = DBManager/DataSoundManager.h; sourceTree = "<group>"; };
 		EFC7604F1C4817FD00D36040 /* DataSoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataSoundManager.m; path = DBManager/DataSoundManager.m; sourceTree = "<group>"; };
@@ -474,30 +479,32 @@
 		EF0391E31BDE062500C4A622 /* Task */ = {
 			isa = PBXGroup;
 			children = (
-				EF0391E41BDE066300C4A622 /* GetToDoItemIsDoingToDatabase.h */,
-				EF0391E51BDE066300C4A622 /* GetToDoItemIsDoingToDatabase.m */,
-				EF0391FC1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.h */,
-				EF0391FD1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m */,
-				EF9A2D5D1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.h */,
-				EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */,
-				EFD681DC1BE5295A0087083B /* GetTodoItemIsDeletedTask.h */,
-				EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */,
-				EFE6133A1BE76BA3007B7CD2 /* GetTodoItemWasDoneOrderByDateCompletedTask.h */,
-				EFE6133B1BE76BA3007B7CD2 /* GetTodoItemWasDoneOrderByDateCompletedTask.m */,
-				EFD4ABEC1C030D48006DF63E /* GetProjectManageItemToDatabaseTask.h */,
-				EFD4ABED1C030D48006DF63E /* GetProjectManageItemToDatabaseTask.m */,
-				EF0E3E0A1C0740E200D6B6A4 /* UpdateProjectManageItemToDatabaseTask.h */,
-				EF0E3E0B1C0740E200D6B6A4 /* UpdateProjectManageItemToDatabaseTask.m */,
 				EFE421261C084AEE008DB4E7 /* DeleteProjectManageToDatabaseTask.h */,
 				EFE421271C084AEE008DB4E7 /* DeleteProjectManageToDatabaseTask.m */,
-				EFB377E71C0D9972007C5BE5 /* GetTodoItemIsDeletedInProjectToDatabaseTask.h */,
-				EFB377E81C0D9972007C5BE5 /* GetTodoItemIsDeletedInProjectToDatabaseTask.m */,
+				EF9A2D5D1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.h */,
+				EF9A2D5E1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m */,
 				EF1DA52B1C15B4DC00D6229F /* GetAllTodoItemsToDatabaseTask.h */,
 				EF1DA52C1C15B4DC00D6229F /* GetAllTodoItemsToDatabaseTask.m */,
-				EF1DA5301C15EF4300D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.h */,
-				EF1DA5311C15EF4400D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.m */,
 				EFF375071C3E7A9C00323FCA /* GetDataChartItemToDatabaseTask.h */,
 				EFF375081C3E7A9C00323FCA /* GetDataChartItemToDatabaseTask.m */,
+				EFD4ABEC1C030D48006DF63E /* GetProjectManageItemToDatabaseTask.h */,
+				EFD4ABED1C030D48006DF63E /* GetProjectManageItemToDatabaseTask.m */,
+				EFB377E71C0D9972007C5BE5 /* GetTodoItemInProjectToDatabaseTask.h */,
+				EFB377E81C0D9972007C5BE5 /* GetTodoItemInProjectToDatabaseTask.m */,
+				EFD681DC1BE5295A0087083B /* GetTodoItemIsDeletedTask.h */,
+				EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */,
+				EF0391E41BDE066300C4A622 /* GetToDoItemIsDoingToDatabase.h */,
+				EF0391E51BDE066300C4A622 /* GetToDoItemIsDoingToDatabase.m */,
+				EF1DA5301C15EF4300D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.h */,
+				EF1DA5311C15EF4400D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.m */,
+				EFE6133A1BE76BA3007B7CD2 /* GetTodoItemWasDoneOrderByDateCompletedTask.h */,
+				EFE6133B1BE76BA3007B7CD2 /* GetTodoItemWasDoneOrderByDateCompletedTask.m */,
+				EF0E3E0A1C0740E200D6B6A4 /* UpdateProjectManageItemToDatabaseTask.h */,
+				EF0E3E0B1C0740E200D6B6A4 /* UpdateProjectManageItemToDatabaseTask.m */,
+				EF0391FC1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.h */,
+				EF0391FD1BDE22BB00C4A622 /* UpdateToDoItemToDatabase.m */,
+				EF7851501C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.h */,
+				EF7851511C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m */,
 			);
 			name = Task;
 			sourceTree = "<group>";
@@ -596,13 +603,14 @@
 			name = PriorityView;
 			sourceTree = "<group>";
 		};
-		EF1DEBDD1C102D3800F2E04A /* ResultsSearchTodoItemTableViewController */ = {
+		EF25BCE41C48E35D00E535F1 /* SelectDeadLineViewController */ = {
 			isa = PBXGroup;
 			children = (
-				EF1DEBDA1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.h */,
-				EF1DEBDB1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.m */,
+				EF25BCE81C48E3AA00E535F1 /* SelectDeadlineViewController.h */,
+				EF25BCE91C48E3AA00E535F1 /* SelectDeadlineViewController.m */,
+				EF25BCEA1C48E3AA00E535F1 /* SelectDeadlineViewController.xib */,
 			);
-			name = ResultsSearchTodoItemTableViewController;
+			name = SelectDeadLineViewController;
 			sourceTree = "<group>";
 		};
 		EF3F0EAA1BDA22C800AB0DC3 = {
@@ -757,6 +765,7 @@
 				EFD4ABEF1C031BAA006DF63E /* AddProjectViewController.h */,
 				EFD4ABF01C031BAA006DF63E /* AddProjectViewController.m */,
 				EFD4ABF11C031BAA006DF63E /* AddProjectViewController.xib */,
+				EF25BCE41C48E35D00E535F1 /* SelectDeadLineViewController */,
 				EFD4ABDF1C02F897006DF63E /* CustomTableViewCellProjectManage */,
 				EFE421211C0841DB008DB4E7 /* DetailProjectManageViewController.h */,
 				EFE421221C0841DB008DB4E7 /* DetailProjectManageViewController.m */,
@@ -784,7 +793,6 @@
 				EFDAE39C1C0B845B0078BCC0 /* MenuProjectManageViewController */,
 				EFD681D81BE524DD0087083B /* MenuViewController */,
 				EF841FEE1BFF2EB000D7CFC0 /* ProjectManageViewController */,
-				EF1DEBDD1C102D3800F2E04A /* ResultsSearchTodoItemTableViewController */,
 				EF0E65C11BF5D1A700610703 /* SettingTimerViewController */,
 				EF0E65BA1BF59BB800610703 /* TimerViewController */,
 				EF734C081BE6614500FEE4F7 /* TodoItemDeletedListViewController */,
@@ -1068,6 +1076,7 @@
 				EFC7607B1C482E2600D36040 /* mylady.mp3 in Resources */,
 				EFFFFF781C45B8FE00EB27AD /* ic_delete.png in Resources */,
 				EFD4ABF31C031BAA006DF63E /* AddProjectViewController.xib in Resources */,
+				EF25BCEC1C48E3AA00E535F1 /* SelectDeadlineViewController.xib in Resources */,
 				EFC7606C1C482E2600D36040 /* blue.mp3 in Resources */,
 				EFC760821C482E2600D36040 /* singlala.mp3 in Resources */,
 				EF02DC271C43A5CF0071DEDE /* background_01@2x.png in Resources */,
@@ -1144,12 +1153,11 @@
 				EFE6133C1BE76BA3007B7CD2 /* GetTodoItemWasDoneOrderByDateCompletedTask.m in Sources */,
 				EF9A2D5F1BDFB59F0046CC2B /* DeleteTodoItemToDatabaseTask.m in Sources */,
 				EFE421241C0841DB008DB4E7 /* DetailProjectManageViewController.m in Sources */,
-				EFB377E91C0D9972007C5BE5 /* GetTodoItemIsDeletedInProjectToDatabaseTask.m in Sources */,
+				EFB377E91C0D9972007C5BE5 /* GetTodoItemInProjectToDatabaseTask.m in Sources */,
 				EF0E65C51BF5D1EB00610703 /* SettingTimerViewController.m in Sources */,
 				EF84406C1BDF1DFB00A97CA0 /* CustomTableViewCell.m in Sources */,
 				EF03920E1BDE235D00C4A622 /* SWCellScrollView.m in Sources */,
 				EF0392131BDE235D00C4A622 /* UMTableViewCell.m in Sources */,
-				EF1DEBDC1C102D3300F2E04A /* ResultsSearchTodoItemTableViewController.m in Sources */,
 				EFD7CA241C353C6E0082830D /* MLColumnData.m in Sources */,
 				EFD7CA291C353C6E0082830D /* PieData.m in Sources */,
 				EF1DA5361C161D6D00D6229F /* PriorityView.m in Sources */,
@@ -1178,6 +1186,7 @@
 				EF02CDC31C05B36700EEE780 /* AGPushNoteView.m in Sources */,
 				EFF375061C3E722F00323FCA /* DataChartItem.m in Sources */,
 				EFD4ABF21C031BAA006DF63E /* AddProjectViewController.m in Sources */,
+				EF25BCEB1C48E3AA00E535F1 /* SelectDeadlineViewController.m in Sources */,
 				EF1DA5321C15EF4400D6229F /* GetTodoItemsFollowPriorityToDatabaseTask.m in Sources */,
 				EFD7CA261C353C6E0082830D /* MLSeriesX.m in Sources */,
 				EFD30E6F1C0C422C00B41964 /* MenuAnimation.m in Sources */,
@@ -1201,6 +1210,7 @@
 				EFD7CA251C353C6E0082830D /* MLLineItem.m in Sources */,
 				EF0391E61BDE066300C4A622 /* GetToDoItemIsDoingToDatabase.m in Sources */,
 				EFF375091C3E7A9C00323FCA /* GetDataChartItemToDatabaseTask.m in Sources */,
+				EF7851521C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m in Sources */,
 				EF0E65C01BF5C9A800610703 /* SettingItem.m in Sources */,
 				EF03920F1BDE235D00C4A622 /* SWLongPressGestureRecognizer.m in Sources */,
 				EFD681DB1BE525230087083B /* MenuViewController.m in Sources */,

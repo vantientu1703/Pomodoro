@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GetTodoItemIsDeletedInProjectToDatabaseTask : NSObject
+@interface GetTodoItemInProjectToDatabaseTask : NSObject
 
-- (NSArray *) getTodoItemIsDeletedInProjectToDatabase: (MoneyDBController *) _moneyDBController whereID: (long) projectID;
+- (NSArray *) getTodoItemInProjectToDatabase: (MoneyDBController *) _moneyDBController whereID: (long) projectID;
 @end

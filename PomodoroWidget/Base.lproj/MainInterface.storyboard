@@ -55,7 +55,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sbd-wu-JeW">
                                                 <rect key="frame" x="144" y="20" width="50" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="50" id="2dT-Vg-ewd"/>
+                                                    <constraint firstAttribute="width" constant="50" id="BbV-qy-jp8"/>
                                                     <constraint firstAttribute="height" constant="30" id="QjV-R1-z1S"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
@@ -65,19 +65,16 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="SMK-hl-1E3" firstAttribute="leading" secondItem="0OZ-KP-kw7" secondAttribute="leading" constant="80" id="4rA-Ia-J3H"/>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="leading" secondItem="C3S-yN-fdP" secondAttribute="trailing" constant="2" id="59j-Ug-aYr"/>
                                             <constraint firstAttribute="width" constant="271" id="7Ie-OY-Shd"/>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="leading" secondItem="SMK-hl-1E3" secondAttribute="trailing" constant="14" id="AGM-bk-5Gi"/>
                                             <constraint firstAttribute="height" constant="79" id="Gvr-2z-4dg"/>
-                                            <constraint firstItem="JWS-uB-OgC" firstAttribute="leading" secondItem="0OZ-KP-kw7" secondAttribute="leading" constant="72" id="SMC-Ad-0ae"/>
-                                            <constraint firstAttribute="bottom" secondItem="JWS-uB-OgC" secondAttribute="bottom" id="UdW-ig-ia0"/>
+                                            <constraint firstItem="C3S-yN-fdP" firstAttribute="centerX" secondItem="0OZ-KP-kw7" secondAttribute="centerX" id="Nht-Wy-Ffx"/>
                                             <constraint firstItem="C3S-yN-fdP" firstAttribute="top" secondItem="0OZ-KP-kw7" secondAttribute="top" constant="20" id="Ugq-Kk-JYD"/>
                                             <constraint firstItem="JWS-uB-OgC" firstAttribute="top" secondItem="SMK-hl-1E3" secondAttribute="bottom" constant="8" id="VmD-KQ-eVM"/>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="leading" secondItem="C3S-yN-fdP" secondAttribute="trailing" constant="2" id="acM-mT-paU"/>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="top" secondItem="0OZ-KP-kw7" secondAttribute="top" constant="20" id="dse-iU-16Q"/>
-                                            <constraint firstAttribute="trailing" secondItem="Sbd-wu-JeW" secondAttribute="trailing" constant="77" id="n5m-DW-xNq"/>
-                                            <constraint firstAttribute="trailing" secondItem="JWS-uB-OgC" secondAttribute="trailing" constant="72" id="obC-cd-COC"/>
+                                            <constraint firstItem="JWS-uB-OgC" firstAttribute="centerX" secondItem="0OZ-KP-kw7" secondAttribute="centerX" id="lgl-Uu-OMR"/>
                                             <constraint firstItem="JWS-uB-OgC" firstAttribute="top" secondItem="Sbd-wu-JeW" secondAttribute="bottom" constant="8" id="pc7-JM-OKk"/>
                                             <constraint firstItem="SMK-hl-1E3" firstAttribute="top" secondItem="0OZ-KP-kw7" secondAttribute="top" constant="20" id="qeO-zx-7Tz"/>
                                             <constraint firstItem="JWS-uB-OgC" firstAttribute="top" secondItem="C3S-yN-fdP" secondAttribute="bottom" constant="8" id="tLH-nc-kZS"/>
@@ -101,12 +98,12 @@
                                                     <action selector="StartOnClicked:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="ErK-su-FTY"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NED-98-GuA">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NED-98-GuA">
                                                 <rect key="frame" x="0.0" y="15" width="128" height="30"/>
                                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="128" id="d0s-qf-zVy"/>
                                                     <constraint firstAttribute="height" constant="30" id="eyz-v8-faI"/>
+                                                    <constraint firstAttribute="width" constant="128" id="q5e-IT-gIL"/>
                                                 </constraints>
                                                 <state key="normal" title="Pause">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -120,7 +117,7 @@
                                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="Acq-cg-wZm"/>
-                                                    <constraint firstAttribute="width" constant="132" id="Xv2-4M-i7X"/>
+                                                    <constraint firstAttribute="width" constant="132" id="YC5-C0-BQa"/>
                                                 </constraints>
                                                 <state key="normal" title="Stop">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -139,8 +136,6 @@
                                             <constraint firstItem="NED-98-GuA" firstAttribute="leading" secondItem="aqN-RM-f8V" secondAttribute="leading" id="Qpk-y7-le7"/>
                                             <constraint firstAttribute="trailing" secondItem="ZaP-lu-k2T" secondAttribute="trailing" id="XuU-qB-E3r"/>
                                             <constraint firstAttribute="width" constant="271" id="azK-9w-8O2"/>
-                                            <constraint firstItem="ZaP-lu-k2T" firstAttribute="leading" secondItem="NED-98-GuA" secondAttribute="trailing" constant="11" id="gff-Ub-7Ho"/>
-                                            <constraint firstItem="ZaP-lu-k2T" firstAttribute="leading" secondItem="NED-98-GuA" secondAttribute="trailing" constant="11" id="oyd-Uy-M3L"/>
                                             <constraint firstItem="6WG-Bd-hbc" firstAttribute="top" secondItem="aqN-RM-f8V" secondAttribute="top" constant="15" id="v4E-Hv-eE8"/>
                                             <constraint firstItem="NED-98-GuA" firstAttribute="top" secondItem="aqN-RM-f8V" secondAttribute="top" constant="15" id="wdv-iC-whx"/>
                                         </constraints>

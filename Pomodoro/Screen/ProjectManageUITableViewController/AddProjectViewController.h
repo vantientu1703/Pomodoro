@@ -7,6 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProjectManageItem.h"
+@protocol AddProjectManagerDelegate <NSObject>
+
+- (void) updateInfomationProject: (ProjectManageItem *) projectManagerItem;
+
+@end
 
 @interface AddProjectViewController : UIViewController
 
@@ -19,6 +25,6 @@
 @property (nonatomic, strong) NSString *stringTitle;
 
 @property (nonatomic, strong) ProjectManageItem *projectManageItem;
-
+@property (nonatomic, strong) id<AddProjectManagerDelegate> delegate;
 
 @end
