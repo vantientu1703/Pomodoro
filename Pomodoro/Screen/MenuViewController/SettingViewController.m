@@ -6,7 +6,7 @@
 //  Copyright © 2015 ZooStudio. All rights reserved.
 //
 
-#import "MenuViewController.h"
+#import "SettingViewController.h"
 #import "GetTodoItemIsDeletedTask.h"
 #import "CustomTableViewCell.h"
 #import "SWTableViewCell.h"
@@ -15,14 +15,14 @@
 #import "SettingTimerViewController.h"
 
 #define CELL_HEIGHT 40
-@interface MenuViewController () <UITableViewDataSource,UITableViewDelegate>
+@interface SettingViewController () <UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) MoneyDBController *moneyDBController;
 @property (nonatomic, strong) NSMutableArray *arrTodoItemIsDeleted;
 @property (nonatomic, strong) NSMutableArray *arrListTitle;
 @end
 
-@implementation MenuViewController
+@implementation SettingViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

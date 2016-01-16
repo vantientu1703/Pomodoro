@@ -399,7 +399,7 @@
         <!--Setting-->
         <scene sceneID="zyh-8J-Oh9">
             <objects>
-                <viewController id="Syy-do-58h" customClass="MenuViewController" sceneMemberID="viewController">
+                <viewController id="Syy-do-58h" customClass="SettingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="v4n-Xc-YIU"/>
                         <viewControllerLayoutGuide type="bottom" id="Stz-nA-Qbs"/>

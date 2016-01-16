@@ -94,7 +94,7 @@
 		EFD4ABEE1C030D48006DF63E /* GetProjectManageItemToDatabaseTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD4ABED1C030D48006DF63E /* GetProjectManageItemToDatabaseTask.m */; settings = {ASSET_TAGS = (); }; };
 		EFD4ABF21C031BAA006DF63E /* AddProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD4ABF01C031BAA006DF63E /* AddProjectViewController.m */; settings = {ASSET_TAGS = (); }; };
 		EFD4ABF31C031BAA006DF63E /* AddProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFD4ABF11C031BAA006DF63E /* AddProjectViewController.xib */; settings = {ASSET_TAGS = (); }; };
-		EFD681DB1BE525230087083B /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD681DA1BE525230087083B /* MenuViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EFD681DB1BE525230087083B /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD681DA1BE525230087083B /* SettingViewController.m */; settings = {ASSET_TAGS = (); }; };
 		EFD681DE1BE5295A0087083B /* GetTodoItemIsDeletedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */; settings = {ASSET_TAGS = (); }; };
 		EFD7CA201C353C6E0082830D /* ColumnChartConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7C9FC1C353C6E0082830D /* ColumnChartConfig.m */; settings = {ASSET_TAGS = (); }; };
 		EFD7CA211C353C6E0082830D /* DataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD7C9FE1C353C6E0082830D /* DataItem.m */; settings = {ASSET_TAGS = (); }; };
@@ -309,8 +309,8 @@
 		EFD4ABEF1C031BAA006DF63E /* AddProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddProjectViewController.h; path = Screen/ProjectManageUITableViewController/AddProjectViewController.h; sourceTree = "<group>"; };
 		EFD4ABF01C031BAA006DF63E /* AddProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddProjectViewController.m; path = Screen/ProjectManageUITableViewController/AddProjectViewController.m; sourceTree = "<group>"; };
 		EFD4ABF11C031BAA006DF63E /* AddProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AddProjectViewController.xib; path = Screen/ProjectManageUITableViewController/AddProjectViewController.xib; sourceTree = "<group>"; };
-		EFD681D91BE525230087083B /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuViewController.h; path = Screen/MenuViewController/MenuViewController.h; sourceTree = "<group>"; };
-		EFD681DA1BE525230087083B /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuViewController.m; path = Screen/MenuViewController/MenuViewController.m; sourceTree = "<group>"; };
+		EFD681D91BE525230087083B /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingViewController.h; path = Screen/MenuViewController/SettingViewController.h; sourceTree = "<group>"; };
+		EFD681DA1BE525230087083B /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewController.m; path = Screen/MenuViewController/SettingViewController.m; sourceTree = "<group>"; };
 		EFD681DC1BE5295A0087083B /* GetTodoItemIsDeletedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GetTodoItemIsDeletedTask.h; path = Task/GetTodoItemIsDeletedTask.h; sourceTree = "<group>"; };
 		EFD681DD1BE5295A0087083B /* GetTodoItemIsDeletedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GetTodoItemIsDeletedTask.m; path = Task/GetTodoItemIsDeletedTask.m; sourceTree = "<group>"; };
 		EFD7C9FB1C353C6E0082830D /* ColumnChartConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnChartConfig.h; sourceTree = "<group>"; };
@@ -815,8 +815,8 @@
 		EFD681D81BE524DD0087083B /* MenuViewController */ = {
 			isa = PBXGroup;
 			children = (
-				EFD681D91BE525230087083B /* MenuViewController.h */,
-				EFD681DA1BE525230087083B /* MenuViewController.m */,
+				EFD681D91BE525230087083B /* SettingViewController.h */,
+				EFD681DA1BE525230087083B /* SettingViewController.m */,
 			);
 			name = MenuViewController;
 			sourceTree = "<group>";
@@ -1213,7 +1213,7 @@
 				EF7851521C497B7200AABAB3 /* GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.m in Sources */,
 				EF0E65C01BF5C9A800610703 /* SettingItem.m in Sources */,
 				EF03920F1BDE235D00C4A622 /* SWLongPressGestureRecognizer.m in Sources */,
-				EFD681DB1BE525230087083B /* MenuViewController.m in Sources */,
+				EFD681DB1BE525230087083B /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
