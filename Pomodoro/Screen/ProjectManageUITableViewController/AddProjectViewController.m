@@ -91,6 +91,12 @@
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
     
     [_txtProjectname resignFirstResponder];
+    if ([_stringTitle isEqualToString:@"edit"]) {
+        _projectManageItem.projectDescription = textField.text;
+        
+        UpdateProjectManageItemToDatabaseTask *updateProjectManageItemToDatabaseTask = [[UpdateProjectManageItemToDatabaseTask alloc] initWithProjectManageItem:_projectManageItem];
+        [updateProjectManageItemToDatabaseTask doQuery:_moneyDBController];
+    }
     return YES;
 }
 
@@ -98,8 +104,17 @@
     
     if ([text isEqualToString:@"\n"]) {
         [_txtDescription resignFirstResponder];
+        
+        if ([_stringTitle isEqualToString:@"edit"]) {
+            _projectManageItem.projectDescription = _txtDescription.text;
+            
+            DebugLog(@"___%@ ",_txtProjectname.text);
+            UpdateProjectManageItemToDatabaseTask *updateProjectManageItemToDatabaseTask = [[UpdateProjectManageItemToDatabaseTask alloc] initWithProjectManageItem:_projectManageItem];
+            [updateProjectManageItemToDatabaseTask doQuery:_moneyDBController];
+        }
         return NO;
     }
+    
     return YES;
 }
 #pragma mark - button select date
@@ -108,7 +123,13 @@
     
     [_txtDescription resignFirstResponder];
     [_txtProjectname resignFirstResponder];
-    
+    if ([_stringTitle isEqualToString:@"edit"]) {
+        _projectManageItem.projectDescription = _txtDescription.text;
+        
+        DebugLog(@"___%@ ",_txtProjectname.text);
+        UpdateProjectManageItemToDatabaseTask *updateProjectManageItemToDatabaseTask = [[UpdateProjectManageItemToDatabaseTask alloc] initWithProjectManageItem:_projectManageItem];
+        [updateProjectManageItemToDatabaseTask doQuery:_moneyDBController];
+    }
     SelectDeadlineViewController *selectDeadlineViewController;
     if (!selectDeadlineViewController) {
         selectDeadlineViewController = [[SelectDeadlineViewController alloc] init];

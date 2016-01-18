@@ -50,10 +50,10 @@
 
 // color hex
 
-#define COLOR_GREEN_1 @"#00cc65"
-#define COLOR_GREEN_2 @"#00ff7f"
-#define COLOR_GREEN_3 @"#7fffbf"
-#define COLOR_GREEN_4 @"#e5fff2"
+#define COLOR_GREEN_PRIORITY_HIGHT @"#00CC00"
+#define COLOR_BLUE_PRIORITY_MEDIUM @"#47DE36"
+#define COLOR_GREEN_PRIORITY_LOW @"#85FF63"
+#define COLOR_GREEN_NOPRIORITY @"#CCFF99"
 #define COLOR_LIGHT_PINK @"#fbf1e3"
 #define COLOR_LIGHT_BLUE @"#cde8ed"
 #define COLOR_LIGHT_GRAY @"#fafcff"

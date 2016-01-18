@@ -530,9 +530,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem:)];
         [self.tableView setEditing:NO animated:NO];
     }
-    
 }
-
 
 - (IBAction)menuOnClicked:(id)sender {
 
@@ -651,7 +649,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                     _priorityView.delegate = self;
                     isPriority = false;
                 }
-                self.keyboardContraint.constant = height - 40;
+                self.keyboardContraint.constant = height - 20;
                 _txtItemTodo.frame = CGRectMake(6, size.height - height - 40, keyboardFrame.size.width - 8, 40);
                 _txtItemTodo.hidden = NO;
                 _priorityView.frame = CGRectMake(0, size.height - height - 70, size.width, 20);
@@ -970,7 +968,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 UIView *viewRed = [[UIView alloc] initWithFrame:CGRectMake(0, _searchBar.frame.size.height, size.width, 10)];
                 NSArray *arrTodoItemsPriorityHight = [_arrTodoItemsFollowPriorityAllSection objectAtIndex:0];
                 if (arrTodoItemsPriorityHight.count > 0) {
-                    viewRed.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_1 alpha:1.0f];
+                    viewRed.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_PRIORITY_HIGHT alpha:1.0f];
                 }
                 [viewHeader addSubview:viewRed];
             }
@@ -978,17 +976,17 @@ static NSString *cellIdentifer = @"cellIdentifer";
         }
         if (section == 1) {
             UIView *viewBlue = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
-            viewBlue.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_2 alpha:1.0f];
+            viewBlue.backgroundColor = [[UIColor alloc] initWithHex:COLOR_BLUE_PRIORITY_MEDIUM alpha:1.0f];
             return viewBlue;
         }
         if (section == 2) {
             UIView *viewYellow = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
-            viewYellow.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_3 alpha:1.0f];
+            viewYellow.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_PRIORITY_LOW alpha:1.0f];
             return viewYellow;
         }
         if (section == 3) {
             UIView *viewWhite = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, 10)];
-            viewWhite.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_4 alpha:1.0f];
+            viewWhite.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_NOPRIORITY alpha:1.0f];
             return viewWhite;
         }
     }

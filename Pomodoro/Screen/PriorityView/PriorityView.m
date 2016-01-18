@@ -33,20 +33,20 @@
     
     redButton = [[UIButton alloc] initWithFrame:CGRectMake(size.width / 4 - 15, 0, size.width / 4, 20)];
     redButton.center = CGPointMake(size.width * 3 /8 - 15, size.height / 2);
-    redButton.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_1 alpha:1.0f];
+    redButton.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_PRIORITY_HIGHT alpha:1.0f];
     redButton.layer.cornerRadius = 5;
     [redButton addTarget:self action:@selector(redButtonOnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:redButton];
     
     blueButton = [[UIButton alloc] initWithFrame:CGRectMake(size.width / 2 - 10, 0, size.width / 4, 20)];
-    blueButton.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_2 alpha:1.0f];
+    blueButton.backgroundColor = [[UIColor alloc] initWithHex:COLOR_BLUE_PRIORITY_MEDIUM alpha:1.0f];
     blueButton.layer.cornerRadius = 5;
     blueButton.center = CGPointMake(size.width * 5 / 8 - 10, size.height / 2);
     [blueButton addTarget:self action:@selector(blueButtonOnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:blueButton];
     
     yellowButton = [[UIButton alloc] initWithFrame:CGRectMake(size.width * 3 / 4 - 5, 0, size.width / 4, 20)];
-    yellowButton.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_3 alpha:1.0f];
+    yellowButton.backgroundColor = [[UIColor alloc] initWithHex:COLOR_GREEN_PRIORITY_LOW alpha:1.0f];
     yellowButton.layer.cornerRadius = 5;
     yellowButton.center = CGPointMake(size.width * 7 / 8 - 5, size.height / 2);
     [yellowButton addTarget:self action:@selector(yellowButtonOnClicked) forControlEvents:UIControlEventTouchUpInside];
