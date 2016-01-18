@@ -384,11 +384,11 @@ static NSString * const kTableViewPanState = @"state";
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan && !self.isHighlighted && self.shouldHighlight)
     {
         [self setHighlighted:YES animated:NO];
-        if (!_isEditting) {
+        //if (!_isEditting) {
             [_delegate beingMovedCellWhenLongPress];
-            _isEditting = true;
-            return;
-        }
+            //_isEditting = true;
+            //return;
+        //}
     }
     
     else if (gestureRecognizer.state == UIGestureRecognizerStateEnded)

@@ -116,8 +116,8 @@
     } else {
         _endDate.text = [dateFomatter stringFromDate:_projectManageItem.endDate];
     }
-    if ([_projectManageItem.projectDescription isEqual:@"(null)"]) {
-        _desscriptTextView.text = @"write something ...";
+    if ([_projectManageItem.projectDescription isEqual:@"(null)"] || [_projectManageItem.projectDescription isEqualToString:@""]) {
+        _desscriptTextView.text = @"Write something ...";
     } else {
         _desscriptTextView.text = _projectManageItem.projectDescription;
     }

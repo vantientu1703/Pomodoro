@@ -65,7 +65,8 @@
         _txtProjectname.text = _projectManageItem.projectName;
         _txtDescription.text = _projectManageItem.projectDescription;
         if ([[dateFomatter stringFromDate:_projectManageItem.endDate] isEqualToString:@"1970 / 01 / 01"]) {
-            _selectDateBtn.titleLabel.text = @"SELECT DATE";
+//            _selectDateBtn.titleLabel.text = @"SELECT DATE";
+            [_selectDateBtn setTitle:@"SELECT DATE" forState:UIControlStateNormal];
         } else {
             [_selectDateBtn setTitle:[dateFomatter stringFromDate:_projectManageItem.endDate] forState:UIControlStateNormal];;
         }
@@ -74,6 +75,9 @@
 //                                                                                 style:UIBarButtonItemStyleDone
 //                                                                                target:self
 //                                                                                action:@selector(backDetailProjectManageViewController)];
+        if ([_projectManageItem.description isEqualToString:@"(null)"]) {
+            _txtDescription.text = @"";
+        }
     } else {
         self.title = @"Adding";
     }

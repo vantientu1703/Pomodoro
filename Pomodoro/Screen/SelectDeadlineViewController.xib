@@ -30,10 +30,17 @@
                 <constraint firstItem="57z-Hf-vJ6" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="3cq-OG-3bX"/>
                 <constraint firstAttribute="trailing" secondItem="57z-Hf-vJ6" secondAttribute="trailing" id="5hv-Dk-Y2S"/>
                 <constraint firstItem="57z-Hf-vJ6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="7eo-DN-wo9"/>
-                <constraint firstItem="57z-Hf-vJ6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="226" id="Vj3-Cp-MDw"/>
+                <constraint firstItem="57z-Hf-vJ6" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Aif-G2-wRB"/>
+                <constraint firstItem="57z-Hf-vJ6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="taw-Le-7CY"/>
                 <constraint firstItem="57z-Hf-vJ6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zxF-K2-itR"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="3cq-OG-3bX"/>
+                    <exclude reference="7eo-DN-wo9"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="589.5" y="149.5"/>
         </view>
     </objects>

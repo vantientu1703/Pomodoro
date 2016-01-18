@@ -791,7 +791,7 @@
 				EF1DA5331C161D4E00D6229F /* PriorityView */,
 				EF02CDBF1C05B36600EEE780 /* AGPushNoteView */,
 				EFDAE39C1C0B845B0078BCC0 /* MenuProjectManageViewController */,
-				EFD681D81BE524DD0087083B /* MenuViewController */,
+				EFD681D81BE524DD0087083B /* SettingTableViewController */,
 				EF841FEE1BFF2EB000D7CFC0 /* ProjectManageViewController */,
 				EF0E65C11BF5D1A700610703 /* SettingTimerViewController */,
 				EF0E65BA1BF59BB800610703 /* TimerViewController */,
@@ -812,13 +812,13 @@
 			name = CustomTableViewCellProjectManage;
 			sourceTree = "<group>";
 		};
-		EFD681D81BE524DD0087083B /* MenuViewController */ = {
+		EFD681D81BE524DD0087083B /* SettingTableViewController */ = {
 			isa = PBXGroup;
 			children = (
 				EFD681D91BE525230087083B /* SettingViewController.h */,
 				EFD681DA1BE525230087083B /* SettingViewController.m */,
 			);
-			name = MenuViewController;
+			name = SettingTableViewController;
 			sourceTree = "<group>";
 		};
 		EFD7C9FA1C353C6E0082830D /* MoneyChart */ = {
