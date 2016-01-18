@@ -23,6 +23,9 @@
 #import "GetToDoItemIsDoingToDatabase.h"
 #import "GetTodoItemWasDoneOrderByDateCompletedTask.h"
 #import "GetTodoItemIsDeletedFollowProjectIDToDatabaseTask.h"
+#import "AppDelegate.h"
+#import "SettingItem.h"
+#import "GetProjectManageItemToDatabaseTask.h"
 
 #define CELL_HEIGHT 40
 
@@ -50,7 +53,10 @@
     
     BOOL isShowSelectMonth;
     
+    NSUserDefaults *userDefaults;
     
+    AppDelegate *appDelegate;
+    SettingItem *settingItem;
 }
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -60,6 +66,10 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+    appDelegate = [[UIApplication sharedApplication] delegate];
+    settingItem = appDelegate.settingItem;
+    
     _moneyDBController = [MoneyDBController getInstance];
     
     isShowSelectMonth = false;
@@ -349,9 +359,23 @@
                         [deleteTodoItemToDatabaseTask doQuery:_moneyDBController];
                     }
                 }
+                
+                
+                
                 DeleteProjectManageToDatabaseTask *deleteProjectManageItemToDatabase = [[DeleteProjectManageToDatabaseTask alloc] initWithProjectManage:_projectManageItem];
                 [deleteProjectManageItemToDatabase doQuery:_moneyDBController];
                 
+                if (_projectManageItem.projectID == settingItem.projectID) {
+                    GetProjectManageItemToDatabaseTask *getProjectManagerItemToDatabaseTask = [[GetProjectManageItemToDatabaseTask alloc] init];
+                    NSArray *arr = [getProjectManagerItemToDatabaseTask getProjectManageItemToDatabase:_moneyDBController];
+                    ProjectManageItem *projectManagerItem = [[ProjectManageItem alloc] init];
+                    projectManagerItem = arr[arr.count - 1];
+                    settingItem.projectID = projectManagerItem.projectID;
+                    [userDefaults setInteger:projectManagerItem.projectID forKey:KEY_PROJECT_ID];
+                    settingItem.indexPathRowMenu = (int)(arr.count - 1);
+                    [userDefaults setInteger:arr.count - 1 forKey:KEY_INDEXPATH_ROW_MENU];
+                    
+                }
                 [self.navigationController popViewControllerAnimated:YES];
             }];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel Action") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

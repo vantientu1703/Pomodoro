@@ -132,7 +132,7 @@
     
     cell.txtTask.enabled = NO;
     cell.delegate = self;
-    cell.rightUtilityButtons = [self rightButtons];
+    //cell.rightUtilityButtons = [self rightButtons];
     cell.leftUtilityButtons = [self leftButtons];
     
     cell.labelPomodoros.text = [NSString stringWithFormat:@"%@", [dateFomatter stringFromDate:todoItem.dateDeleted]];
@@ -157,22 +157,23 @@
 
 #pragma mark Delegate SWTableViewCell
 
+- (void) beingMovedCellWhenLongPress {
+    DebugLog(@"longpress.....");
+}
 - (NSArray *) rightButtons {
-    
-    NSMutableArray *rightButtons = [[NSMutableArray alloc] init];
-    
-    [rightButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0] title:@"UnDelete"];
-    return rightButtons;
+    NSMutableArray *arrRightButtons = [[NSMutableArray alloc] init];
+    [arrRightButtons sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0f] title:@"UnDelete"];
+    return arrRightButtons;
 }
 
 - (NSArray *) leftButtons {
-    return 0;
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    [arr sw_addUtilityButtonWithColor:[UIColor colorWithRed:1.0f green:0.231f blue:0.188f alpha:1.0f] title:@"UnDelete"];
+    return arr;
 }
-
-- (void) swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
-    
-    // index = 0 Button is UnDelete;
+- (void) swipeableTableViewCell:(SWTableViewCell *)cell didTriggerLeftUtilityButtonWithIndex:(NSInteger)index {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    //undelete
     if (index == 0) {
         
         DebugLog(@"press is Undelete");
@@ -191,6 +192,29 @@
         
         [self.tableView reloadData];
     }
+}
+- (void) swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
+    
+//    // index = 0 Button is UnDelete;
+//    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+//    if (index == 0) {
+//        
+//        DebugLog(@"press is Undelete");
+//        NSString *titleSection = [_arrTitleSections objectAtIndex:indexPath.section];
+//        NSMutableArray *arrTodoItemIsDeleted = [_todoItemIsDeletedDictionarys objectForKey:titleSection];
+//        TodoItem *todoItem = [[TodoItem alloc] init];
+//        todoItem = [arrTodoItemIsDeleted objectAtIndex:indexPath.row];
+//        todoItem.isDelete = false;
+//        
+//        UpdateToDoItemToDatabase *updateTodoItemToDatabaseTask = [[UpdateToDoItemToDatabase alloc] initWithTodoItem:todoItem];
+//        [updateTodoItemToDatabaseTask doQuery:_moneyDBController];
+//        
+//        [arrTodoItemIsDeleted removeObjectAtIndex:indexPath.row];
+//        [_todoItemIsDeletedDictionarys setObject:arrTodoItemIsDeleted forKey:titleSection];
+//        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+//        
+//        [self.tableView reloadData];
+//    }
 }
 
 
