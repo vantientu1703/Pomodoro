@@ -89,6 +89,7 @@
         
         //timeWork = (int) [_shareUserDefaults integerForKey:@"key_time_work"];
         //timeSeconds = 0;
+        //[_shareUserDefaults setObject:@"stop_containing_app" forKey:@"key_timer_running"];
         NSURL *url = [NSURL URLWithString:@"pomodoro://"];
         [self.extensionContext openURL:url completionHandler:^(BOOL success) {}];
     }

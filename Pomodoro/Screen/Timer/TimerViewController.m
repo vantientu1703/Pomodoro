@@ -139,6 +139,7 @@
             _timerNotificationCenterItem.totalWorking = 0;
             _timerNotificationCenterItem.totalTime = _settingItem.timeWork * 60;
             [self setTextForLabelWhenSettingWasChanged];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KEY_STOP_TIMER object:self];
         }
     }
     
@@ -302,6 +303,12 @@
     [userDefaults setInteger:_timerNotificationCenterItem.timeMinutes forKey:@"key_time_minutes"];
     [userDefaults setInteger:_timerNotificationCenterItem.timeSeconds forKey:@"key_time_seconds"];
     [userDefaults setObject:@"stop_containing_app" forKey:@"key_timer_running"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KEY_STOP_TIMER object:self];
+    _settingItem.indexPathRow = -1;
+    _settingItem.indexPathSection = -1;
+    [userDefaults setInteger:-1 forKey:KEY_INDEXPATH_SECTION];
+    [userDefaults setInteger:-1 forKey:KEY_INDEXPATH_ROW];
+    _labelTask.text = @"";
 }
 
 - (IBAction)buttonStartOnClicked:(id)sender {

@@ -131,16 +131,12 @@ static NSString *cellIdentifer = @"cellIdentifer";
         self.tabBarController.selectedIndex = 1;
     }
     _settingItem.isChanged = 0;
-    
-    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [userDefaults setInteger:0 forKey:KEY_IS_CHANGED];
+    [_shareUserDefaults setInteger:0 forKey:KEY_IS_CHANGED];
     
     [self removeMenuAndViewGrayBackground];
     [self.tableView reloadData];
     
-    CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
-    cell.delegate = self;
-    
+    timerNotificationCenterItem.isRunTimer = [_shareUserDefaults boolForKey:@"key_is_run_timer"];
     NSString *stringTimerRunning;
     stringTimerRunning = [_shareUserDefaults stringForKey:@"key_timer_running"];
     if ([stringTimerRunning isEqualToString:@"stop_containing_app"] || [stringTimerRunning isEqualToString:@"stop"]) {
@@ -157,17 +153,28 @@ static NSString *cellIdentifer = @"cellIdentifer";
         [appDelegate startStopTimer];
     }
     
-    if (timerNotificationCenterItem.isRunTimer) {
-        // label cell đc cập nhật khi chuyển tab view
-        isStartting = false;
-        cell.rightUtilityButtons = [self rightButtonsTodoPause];
-        [self updateLabelForCell];
-    } else {
-        isStartting = true;
-        cell.rightUtilityButtons = [self rightButtonsStatusToDo];
-        [self updateLabelForCell];
+    CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
+    cell.delegate = self;
+    TodoItem *todoItem = [[TodoItem alloc] init];
+    if (_indexPath != nil) {
+        todoItem = _arrTodoItemsFollowPriorityAllSection[_indexPath.section][_indexPath.row];
     }
+    TodoItem *todoItemTimer = timerNotificationCenterItem.todoItem;
+    
+    if (todoItem.todo_id == todoItemTimer.todo_id) {
+        if (timerNotificationCenterItem.isRunTimer) {
+            // label cell đc cập nhật khi chuyển tab view
+            isStartting = false;
+            cell.rightUtilityButtons = [self rightButtonsTodoPause];
+            [self updateLabelForCell];
+        } else {
+            isStartting = true;
+            cell.rightUtilityButtons = [self rightButtonsStatusToDo];
+            [self updateLabelForCell];
+        }
 
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(pushTabbarViewControllerIndex2) name:@"appDidBecomeActive"
                                                object:nil];
@@ -178,6 +185,10 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(semiModalDismissed:)
                                                  name:kSemiModalDidHideNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateLabelForCell:)
+                                                 name:KEY_STOP_TIMER
                                                object:nil];
     isAdding = true;
 }
@@ -546,6 +557,29 @@ static NSString *cellIdentifer = @"cellIdentifer";
     [self removeMenuAndViewGrayBackground];
     [self loadData];
     [self.tableView reloadData];
+    CustomTableViewCell *cell = [_tableView cellForRowAtIndexPath:_indexPath];
+    cell.delegate = self;
+    TodoItem *todoItem = [[TodoItem alloc] init];
+    if (_indexPath != nil) {
+        if ([_arrTodoItemsFollowPriorityAllSection[_settingItem.indexPathSection] count] > 0) {
+            todoItem = _arrTodoItemsFollowPriorityAllSection[_indexPath.section][_indexPath.row];
+        }
+    }
+    TodoItem *todoItemTimer = timerNotificationCenterItem.todoItem;
+    
+    if (todoItem.todo_id == todoItemTimer.todo_id) {
+        if (timerNotificationCenterItem.isRunTimer) {
+            // label cell đc cập nhật khi chuyển tab view
+            isStartting = false;
+            cell.rightUtilityButtons = [self rightButtonsTodoPause];
+            [self updateLabelForCell];
+        } else {
+            isStartting = true;
+            cell.rightUtilityButtons = [self rightButtonsStatusToDo];
+            [self updateLabelForCell];
+        }
+        
+    }
     [_txtItemTodo resignFirstResponder];
 }
 
@@ -1355,6 +1389,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
         _indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
         
         NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
+        ///[userDefaults setObject:indexPath forKey:KEY_INDEXPATH];
         SettingItem *settingItem;;
         settingItem = appDelegate.settingItem;
         
@@ -1378,6 +1413,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
             timerNotificationCenterItem.totalLongBreaking = 0;
             timerNotificationCenterItem.stringTaskname = todoItem.content;
             
+            [userDefaults setBool:true forKey:@"key_is_run_timer"];
             [userDefaults setInteger:_indexPath.row forKey:KEY_INDEXPATH_ROW];
             settingItem.indexPathRow = (int)_indexPath.row;
             
@@ -1403,7 +1439,8 @@ static NSString *cellIdentifer = @"cellIdentifer";
         } else {
             
             if (!isStartting) {
-                timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = false thì timer invalidate
+                timerNotificationCenterItem.isRunTimer = isStartting;
+                [userDefaults setBool:false forKey:@"key_is_run_timer"];// gán giá trị isRunTimer = false thì timer invalidate
                 [self updateLabelForCell];
                 [appDelegate startStopTimer];
                 isStartting = true;
@@ -1416,6 +1453,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
                 
                 timerNotificationCenterItem.isRunTimer = isStartting; // gán giá trị isRunTimer = true thì timer isvalid
                 timerNotificationCenterItem.stringTaskname = todoItem.content;
+                [userDefaults setBool:true forKey:@"key_is_run_timer"];
                 [userDefaults setInteger:1 forKey:KEY_IS_ACTIVE];
                 settingItem.isActive = 1;
                 self.tabBarController.selectedIndex = 1;
@@ -1508,35 +1546,45 @@ static NSString *cellIdentifer = @"cellIdentifer";
 }
 - (void) updateLabelForCell: (NSNotification *) notification { // label cell đc cập nhật liên tục khi timer running
     
-    if (_arrTodos.count != 0) {
-        
-        TodoItem *todoItem = [[TodoItem alloc] init];
-        todoItem = [_arrTodos objectAtIndex:_indexPath.row];
-        
-        CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
-        cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell: timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
-        cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItem.pomodoros];
-        
-        if (timerNotificationCenterItem.timeMinutes == 0 && timerNotificationCenterItem.timeSeconds == 0) {
-            DebugLog(@"____________%@", timerNotificationCenterItem.stringStatusWorking);
-            if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Breaking"]) {
-                
-                [self pushNoteView:@"This is time to break"];
-            } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Working"]) {
-                
-                [self pushNoteView:@"This is time to work"];
-                
-            } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Long Breaking"]) {
-                
-                [self pushNoteView:@"This is time to long break"];
-            }
-            if (_settingItem.isSound) {
-                [self playSound];
+    //if (![[_shareUserDefaults objectForKey:@"key_timer_running"] isEqualToString:@"start_containing_app"]) {
+        if (_settingItem.indexPathSection != -1 && _settingItem.indexPathRow != -1) {
+            TodoItem *todoItem = [[TodoItem alloc] init];
+            todoItem = _arrTodoItemsFollowPriorityAllSection[_settingItem.indexPathSection][_settingItem.indexPathRow];
+            TodoItem *todoItemTimer = timerNotificationCenterItem.todoItem;
+            if (todoItem.todo_id == todoItemTimer.todo_id) {
+                CustomTableViewCell *cell = [self.tableView cellForRowAtIndexPath:_indexPath];
+                if ([[_shareUserDefaults objectForKey:@"key_timer_running"] isEqualToString:@"stop"]) {
+                    [_shareUserDefaults setObject:@"" forKey:@"key_timer_running"];
+                    cell.labelTime.text = @"";
+                    [self.tableView reloadData];
+                } else {
+                    cell.labelTime.text = [NSString stringWithFormat:@"%@ %@ ", timerNotificationCenterItem.stringStatusWorking,[self setTextLabelForCell: timerNotificationCenterItem.timeMinutes and: timerNotificationCenterItem.timeSeconds]];
+                }
+                cell.labelPomodoros.text = [NSString stringWithFormat:@"Pomodoros : %d", todoItem.pomodoros];
             }
             
-            [self performSelector:@selector(removePushView) withObject:nil afterDelay:3];
+            if (timerNotificationCenterItem.timeMinutes == 0 && timerNotificationCenterItem.timeSeconds == 0) {
+                DebugLog(@"____________%@", timerNotificationCenterItem.stringStatusWorking);
+                if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Breaking"]) {
+                    
+                    [self pushNoteView:@"This is time to break"];
+                } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Working"]) {
+                    
+                    [self pushNoteView:@"This is time to work"];
+                    
+                } else if ([timerNotificationCenterItem.stringStatusWorking isEqualToString:@"Long Breaking"]) {
+                    
+                    [self pushNoteView:@"This is time to long break"];
+                }
+                if (_settingItem.isSound) {
+                    [self playSound];
+                }
+                
+                [self performSelector:@selector(removePushView) withObject:nil afterDelay:3];
+            }
         }
-    }
+   // }
+    
 }
 
 #pragma mark push and remove note view

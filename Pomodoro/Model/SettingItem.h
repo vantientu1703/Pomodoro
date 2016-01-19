@@ -20,6 +20,7 @@
 @property (nonatomic, assign) int indexPathRowMenu;
 @property (nonatomic, assign) int indexPriority;
 
+@property (nonatomic, assign) long todoID;
 @property (nonatomic, assign) long projectID;
 
 @property (nonatomic, assign) BOOL isActive;
@@ -27,7 +28,10 @@
 @property (nonatomic, assign) BOOL isSound;
 @property (nonatomic, assign) BOOL isStartupApp;
 @property (nonatomic, assign) BOOL isCheckTimerRunning;
+
 @property (nonatomic, strong) NSString *projectName;
 @property (nonatomic, strong) TodoItem *todoItem;
+
+@property (nonatomic, strong) NSIndexPath *indexPath;
 
 @end

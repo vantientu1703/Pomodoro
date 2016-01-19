@@ -81,18 +81,15 @@
         [self setIsChanged:false];
     }
     [self setIndexPathRow:(int)[userDefault integerForKey:KEY_INDEXPATH_ROW]];
-    if (self.indexPathRow != -1) {
+    if (_indexPathRow != -1) {
+        _indexPathRow = -1;
         [userDefault setInteger:-1 forKey:KEY_INDEXPATH_ROW];
-        [self setIndexPathRow:-1];
     }
-    
     [self setIndexPathSection:(int)[userDefault integerForKey:KEY_INDEXPATH_SECTION]];
-    if (self.indexPathSection != -1) {
+    if (_indexPathSection != -1) {
+        _indexPathSection = -1;
         [userDefault setInteger:-1 forKey:KEY_INDEXPATH_SECTION];
-        [self setIndexPathSection:-1];
     }
-    
-    
     [self setIsSound:(BOOL)[userDefault integerForKey:KEY_IS_SOUND]];
     
     NSArray *arr = [userDefault objectForKey:KEY_PROCJECT_NAME];
@@ -114,6 +111,14 @@
     [self setIndexPathRowMenu:(int)[userDefault integerForKey:KEY_INDEXPATH_ROW_MENU]];
     [self setTodoItem:(TodoItem *)[userDefault objectForKey:KEY_TODO_ITEM]];
     [self setIsCheckTimerRunning:(BOOL)[userDefault boolForKey:@"key_is_check_timer_running"]];
+    [self setTodoID:(long)[userDefault integerForKey:KEY_TODO_ID]];
+    if (self.todoID != -1) {
+        [self setTodoID:-1];
+    }
+    [self setIndexPath:(NSIndexPath *)[userDefault objectForKey:KEY_INDEXPATH]];
+//    if (self.indexPath != nil) {
+//        self.indexPath = nil;
+//    }
 }
 
 

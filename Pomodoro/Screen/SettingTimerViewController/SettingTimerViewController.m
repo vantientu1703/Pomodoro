@@ -228,13 +228,15 @@
 - (IBAction)switchLongBreak:(id)sender {
     
     if (_switchLongBreak.on == YES) {
-        [userDefaults setInteger:1 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
-        _settingItem.switchOnOffLongBreak = 1;
+//        [userDefaults setInteger:1 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
+//        _settingItem.switchOnOffLongBreak = 1;d
+        _switchOnOffLongBreak = true;
         _changeTimerLongBreak.enabled = YES;
         _changeFrequency.enabled = YES;
     } else {
-        [userDefaults setInteger:0 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
-        _settingItem.switchOnOffLongBreak = 0;
+//        [userDefaults setInteger:0 forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
+//        _settingItem.switchOnOffLongBreak = 0;
+        _switchOnOffLongBreak = false;
         _changeFrequency.enabled = NO;
         _changeTimerLongBreak.enabled = NO;
     }
@@ -291,6 +293,8 @@
     _timerNotificationCenterItem.totalWorking = 0;
     _timerNotificationCenterItem.totalLongBreaking = 0;
     
+    _settingItem.switchOnOffLongBreak = _switchOnOffLongBreak;
+    [userDefaults setInteger:_switchOnOffLongBreak forKey:KEY_SWITCH_ONOFF_LONG_BREAK];
     [userDefaults setBool:true forKey:@"key_is_changed_from_containingapp"];
     [userDefaults setObject:@"" forKey:@"key_timer_running"];
     [userDefaults setBool:false forKey:@"key_is_check_timer_running"];
