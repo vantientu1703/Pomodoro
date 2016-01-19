@@ -113,6 +113,7 @@
     }
     [self setIndexPathRowMenu:(int)[userDefault integerForKey:KEY_INDEXPATH_ROW_MENU]];
     [self setTodoItem:(TodoItem *)[userDefault objectForKey:KEY_TODO_ITEM]];
+    [self setIsCheckTimerRunning:(BOOL)[userDefault boolForKey:@"key_is_check_timer_running"]];
 }
 
 

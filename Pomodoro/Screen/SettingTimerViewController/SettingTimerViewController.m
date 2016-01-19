@@ -293,7 +293,7 @@
     
     [userDefaults setBool:true forKey:@"key_is_changed_from_containingapp"];
     [userDefaults setObject:@"" forKey:@"key_timer_running"];
-    
+    [userDefaults setBool:false forKey:@"key_is_check_timer_running"];
     [self.navigationController popViewControllerAnimated:YES];
     self.navigationItem.rightBarButtonItem = nil;
 }

@@ -360,8 +360,6 @@
                     }
                 }
                 
-                
-                
                 DeleteProjectManageToDatabaseTask *deleteProjectManageItemToDatabase = [[DeleteProjectManageToDatabaseTask alloc] initWithProjectManage:_projectManageItem];
                 [deleteProjectManageItemToDatabase doQuery:_moneyDBController];
                 

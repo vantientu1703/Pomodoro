@@ -453,11 +453,11 @@
             </objects>
             <point key="canvasLocation" x="-871.5" y="-236.5"/>
         </scene>
-        <!--Project Manage-->
+        <!--Project Manager-->
         <scene sceneID="aNy-f8-Ffs">
             <objects>
                 <navigationController id="DpC-xi-qSA" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Project Manage" id="zJD-uS-R2r"/>
+                    <tabBarItem key="tabBarItem" title="Project Manager" id="zJD-uS-R2r"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2jt-VZ-Feo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

@@ -38,10 +38,11 @@
     self.timerNotificationcenterItem = [TimerNotificationcenterItem new];
     [self setupTimerNotificationCenterItem];
     
-    
     return YES;
 }
 - (void) setupTimerNotificationCenterItem {
+    [_timerNotificationcenterItem.timer invalidate];
+    _timerNotificationcenterItem.timer = nil;
     _timerNotificationcenterItem.totalTime = _settingItem.timeWork * 60;
     _timerNotificationcenterItem.timeMinutes = _timerNotificationcenterItem.totalTime / 60;
     _timerNotificationcenterItem.isWorking = true;
@@ -49,10 +50,10 @@
     _timerNotificationcenterItem.totalLongBreaking = 0;
     _timerNotificationcenterItem.isRunTimer = false;
     _timerNotificationcenterItem.stringStatusWorking = @"Working";
-    NSUserDefaults *shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
-    [shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"key_time_minutes"];
-    [shareUserDefaults setInteger:0 forKey:@"key_time_seconds"];
-    [shareUserDefaults synchronize];
+    [_shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"key_time_minutes"];
+    [_shareUserDefaults setInteger:0 forKey:@"key_time_seconds"];
+    [_shareUserDefaults setBool:_timerNotificationcenterItem.isRunTimer forKey:@"key_is_run_timer"];
+    //[_shareUserDefaults synchronize];
 }
 - (void) startStopTimer {
     if (_timerNotificationcenterItem.isRunTimer) {
@@ -73,7 +74,11 @@
     _timerNotificationcenterItem.totalTime --;
     _timerNotificationcenterItem.timeMinutes = _timerNotificationcenterItem.totalTime / 60;
     _timerNotificationcenterItem.timeSeconds = _timerNotificationcenterItem.totalTime - (_timerNotificationcenterItem.timeMinutes * 60);
+    
     [_shareUserDefaults setInteger:_timerNotificationcenterItem.totalTime forKey:@"key_total_time"];
+    [_shareUserDefaults setInteger:_timerNotificationcenterItem.timeMinutes forKey:@"key_time_minutes"];
+    [_shareUserDefaults setInteger:_timerNotificationcenterItem.timeSeconds forKey:@"key_time_seconds"];
+    [_shareUserDefaults setObject:_timerNotificationcenterItem.stringStatusWorking forKey:@"key_status_working"];
     
         if (_timerNotificationcenterItem.totalTime == 0) {
             if (_timerNotificationcenterItem.isWorking) {

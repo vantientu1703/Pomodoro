@@ -13,7 +13,7 @@
 #import "SWTableViewCell.h"
 #import "UpdateToDoItemToDatabase.h"
 #import "GetTodoItemInProjectToDatabaseTask.h"
-
+#import "UIColor+Extend.h"
 
 @interface TodoITemDeletedListViewController () <UITableViewDelegate,UITableViewDataSource,SWTableViewCellDelegate>
 
@@ -36,6 +36,7 @@
     
     _moneyDBController = [MoneyDBController getInstance];
     [self loadData];
+    self.tableView.backgroundColor = [[UIColor alloc] initWithHex:COLOR_LIGHT_PINK alpha:1.0f];
 }
 
 - (void) loadData {
@@ -193,6 +194,7 @@
         [self.tableView reloadData];
     }
 }
+
 - (void) swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
     
 //    // index = 0 Button is UnDelete;

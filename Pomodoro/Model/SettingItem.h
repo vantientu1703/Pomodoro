@@ -26,7 +26,7 @@
 @property (nonatomic, assign) BOOL isChanged;
 @property (nonatomic, assign) BOOL isSound;
 @property (nonatomic, assign) BOOL isStartupApp;
-
+@property (nonatomic, assign) BOOL isCheckTimerRunning;
 @property (nonatomic, strong) NSString *projectName;
 @property (nonatomic, strong) TodoItem *todoItem;
 

@@ -196,7 +196,9 @@ static NSString *cellIdentifer = @"cellIdentifer";
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     [self setupRegisterUserNotificationSetting];
+    [_shareUserDefaults setBool:false forKey:@"key_is_check_timer_running"];
     size = [[UIScreen mainScreen] bounds].size;
     self.tableView.backgroundColor = [[UIColor alloc] initWithHex:COLOR_LIGHT_PINK alpha:1.0f];
     isShowMenu = true;
