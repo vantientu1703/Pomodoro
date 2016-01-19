@@ -294,6 +294,9 @@
     [userDefaults setBool:true forKey:@"key_is_changed_from_containingapp"];
     [userDefaults setObject:@"" forKey:@"key_timer_running"];
     [userDefaults setBool:false forKey:@"key_is_check_timer_running"];
+    [userDefaults setInteger:_timerWork forKey:@"key_time_minutes"];
+    [userDefaults setBool:false forKey:@"key_is_run_timer"];
+    [userDefaults setInteger:0 forKey:@"key_time_seconds"];
     [self.navigationController popViewControllerAnimated:YES];
     self.navigationItem.rightBarButtonItem = nil;
 }

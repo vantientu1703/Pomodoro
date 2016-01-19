@@ -62,30 +62,17 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-V9-9Gj">
-                                                <rect key="frame" x="8" y="24" width="42" height="21"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="21" id="QPF-ux-5gp"/>
-                                                    <constraint firstAttribute="width" constant="42" id="gA9-VY-ca1"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="leading" secondItem="C3S-yN-fdP" secondAttribute="trailing" constant="2" id="59j-Ug-aYr"/>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="leading" secondItem="SMK-hl-1E3" secondAttribute="trailing" constant="14" id="AGM-bk-5Gi"/>
                                             <constraint firstAttribute="height" constant="79" id="Gvr-2z-4dg"/>
-                                            <constraint firstItem="ehh-V9-9Gj" firstAttribute="top" secondItem="0OZ-KP-kw7" secondAttribute="top" constant="24" id="K24-BR-Toj"/>
                                             <constraint firstItem="C3S-yN-fdP" firstAttribute="centerX" secondItem="0OZ-KP-kw7" secondAttribute="centerX" id="Nht-Wy-Ffx"/>
                                             <constraint firstItem="C3S-yN-fdP" firstAttribute="top" secondItem="0OZ-KP-kw7" secondAttribute="top" constant="20" id="Ugq-Kk-JYD"/>
-                                            <constraint firstItem="ehh-V9-9Gj" firstAttribute="leading" secondItem="0OZ-KP-kw7" secondAttribute="leading" constant="8" id="Utr-Ze-og0"/>
                                             <constraint firstItem="JWS-uB-OgC" firstAttribute="top" secondItem="SMK-hl-1E3" secondAttribute="bottom" constant="5" id="VmD-KQ-eVM"/>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="leading" secondItem="C3S-yN-fdP" secondAttribute="trailing" constant="2" id="acM-mT-paU"/>
                                             <constraint firstItem="Sbd-wu-JeW" firstAttribute="top" secondItem="0OZ-KP-kw7" secondAttribute="top" constant="20" id="dse-iU-16Q"/>
-                                            <constraint firstItem="SMK-hl-1E3" firstAttribute="leading" secondItem="ehh-V9-9Gj" secondAttribute="trailing" constant="35" id="khA-sR-O5Z"/>
                                             <constraint firstItem="JWS-uB-OgC" firstAttribute="centerX" secondItem="0OZ-KP-kw7" secondAttribute="centerX" id="lgl-Uu-OMR"/>
                                             <constraint firstItem="JWS-uB-OgC" firstAttribute="top" secondItem="Sbd-wu-JeW" secondAttribute="bottom" constant="5" id="pc7-JM-OKk"/>
                                             <constraint firstItem="SMK-hl-1E3" firstAttribute="top" secondItem="0OZ-KP-kw7" secondAttribute="top" constant="20" id="qeO-zx-7Tz"/>
@@ -148,7 +135,6 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="120"/>
                     <connections>
-                        <outlet property="labelCheck" destination="ehh-V9-9Gj" id="EwB-NE-7XU"/>
                         <outlet property="labelMinutes" destination="SMK-hl-1E3" id="kYv-Cp-1TQ"/>
                         <outlet property="labelSeconds" destination="Sbd-wu-JeW" id="LYp-8X-Tli"/>
                         <outlet property="labelStatusWorking" destination="JWS-uB-OgC" id="jC4-cz-AR3"/>

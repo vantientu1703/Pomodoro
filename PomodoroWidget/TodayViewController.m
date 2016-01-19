@@ -18,9 +18,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelStatusWorking;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
-@property (weak, nonatomic) IBOutlet UILabel *labelCheck;
-
-
 
 @property (nonatomic, strong) NSUserDefaults *shareUserDefaults;
 @end
@@ -105,7 +102,7 @@
     BOOL isRunTimer;
     _shareUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.me.PomodoroWidget"];
     isRunTimer = [_shareUserDefaults boolForKey:@"key_is_run_timer"];
-    _labelCheck.text = [NSString stringWithFormat:@"%d", [_shareUserDefaults boolForKey:@"key_is_run_timer"]];
+    //_labelCheck.text = [NSString stringWithFormat:@"%d", [_shareUserDefaults boolForKey:@"key_is_run_timer"]];
     
     if (isRunTimer) {
         _segmentControl.selectedSegmentIndex = - 1;
