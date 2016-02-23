@@ -744,7 +744,7 @@ static NSString *cellIdentifer = @"cellIdentifer";
     }  completion:^(BOOL finished) {
         [self loadData];
         [self.tableView reloadData];
-        _searchBar.frame = CGRectMake(_searchBar.frame.origin.x, _searchBar.frame.origin.y, _searchBar.frame.size.width - 70, 44);\
+        _searchBar.frame = CGRectMake(_searchBar.frame.origin.x, _searchBar.frame.origin.y, _searchBar.frame.size.width - 70, 44);
         [_priorityView removeFromSuperview];
     }];
 }
@@ -1472,6 +1472,13 @@ static NSString *cellIdentifer = @"cellIdentifer";
 
 #pragma mark editableTableControllerDelegate\
 
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if (indexPath.row == 0) {
+//        return NO;
+//    } else {
+//        return YES;
+//    }
+//}
 - (void) beingMovedCellWhenLongPress {
     if (_segmentControl.selectedSegmentIndex == 0) {
         [self.tableView setEditing:YES animated:YES];

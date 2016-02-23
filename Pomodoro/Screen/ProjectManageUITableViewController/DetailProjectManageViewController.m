@@ -189,6 +189,7 @@
         [view addSubview:label];
         [self.monthScrollView addSubview:view];
     }
+    
     for (int i = 0; i < arrMonthYearDataChart.count; i ++) {
         DataChartItem *dataChartItem = [[DataChartItem alloc] init];
         dataChartItem = arrMonthYearDataChart[i];

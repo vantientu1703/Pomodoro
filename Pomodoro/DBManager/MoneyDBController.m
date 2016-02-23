@@ -96,12 +96,10 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     DebugLog(@"version: %d",[self currentVersion]);
     int dbVersion = [self currentVersion];
     if (dbVersion < 1) {
-        
         [self executeQuery:@"ALTER TABLE todos \
                              ADD isdeleted INTEGER DEFAULT 0"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 1] UTF8String], nil, nil, nil);
-    } else if (dbVersion < 2){
-        
+    } else if (dbVersion < 2) {
         [self executeQuery:@"ALTER TABLE todos \
                              ADD date_completed DATETIME"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 2] UTF8String], nil, nil, nil);
@@ -113,12 +111,10 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                              ADD projectid INTEGER"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 5] UTF8String], nil, nil, nil);
     } else if (dbVersion < 7) {
-        
         [self executeQuery:@"ALTER TABLE projectmanage \
                              ADD startdate DATETIME"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 7] UTF8String], nil, nil, nil);
     } else if (dbVersion < 8) {
-        
         [self executeQuery:@"ALTER TABLE projectmanage \
                              ADD enddate DATETIME"];
         sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 8] UTF8String], nil, nil, nil);
@@ -155,10 +151,8 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     }
 }
 - (int) currentVersion {
-    
     sqlite3_stmt *statement = nil;
     int dbVersion = 9999;
-    
     @try {
         if (sqlite3_prepare_v2(sqlite, "PRAGMA user_version", -1, &statement, nil) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -177,12 +171,9 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     return dbVersion;
 }
 - (void)createTable {
-
     [self executeQuery:TABLE_CREATE_TASKS];
     [self executeQuery:TABLE_CREATE_PROJECTMANAGE];
     [self executeQuery:TABLE_CREAT_DATACHART];
-    
-    //sqlite3_exec(sqlite, [[NSString stringWithFormat:@"PRAGMA user_version = %d", 0] UTF8String], nil, nil, nil);
 }
 
 
@@ -190,7 +181,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     if (sqlite == nil) {
         return -1;
     }
-    
     sqlite3_stmt *statement;
     @try {
         if(sqlite3_prepare_v2(sqlite, [query UTF8String], -1, &statement, nil) == SQLITE_OK) {
@@ -211,24 +201,19 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
             sqlite3_finalize(statement);
         }
     }
-    
     return -1;
 }
 
 #pragma mark - Support select, insert, delete, update
 - (long)insert:(NSString*)table_name data:(NSDictionary *)data {
-    
     long reval = -1;
     if (!self.sqlite) {
         return reval;
     }
-    
     NSArray *arKeys = [data allKeys];
-    
     NSMutableString *sqlCommand = [[NSMutableString alloc]init];
     NSMutableString *strField = [[NSMutableString alloc]init];
     NSMutableString *strValue = [[NSMutableString alloc]init];
-
     for (NSString *field_name in arKeys) {
         if ([strField length]>0 && [strValue length]>0) {
             [strField appendFormat:@","];
@@ -239,9 +224,7 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     }
     [sqlCommand appendFormat:@"INSERT INTO %@(%@) VALUES(%@)",table_name,strField,strValue];
     NSLog(@"%@",sqlCommand);
-    
     sqlite3_stmt *statement = nil;
-    
     @try {
         if (sqlite3_prepare_v2(self.sqlite, [sqlCommand UTF8String], -1, &statement, nil) == SQLITE_OK) {
             NSInteger index = 1;
@@ -250,25 +233,20 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 sqlite3_bind_text(statement, index++, [value UTF8String], -1, nil);
             }
         }
-        
         if (sqlite3_step(statement) == SQLITE_DONE) {
             reval = sqlite3_last_insert_rowid(sqlite);
         } else {
             NSLog(@"insert db ERROR! %s", sqlite3_errmsg(sqlite));
         }
-        
-//        onCompletion(reval);
     }
     @catch (NSException *exception) {
         NSLog(@"Exception: Cannot insert data to DB!");
-//        onFailure();
     }
     @finally {
         if (statement != nil) {
             sqlite3_finalize(statement);
         }
     }
-    
     return reval;
 }
 
@@ -277,14 +255,10 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     if (!self.sqlite) {
         return reval;
     }
-    
     NSArray *arKeys = [data allKeys];
-    
     NSMutableString *sqlCommand = [[NSMutableString alloc]init];
     NSMutableString *strField = [[NSMutableString alloc]init];
-    
     [sqlCommand appendFormat:@"UPDATE %@ SET ",table_name];
-    
     for (NSString *key in arKeys) {
         if (strField.length > 0) {
             [strField appendFormat:@", "];
@@ -292,8 +266,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
         [strField appendFormat:@"%@ = ? ",key];
     }
     [sqlCommand appendFormat:@"%@ where %@",strField,clause];
-    NSLog(@"%@",sqlCommand);
-    
     sqlite3_stmt *statement = nil;
     @try {
         if (sqlite3_prepare_v2(sqlite, [sqlCommand UTF8String], -1, &statement, nil) == SQLITE_OK) {
@@ -305,15 +277,12 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 sqlite3_bind_text(statement, index++, [sValue UTF8String], -1, nil);
                 sValue = nil;
             }
-            
             for (sValue in args) {
                 sqlite3_bind_text(statement, index++, [sValue UTF8String], -1, nil);
                 sValue = nil;
             }
-            
             if (sqlite3_step(statement) == SQLITE_DONE) {
                 reval = sqlite3_total_changes(sqlite);
-//                onCompletion();
             } else {
                 NSLog(@"Update error: %s",sqlite3_errmsg(sqlite));
             }
@@ -340,9 +309,7 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
     NSMutableString *tempvalue = [NSMutableString stringWithFormat:@" WHERE %@", conditionString];
     [sqlCommand appendString:tempColumn];
     [sqlCommand appendString:tempvalue];
-
     sqlite3_stmt *statement = nil;
-    
     @try {
         if (sqlite3_prepare_v2(self.sqlite, [sqlCommand UTF8String], -1, &statement, nil) == SQLITE_OK) {
             
@@ -353,20 +320,14 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 sqlite3_bind_text(statement, index++, [value UTF8String], -1, nil);
                 value = nil;
             }
-            
             if (sqlite3_step(statement) == SQLITE_DONE) {
-                
                 reval = sqlite3_total_changes(self.sqlite);
-                
             } else {
                 NSLog(@"error insert with table and parameter: %@", sqlite3_errmsg16(sqlite));
             }
-            
-            
         } else {
             NSLog(@"error insert with table and parameter: %@", sqlite3_errmsg16(sqlite));
         }
-//        onCompletion();
     }
     @catch (NSException *exception) {
         NSLog(@"Delete exception: %@",exception);
@@ -381,9 +342,7 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
 }
 
 - (NSArray*)rawQuery:(NSString*)sqlCommand args:(NSArray*)selectionArgs {
-    
     NSMutableArray *reval;
-    
     sqlite3_stmt *statement;
     NSLog(@"%@",sqlCommand);
     @try {
@@ -396,14 +355,11 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 sqlite3_bind_text(statement, index++, [sValue UTF8String], -1, nil);
                 sValue = nil;
             }
-            
             reval = [[NSMutableArray alloc]init];
             NSMutableDictionary *keyValue = nil;
             NSInteger count = 0;
             NSString *column = nil;
             NSString *cValue = nil;
-            
-            
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 @try {
                     keyValue = [[NSMutableDictionary alloc] init];
@@ -421,7 +377,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                     [reval addObject:keyValue];
                 }
                 @catch (NSException *exception) {
-                    
                 }
                 @finally {
                     if (keyValue != nil) {
@@ -431,7 +386,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 }
             }
         }
-//        onCompletion();
     }
     @catch (NSException *exception) {
         NSLog(@"Raw error: %@",exception);
@@ -442,7 +396,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
             sqlite3_finalize(statement);
         }
     }
-    
     return reval;
 }
 
@@ -450,9 +403,7 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
  Raw query
 */
 - (NSArray*)rawQueryWithCommand:(NSString*)sqlCommand args:(NSArray*)selectionArgs {
-    
     NSMutableArray *reval;
-    
     sqlite3_stmt *statement;
     NSLog(@"%@",sqlCommand);
     @try {
@@ -465,32 +416,23 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 sqlite3_bind_text(statement, index++, [sValue UTF8String], -1, nil);
                 sValue = nil;
             }
-            
             reval = [[NSMutableArray alloc]init];
             NSMutableDictionary *keyValue = nil;
             NSInteger count = 0;
-//            NSString *column = nil;
             NSString *cValue = nil;
-            
-            
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 @try {
                     keyValue = [[NSMutableDictionary alloc] init];
                     
                     count = sqlite3_column_count(statement);
                     for (int i = 0; i < count; i++) {
-//                        column = [MoneyDBUtils stringFromUTF8:(const char *)sqlite3_column_name(statement, i)];
                         cValue = [ZooDBUtil stringFromUTF8:(const char*)sqlite3_column_text(statement, i)];
-                        
                         [keyValue setValue:cValue forKey:[NSString stringWithFormat:@"%d",i]];
-                        
-//                        column = nil;
                         cValue = nil;
                     }
                     [reval addObject:keyValue];
                 }
                 @catch (NSException *exception) {
-                    
                 }
                 @finally {
                     if (keyValue != nil) {
@@ -500,7 +442,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 }
             }
         }
-        //        onCompletion();
     }
     @catch (NSException *exception) {
         DebugLog(@"Raw error: %@",exception);
@@ -511,28 +452,21 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
             sqlite3_finalize(statement);
         }
     }
-    
     return reval;
 }
 
 - (NSArray*)rawQuery:(NSString*)sqlCommand arg:(NSString*)selectionArg {
-    
     NSMutableArray *reval;
-    
     sqlite3_stmt *statement;
     @try {
         if (sqlite3_prepare_v2(sqlite, [sqlCommand UTF8String], -1, &statement, nil) == SQLITE_OK) {
             NSInteger index=1;
-            
             sqlite3_bind_text(statement, index++, [selectionArg UTF8String], -1, nil);
-            
             reval = [[NSMutableArray alloc]init];
             NSMutableDictionary *keyValue = nil;
             NSInteger count = 0;
             NSString *column = nil;
             NSString *cValue = nil;
-            
-            
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 @try {
                     keyValue = [[NSMutableDictionary alloc] init];
@@ -550,7 +484,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                     [reval addObject:keyValue];
                 }
                 @catch (NSException *exception) {
-                    
                 }
                 @finally {
                     if (keyValue != nil) {
@@ -560,7 +493,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
                 }
             }
         }
-//        onCompletion(reval);
     }
     @catch (NSException *exception) {
         NSLog(@"Raw error: %@",exception);
@@ -571,47 +503,36 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
             sqlite3_finalize(statement);
         }
     }
-    
     return reval;
 }
 
-
 - (void)rawQueryTest:(NSString*)sqlCommand arg:(NSString*)selectionArg {
     NSMutableArray *reval;
-    
     sqlite3_stmt *statement;
     NSLog(@"%@",sqlCommand);
     @try {
         if (sqlite3_prepare_v2(sqlite, [sqlCommand UTF8String], -1, &statement, nil) == SQLITE_OK) {
             NSInteger index=1;
-            
             sqlite3_bind_text(statement, index++, [selectionArg UTF8String], -1, nil);
-            
             reval = [[NSMutableArray alloc]init];
             NSMutableDictionary *keyValue = nil;
             NSInteger count = 0;
             NSString *column = nil;
             NSString *cValue = nil;
-
-
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 @try {
                     keyValue = [[NSMutableDictionary alloc] init];
-                    
                     count = sqlite3_column_count(statement);
                     for (int i = 0; i < count; i++) {
                         column = [ZooDBUtil stringFromUTF8:(const char*)sqlite3_column_name(statement,i)];
                         cValue = [ZooDBUtil stringFromUTF8:(const char*)sqlite3_column_text(statement, i)];
-                        
                         [keyValue setValue:cValue forKey:column];
-                        
                         column = nil;
                         cValue = nil;
                     }
                     [reval addObject:keyValue];
                 }
                 @catch (NSException *exception) {
-
                 }
                 @finally {
                     if (keyValue != nil) {
@@ -633,7 +554,6 @@ static NSString *TABLE_CREAT_DATACHART = @"CREATE TABLE IF NOT EXISTS \"datachar
         }
     }
 }
-
 #pragma mark - Return db path
 + (NSString *)dbPath:(NSString *)fileName {
     if (documentDir == nil) {

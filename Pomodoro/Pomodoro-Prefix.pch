@@ -22,6 +22,7 @@
 
 #ifndef Pomodoro_Prefix_h
 #define Pomodoro_Prefix_h
+
 #define TODOS @"todos"
 #define PROJECTMANAGE @"projectmanage"
 
